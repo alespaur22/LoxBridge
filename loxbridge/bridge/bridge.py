@@ -2,6 +2,7 @@ import sys
 import time
 
 from loxbridge.homey.client import HomeyClient
+from loxbridge.logger.logger import logger
 from loxbridge.loxone.udp import send_value
 
 POLL_INTERVAL = 1.0
@@ -41,33 +42,30 @@ class Bridge:
             loxone_port = int(loxone_config["port"])
 
         except (ValueError, KeyError, TypeError) as error:
-            print(f"Chyba konfigurace: {error}")
+            logger.error(f"Chyba konfigurace: {error}")
             sys.exit(1)
 
         previous_values: dict[tuple[str, str], object] = {}
 
-        print("LoxBridge spuštěn")
-        print(f"Homey: {homey_config['ip']}")
-        print(f"Loxone: {loxone_ip}:{loxone_port}")
-        print()
+        logger.info("LoxBridge spuštěn")
+        logger.info(f"Homey: {homey_config['ip']}")
+        logger.info(f"Loxone: {loxone_ip}:{loxone_port}")
 
         for device_config in devices_config:
             device_name = device_config["name"]
 
-            print(f"Zařízení: {device_name}")
+            logger.info(f"Zařízení: {device_name}")
 
             for capability_id, loxone_key in device_config["capabilities"].items():
-                print(f"  {capability_id} → {loxone_key}")
+                logger.info(f"  {capability_id} → {loxone_key}")
 
-        print()
-        print("Ukončení: Ctrl + C")
+        logger.info("Ukončení: Ctrl + C")
 
         try:
             while True:
                 try:
                     devices = client.get_devices()
 
-                    # Nově vytvoříme slovník zařízení podle názvu
                     devices_by_name = {
                         device.get("name", "").casefold(): device
                         for device in devices.values()
@@ -80,8 +78,8 @@ class Bridge:
                         device = devices_by_name.get(device_name.casefold())
 
                         if device is None:
-                            print(
-                                f'Chyba: zařízení "{device_name}" nebylo nalezeno.'
+                            logger.warning(
+                                f'Zařízení "{device_name}" nebylo nalezeno.'
                             )
                             continue
 
@@ -91,9 +89,8 @@ class Bridge:
                             capability = capabilities.get(capability_id)
 
                             if capability is None:
-                                print(
-                                    f'Chyba: zařízení "{device_name}" nemá '
-                                    f'capability "{capability_id}".'
+                                logger.warning(
+                                    f'Zařízení "{device_name}" nemá capability "{capability_id}".'
                                 )
                                 continue
 
@@ -117,7 +114,7 @@ class Bridge:
                                 value=loxone_value,
                             )
 
-                            print(
+                            logger.info(
                                 f"{device_name}: {capability_id}={value!r} "
                                 f"→ {loxone_key}={loxone_value}"
                             )
@@ -125,9 +122,9 @@ class Bridge:
                             previous_values[value_id] = value
 
                 except RuntimeError as error:
-                    print(f"Chyba komunikace: {error}")
+                    logger.error(f"Chyba komunikace: {error}")
 
                 time.sleep(POLL_INTERVAL)
 
         except KeyboardInterrupt:
-            print("\nLoxBridge ukončen.")
+            logger.info("LoxBridge ukončen.")
