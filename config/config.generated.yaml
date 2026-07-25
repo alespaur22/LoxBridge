@@ -1,0 +1,1860 @@
+homey:
+  ip: 192.168.68.112
+  token: 9e3f2a5f-54ec-4e31-a119-a80d13e1c676:7b8579e8-73b0-4654-835e-61f8bbce7c6f:192577e6f49d9af75eec1578457ff1f29fdac4f4
+loxone:
+  ip: 192.168.68.118
+  port: 7001
+devices:
+- name: AC Koupelna 1
+  slug: ac_koupelna_1
+  capabilities:
+    meter_power:
+      key: ac_koupelna_1_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: AC Koupelna 1 - Spotřebovaná energie
+      unit: kWh
+    fan_speed:
+      key: ac_koupelna_1_fan_speed
+      type: enum
+      title: Rychlost ventilátoru
+      loxone_name: AC Koupelna 1 - Rychlost ventilátoru
+    measure_power:
+      key: ac_koupelna_1_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: AC Koupelna 1 - Aktuální příkon
+      unit: W
+    target_temperature:
+      key: ac_koupelna_1_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: AC Koupelna 1 - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: ac_koupelna_1_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: AC Koupelna 1 - Aktuální teplota
+      unit: °C
+    measure_temperature_outside:
+      key: ac_koupelna_1_measure_temperature_outside
+      type: number
+      title: Venkovní teplota
+      loxone_name: AC Koupelna 1 - Venkovní teplota
+      unit: °C
+    measure_temperature_inside:
+      key: ac_koupelna_1_measure_temperature_inside
+      type: number
+      title: Vnitřní teplota
+      loxone_name: AC Koupelna 1 - Vnitřní teplota
+      unit: °C
+    onoff:
+      key: ac_koupelna_1_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: AC Koupelna 1 - Zapnuto
+    operation_mode:
+      key: ac_koupelna_1_operation_mode
+      type: enum
+      title: Režim
+      loxone_name: AC Koupelna 1 - Režim
+    eco_mode:
+      key: ac_koupelna_1_eco_mode
+      type: enum
+      title: Eco režim
+      loxone_name: AC Koupelna 1 - Eco režim
+    air_swing_lr:
+      key: ac_koupelna_1_air_swing_lr
+      type: enum
+      title: Směr lamel vlevo–vpravo
+      loxone_name: AC Koupelna 1 - Směr lamel vlevo–vpravo
+    air_swing_ud:
+      key: ac_koupelna_1_air_swing_ud
+      type: enum
+      title: Směr lamel nahoru–dolů
+      loxone_name: AC Koupelna 1 - Směr lamel nahoru–dolů
+    fan_auto_mode:
+      key: ac_koupelna_1_fan_auto_mode
+      type: enum
+      title: Fan Auto Mode
+      loxone_name: AC Koupelna 1 - Fan Auto Mode
+    nanoe_mode:
+      key: ac_koupelna_1_nanoe_mode
+      type: enum
+      title: Nanoe
+      loxone_name: AC Koupelna 1 - Nanoe
+  homey_id: 4a54b6a3-4074-44f6-a109-7e41210e2ae2
+- name: AC Koupelna 2
+  slug: ac_koupelna_2
+  capabilities:
+    meter_power:
+      key: ac_koupelna_2_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: AC Koupelna 2 - Spotřebovaná energie
+      unit: kWh
+    fan_speed:
+      key: ac_koupelna_2_fan_speed
+      type: enum
+      title: Rychlost ventilátoru
+      loxone_name: AC Koupelna 2 - Rychlost ventilátoru
+    measure_power:
+      key: ac_koupelna_2_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: AC Koupelna 2 - Aktuální příkon
+      unit: W
+    target_temperature:
+      key: ac_koupelna_2_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: AC Koupelna 2 - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: ac_koupelna_2_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: AC Koupelna 2 - Aktuální teplota
+      unit: °C
+    measure_temperature_outside:
+      key: ac_koupelna_2_measure_temperature_outside
+      type: number
+      title: Venkovní teplota
+      loxone_name: AC Koupelna 2 - Venkovní teplota
+      unit: °C
+    measure_temperature_inside:
+      key: ac_koupelna_2_measure_temperature_inside
+      type: number
+      title: Vnitřní teplota
+      loxone_name: AC Koupelna 2 - Vnitřní teplota
+      unit: °C
+    onoff:
+      key: ac_koupelna_2_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: AC Koupelna 2 - Zapnuto
+    operation_mode:
+      key: ac_koupelna_2_operation_mode
+      type: enum
+      title: Režim
+      loxone_name: AC Koupelna 2 - Režim
+    eco_mode:
+      key: ac_koupelna_2_eco_mode
+      type: enum
+      title: Eco režim
+      loxone_name: AC Koupelna 2 - Eco režim
+    air_swing_lr:
+      key: ac_koupelna_2_air_swing_lr
+      type: enum
+      title: Směr lamel vlevo–vpravo
+      loxone_name: AC Koupelna 2 - Směr lamel vlevo–vpravo
+    air_swing_ud:
+      key: ac_koupelna_2_air_swing_ud
+      type: enum
+      title: Směr lamel nahoru–dolů
+      loxone_name: AC Koupelna 2 - Směr lamel nahoru–dolů
+    fan_auto_mode:
+      key: ac_koupelna_2_fan_auto_mode
+      type: enum
+      title: Fan Auto Mode
+      loxone_name: AC Koupelna 2 - Fan Auto Mode
+    nanoe_mode:
+      key: ac_koupelna_2_nanoe_mode
+      type: enum
+      title: Nanoe
+      loxone_name: AC Koupelna 2 - Nanoe
+  homey_id: 4ed9337f-f40e-4160-a02e-67f99d8c1670
+- name: AC Ložnice
+  slug: ac_loznice
+  capabilities:
+    meter_power:
+      key: ac_loznice_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: AC Ložnice - Spotřebovaná energie
+      unit: kWh
+    fan_speed:
+      key: ac_loznice_fan_speed
+      type: enum
+      title: Rychlost ventilátoru
+      loxone_name: AC Ložnice - Rychlost ventilátoru
+    measure_power:
+      key: ac_loznice_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: AC Ložnice - Aktuální příkon
+      unit: W
+    target_temperature:
+      key: ac_loznice_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: AC Ložnice - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: ac_loznice_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: AC Ložnice - Aktuální teplota
+      unit: °C
+    measure_temperature_outside:
+      key: ac_loznice_measure_temperature_outside
+      type: number
+      title: Venkovní teplota
+      loxone_name: AC Ložnice - Venkovní teplota
+      unit: °C
+    measure_temperature_inside:
+      key: ac_loznice_measure_temperature_inside
+      type: number
+      title: Vnitřní teplota
+      loxone_name: AC Ložnice - Vnitřní teplota
+      unit: °C
+    onoff:
+      key: ac_loznice_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: AC Ložnice - Zapnuto
+    operation_mode:
+      key: ac_loznice_operation_mode
+      type: enum
+      title: Režim
+      loxone_name: AC Ložnice - Režim
+    eco_mode:
+      key: ac_loznice_eco_mode
+      type: enum
+      title: Eco režim
+      loxone_name: AC Ložnice - Eco režim
+    air_swing_lr:
+      key: ac_loznice_air_swing_lr
+      type: enum
+      title: Směr lamel vlevo–vpravo
+      loxone_name: AC Ložnice - Směr lamel vlevo–vpravo
+    air_swing_ud:
+      key: ac_loznice_air_swing_ud
+      type: enum
+      title: Směr lamel nahoru–dolů
+      loxone_name: AC Ložnice - Směr lamel nahoru–dolů
+    fan_auto_mode:
+      key: ac_loznice_fan_auto_mode
+      type: enum
+      title: Fan Auto Mode
+      loxone_name: AC Ložnice - Fan Auto Mode
+    nanoe_mode:
+      key: ac_loznice_nanoe_mode
+      type: enum
+      title: Nanoe
+      loxone_name: AC Ložnice - Nanoe
+  homey_id: 35f4dddc-322d-4a19-97cb-d1d20691dafa
+- name: AC Obývák
+  slug: ac_obyvak
+  capabilities:
+    meter_power:
+      key: ac_obyvak_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: AC Obývák - Spotřebovaná energie
+      unit: kWh
+    fan_speed:
+      key: ac_obyvak_fan_speed
+      type: enum
+      title: Rychlost ventilátoru
+      loxone_name: AC Obývák - Rychlost ventilátoru
+    measure_power:
+      key: ac_obyvak_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: AC Obývák - Aktuální příkon
+      unit: W
+    target_temperature:
+      key: ac_obyvak_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: AC Obývák - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: ac_obyvak_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: AC Obývák - Aktuální teplota
+      unit: °C
+    measure_temperature_outside:
+      key: ac_obyvak_measure_temperature_outside
+      type: number
+      title: Venkovní teplota
+      loxone_name: AC Obývák - Venkovní teplota
+      unit: °C
+    measure_temperature_inside:
+      key: ac_obyvak_measure_temperature_inside
+      type: number
+      title: Vnitřní teplota
+      loxone_name: AC Obývák - Vnitřní teplota
+      unit: °C
+    onoff:
+      key: ac_obyvak_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: AC Obývák - Zapnuto
+    operation_mode:
+      key: ac_obyvak_operation_mode
+      type: enum
+      title: Režim
+      loxone_name: AC Obývák - Režim
+    eco_mode:
+      key: ac_obyvak_eco_mode
+      type: enum
+      title: Eco režim
+      loxone_name: AC Obývák - Eco režim
+    air_swing_lr:
+      key: ac_obyvak_air_swing_lr
+      type: enum
+      title: Směr lamel vlevo–vpravo
+      loxone_name: AC Obývák - Směr lamel vlevo–vpravo
+    air_swing_ud:
+      key: ac_obyvak_air_swing_ud
+      type: enum
+      title: Směr lamel nahoru–dolů
+      loxone_name: AC Obývák - Směr lamel nahoru–dolů
+    fan_auto_mode:
+      key: ac_obyvak_fan_auto_mode
+      type: enum
+      title: Fan Auto Mode
+      loxone_name: AC Obývák - Fan Auto Mode
+    nanoe_mode:
+      key: ac_obyvak_nanoe_mode
+      type: enum
+      title: Nanoe
+      loxone_name: AC Obývák - Nanoe
+  homey_id: e4a4d03d-0a4c-4c17-bec7-e6a36ff7e077
+- name: AC Pokojíček
+  slug: ac_pokojicek
+  capabilities:
+    meter_power:
+      key: ac_pokojicek_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: AC Pokojíček - Spotřebovaná energie
+      unit: kWh
+    fan_speed:
+      key: ac_pokojicek_fan_speed
+      type: enum
+      title: Rychlost ventilátoru
+      loxone_name: AC Pokojíček - Rychlost ventilátoru
+    measure_power:
+      key: ac_pokojicek_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: AC Pokojíček - Aktuální příkon
+      unit: W
+    target_temperature:
+      key: ac_pokojicek_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: AC Pokojíček - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: ac_pokojicek_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: AC Pokojíček - Aktuální teplota
+      unit: °C
+    measure_temperature_outside:
+      key: ac_pokojicek_measure_temperature_outside
+      type: number
+      title: Venkovní teplota
+      loxone_name: AC Pokojíček - Venkovní teplota
+      unit: °C
+    measure_temperature_inside:
+      key: ac_pokojicek_measure_temperature_inside
+      type: number
+      title: Vnitřní teplota
+      loxone_name: AC Pokojíček - Vnitřní teplota
+      unit: °C
+    onoff:
+      key: ac_pokojicek_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: AC Pokojíček - Zapnuto
+    operation_mode:
+      key: ac_pokojicek_operation_mode
+      type: enum
+      title: Režim
+      loxone_name: AC Pokojíček - Režim
+    eco_mode:
+      key: ac_pokojicek_eco_mode
+      type: enum
+      title: Eco režim
+      loxone_name: AC Pokojíček - Eco režim
+    air_swing_lr:
+      key: ac_pokojicek_air_swing_lr
+      type: enum
+      title: Směr lamel vlevo–vpravo
+      loxone_name: AC Pokojíček - Směr lamel vlevo–vpravo
+    air_swing_ud:
+      key: ac_pokojicek_air_swing_ud
+      type: enum
+      title: Směr lamel nahoru–dolů
+      loxone_name: AC Pokojíček - Směr lamel nahoru–dolů
+    fan_auto_mode:
+      key: ac_pokojicek_fan_auto_mode
+      type: enum
+      title: Fan Auto Mode
+      loxone_name: AC Pokojíček - Fan Auto Mode
+    nanoe_mode:
+      key: ac_pokojicek_nanoe_mode
+      type: enum
+      title: Nanoe
+      loxone_name: AC Pokojíček - Nanoe
+  homey_id: 80809262-bc77-415c-8a34-6079a896b812
+- name: Aktuální počasí
+  slug: aktualni_pocasi
+  capabilities:
+    forecast_time:
+      key: aktualni_pocasi_forecast_time
+      type: string
+      title: Forecast time
+      loxone_name: Aktuální počasí - Forecast time
+    weather_description:
+      key: aktualni_pocasi_weather_description
+      type: string
+      title: Weather
+      loxone_name: Aktuální počasí - Weather
+    measure_temperature:
+      key: aktualni_pocasi_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Aktuální počasí - Aktuální teplota
+      unit: °C
+    measure_temperature.feels_like:
+      key: aktualni_pocasi_measure_temperature_feels_like
+      type: number
+      title: Feels like
+      loxone_name: Aktuální počasí - Feels like
+      unit: °C
+    measure_rain.next_1_hour:
+      key: aktualni_pocasi_measure_rain_next_1_hour
+      type: number
+      title: Rain next hour
+      loxone_name: Aktuální počasí - Rain next hour
+      unit: mm
+    measure_rain.next_6_hours:
+      key: aktualni_pocasi_measure_rain_next_6_hours
+      type: number
+      title: Rain next 6 hours
+      loxone_name: Aktuální počasí - Rain next 6 hours
+      unit: mm
+    measure_temperature.min_next_6_hours:
+      key: aktualni_pocasi_measure_temperature_min_next_6_hours
+      type: number
+      title: Min. temperature
+      loxone_name: Aktuální počasí - Min. temperature
+      unit: °C
+    measure_temperature.max_next_6_hours:
+      key: aktualni_pocasi_measure_temperature_max_next_6_hours
+      type: number
+      title: Max. temperature
+      loxone_name: Aktuální počasí - Max. temperature
+      unit: °C
+    measure_pressure:
+      key: aktualni_pocasi_measure_pressure
+      type: number
+      title: Air pressure at sea level
+      loxone_name: Aktuální počasí - Air pressure at sea level
+      unit: mbar
+    measure_humidity:
+      key: aktualni_pocasi_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Aktuální počasí - Vlhkost
+      unit: '%'
+    measure_cloud_area_fraction:
+      key: aktualni_pocasi_measure_cloud_area_fraction
+      type: number
+      title: Cloudiness
+      loxone_name: Aktuální počasí - Cloudiness
+      unit: '%'
+    measure_fog_area_fraction:
+      key: aktualni_pocasi_measure_fog_area_fraction
+      type: number
+      title: Fog
+      loxone_name: Aktuální počasí - Fog
+      unit: '%'
+    measure_wind_strength1:
+      key: aktualni_pocasi_measure_wind_strength1
+      type: number
+      title: Wind strength
+      loxone_name: Aktuální počasí - Wind strength
+      unit: m/s
+    measure_wind_direction:
+      key: aktualni_pocasi_measure_wind_direction
+      type: string
+      title: Wind direction
+      loxone_name: Aktuální počasí - Wind direction
+    measure_wind_angle:
+      key: aktualni_pocasi_measure_wind_angle
+      type: number
+      title: Wind angle
+      loxone_name: Aktuální počasí - Wind angle
+      unit: °
+    measure_ultraviolet:
+      key: aktualni_pocasi_measure_ultraviolet
+      type: number
+      title: Ultraviolet
+      loxone_name: Aktuální počasí - Ultraviolet
+      unit: UVI
+    sunrise_time:
+      key: aktualni_pocasi_sunrise_time
+      type: string
+      title: Sunrise
+      loxone_name: Aktuální počasí - Sunrise
+    sunset_time:
+      key: aktualni_pocasi_sunset_time
+      type: string
+      title: Sunset
+      loxone_name: Aktuální počasí - Sunset
+  homey_id: 1b539e9b-89e8-4219-8dd9-c7f36ca4f923
+- name: Automatická závlaha
+  slug: automaticka_zavlaha
+  capabilities:
+    meter_water:
+      key: automaticka_zavlaha_meter_water
+      type: number
+      title: Water meter
+      loxone_name: Automatická závlaha - Water meter
+      unit: m³
+    measure_water:
+      key: automaticka_zavlaha_measure_water
+      type: number
+      title: Water flow
+      loxone_name: Automatická závlaha - Water flow
+      unit: L/min
+    onoff:
+      key: automaticka_zavlaha_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Automatická závlaha - Zapnuto
+    measure_rain:
+      key: automaticka_zavlaha_measure_rain
+      type: number
+      title: Rain
+      loxone_name: Automatická závlaha - Rain
+      unit: mm
+  homey_id: beccadf3-1eb1-4921-a9e3-706c3c31b872
+- name: Bazénová filtrace
+  slug: bazenova_filtrace
+  capabilities:
+    onoff:
+      key: bazenova_filtrace_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bazénová filtrace - Zapnuto
+    measure_power:
+      key: bazenova_filtrace_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Bazénová filtrace - Aktuální příkon
+      unit: W
+    meter_power:
+      key: bazenova_filtrace_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Bazénová filtrace - Spotřebovaná energie
+      unit: kWh
+  homey_id: b7557c09-2e82-480b-86ad-14d69778f624
+- name: Bodovka 1
+  slug: bodovka_1
+  capabilities:
+    onoff:
+      key: bodovka_1_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 1 - Zapnuto
+    dim:
+      key: bodovka_1_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 1 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_1_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 1 - Color temperature
+  homey_id: f5394b8b-4241-40a8-830b-78c26e39e5ca
+- name: Bodovka 2
+  slug: bodovka_2
+  capabilities:
+    onoff:
+      key: bodovka_2_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 2 - Zapnuto
+    dim:
+      key: bodovka_2_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 2 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_2_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 2 - Color temperature
+  homey_id: 3394e03b-312d-4ea2-960c-b6c521f5d637
+- name: Bodovka 3
+  slug: bodovka_3
+  capabilities:
+    onoff:
+      key: bodovka_3_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 3 - Zapnuto
+    dim:
+      key: bodovka_3_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 3 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_3_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 3 - Color temperature
+  homey_id: b2bb4dc1-62e4-4516-9c76-1c09f3bd79bc
+- name: Bodovka 4
+  slug: bodovka_4
+  capabilities:
+    onoff:
+      key: bodovka_4_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 4 - Zapnuto
+    dim:
+      key: bodovka_4_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 4 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_4_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 4 - Color temperature
+  homey_id: 8985ab06-3f7a-4987-9b31-9564914ed993
+- name: Bodovka 5
+  slug: bodovka_5
+  capabilities:
+    onoff:
+      key: bodovka_5_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 5 - Zapnuto
+    dim:
+      key: bodovka_5_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 5 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_5_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 5 - Color temperature
+  homey_id: dda188e8-4338-4bbb-928b-93f6b95531f7
+- name: Bodovka 6
+  slug: bodovka_6
+  capabilities:
+    onoff:
+      key: bodovka_6_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 6 - Zapnuto
+    dim:
+      key: bodovka_6_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 6 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_6_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 6 - Color temperature
+  homey_id: 360523f3-968e-49b6-b344-d77a8719664b
+- name: Bodovka 7
+  slug: bodovka_7
+  capabilities:
+    onoff:
+      key: bodovka_7_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 7 - Zapnuto
+    dim:
+      key: bodovka_7_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 7 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_7_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 7 - Color temperature
+  homey_id: 25c8d5cb-61bc-4ce3-b710-aa51409ef009
+- name: Bodovka 8
+  slug: bodovka_8
+  capabilities:
+    onoff:
+      key: bodovka_8_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 8 - Zapnuto
+    dim:
+      key: bodovka_8_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 8 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_8_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 8 - Color temperature
+  homey_id: d08a6042-5bbe-4ae5-9889-9172dce1cc00
+- name: Bodovka 9
+  slug: bodovka_9
+  capabilities:
+    onoff:
+      key: bodovka_9_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovka 9 - Zapnuto
+    dim:
+      key: bodovka_9_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovka 9 - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovka_9_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovka 9 - Color temperature
+  homey_id: d1a94483-2549-4c7e-9b9f-485a2852ad20
+- name: Bodovky
+  slug: bodovky
+  capabilities:
+    onoff:
+      key: bodovky_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovky - Zapnuto
+    dim:
+      key: bodovky_dim
+      type: number
+      title: Jas
+      loxone_name: Bodovky - Jas
+      unit: '%'
+    light_temperature:
+      key: bodovky_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: Bodovky - Color temperature
+  homey_id: e07f51c4-4888-4266-b19e-3dc007c9c267
+- name: Bodovky Kuchyně
+  slug: bodovky_kuchyne
+  capabilities:
+    onoff:
+      key: bodovky_kuchyne_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovky Kuchyně - Zapnuto
+  homey_id: d33137e5-5a47-43bb-a8ac-c73f80199db2
+- name: Bodovky Obývak
+  slug: bodovky_obyvak
+  capabilities:
+    onoff:
+      key: bodovky_obyvak_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Bodovky Obývak - Zapnuto
+    measure_voltage:
+      key: bodovky_obyvak_measure_voltage
+      type: number
+      title: Voltage
+      loxone_name: Bodovky Obývak - Voltage
+      unit: V
+    measure_current:
+      key: bodovky_obyvak_measure_current
+      type: number
+      title: Current
+      loxone_name: Bodovky Obývak - Current
+      unit: A
+    measure_power:
+      key: bodovky_obyvak_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Bodovky Obývak - Aktuální příkon
+      unit: W
+    meter_power:
+      key: bodovky_obyvak_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Bodovky Obývak - Spotřebovaná energie
+      unit: kWh
+  homey_id: b8452a09-5d95-4e0e-94c5-85257cbaca66
+- name: Dobrou noc
+  slug: dobrou_noc
+  capabilities:
+    onoff:
+      key: dobrou_noc_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Dobrou noc - Zapnuto
+  homey_id: 19171f87-a4b3-4314-94af-6aa94fba3557
+- name: Hey Google
+  slug: hey_google
+  capabilities:
+    speaker_playing:
+      key: hey_google_speaker_playing
+      type: boolean
+      title: Playing
+      loxone_name: Hey Google - Playing
+    speaker_artist:
+      key: hey_google_speaker_artist
+      type: string
+      title: Artist
+      loxone_name: Hey Google - Artist
+    speaker_album:
+      key: hey_google_speaker_album
+      type: string
+      title: Album
+      loxone_name: Hey Google - Album
+    speaker_track:
+      key: hey_google_speaker_track
+      type: string
+      title: Track
+      loxone_name: Hey Google - Track
+    volume_mute:
+      key: hey_google_volume_mute
+      type: boolean
+      title: Volume muted
+      loxone_name: Hey Google - Volume muted
+    volume_set:
+      key: hey_google_volume_set
+      type: number
+      title: Set volume
+      loxone_name: Hey Google - Set volume
+      unit: '%'
+  homey_id: 94bf75a8-4f9d-48aa-a61e-74dda8de47aa
+- name: Lampička
+  slug: lampicka
+  capabilities:
+    onoff:
+      key: lampicka_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Lampička - Zapnuto
+    dim:
+      key: lampicka_dim
+      type: number
+      title: Jas
+      loxone_name: Lampička - Jas
+      unit: '%'
+  homey_id: 349f7b4c-acdb-4738-ac85-71b1e77d3b6b
+- name: LED Chodba
+  slug: led_chodba
+  capabilities:
+    onoff:
+      key: led_chodba_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: LED Chodba - Zapnuto
+    dim:
+      key: led_chodba_dim
+      type: number
+      title: Jas
+      loxone_name: LED Chodba - Jas
+      unit: '%'
+  homey_id: 99103851-a94e-4457-99aa-3f65bfced3e9
+- name: LED Koupelna
+  slug: led_koupelna
+  capabilities:
+    onoff:
+      key: led_koupelna_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: LED Koupelna - Zapnuto
+    dim:
+      key: led_koupelna_dim
+      type: number
+      title: Jas
+      loxone_name: LED Koupelna - Jas
+      unit: '%'
+    dim.white:
+      key: led_koupelna_dim_white
+      type: number
+      title: Dim level white
+      loxone_name: LED Koupelna - Dim level white
+      unit: '%'
+    light_hue:
+      key: led_koupelna_light_hue
+      type: number
+      title: Hue
+      loxone_name: LED Koupelna - Hue
+    light_saturation:
+      key: led_koupelna_light_saturation
+      type: number
+      title: Color saturation
+      loxone_name: LED Koupelna - Color saturation
+    measure_power:
+      key: led_koupelna_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: LED Koupelna - Aktuální příkon
+      unit: W
+    meter_power:
+      key: led_koupelna_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: LED Koupelna - Spotřebovaná energie
+      unit: kWh
+    measure_voltage:
+      key: led_koupelna_measure_voltage
+      type: number
+      title: Voltage
+      loxone_name: LED Koupelna - Voltage
+      unit: V
+    measure_current:
+      key: led_koupelna_measure_current
+      type: number
+      title: Current
+      loxone_name: LED Koupelna - Current
+      unit: A
+    onoff.whitemode:
+      key: led_koupelna_onoff_whitemode
+      type: boolean
+      title: Toggle white mode
+      loxone_name: LED Koupelna - Toggle white mode
+    measure_temperature:
+      key: led_koupelna_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: LED Koupelna - Aktuální teplota
+      unit: °C
+    rssi:
+      key: led_koupelna_rssi
+      type: number
+      title: Signal
+      loxone_name: LED Koupelna - Signal
+      unit: RSSI
+  homey_id: f0571845-03fa-4933-86ac-bb86b925204a
+- name: LED Obývák
+  slug: led_obyvak
+  capabilities:
+    onoff:
+      key: led_obyvak_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: LED Obývák - Zapnuto
+    dim:
+      key: led_obyvak_dim
+      type: number
+      title: Jas
+      loxone_name: LED Obývák - Jas
+      unit: '%'
+    light_hue:
+      key: led_obyvak_light_hue
+      type: number
+      title: Hue
+      loxone_name: LED Obývák - Hue
+    light_mode:
+      key: led_obyvak_light_mode
+      type: enum
+      title: Light mode
+      loxone_name: LED Obývák - Light mode
+    light_saturation:
+      key: led_obyvak_light_saturation
+      type: number
+      title: Color saturation
+      loxone_name: LED Obývák - Color saturation
+    light_temperature:
+      key: led_obyvak_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: LED Obývák - Color temperature
+    measure_power:
+      key: led_obyvak_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: LED Obývák - Aktuální příkon
+      unit: W
+    meter_power:
+      key: led_obyvak_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: LED Obývák - Spotřebovaná energie
+      unit: kWh
+    measure_voltage.input1:
+      key: led_obyvak_measure_voltage_input1
+      type: number
+      title: Input 1
+      loxone_name: LED Obývák - Input 1
+      unit: V
+    measure_voltage.input2:
+      key: led_obyvak_measure_voltage_input2
+      type: number
+      title: Input 2
+      loxone_name: LED Obývák - Input 2
+      unit: V
+    measure_voltage.input3:
+      key: led_obyvak_measure_voltage_input3
+      type: number
+      title: Input 3
+      loxone_name: LED Obývák - Input 3
+      unit: V
+    measure_voltage.input4:
+      key: led_obyvak_measure_voltage_input4
+      type: number
+      title: Input 4
+      loxone_name: LED Obývák - Input 4
+      unit: V
+  homey_id: 33c48917-9f57-4f2d-b323-8d15d6c34eab
+- name: LED Ostrůvek
+  slug: led_ostruvek
+  capabilities:
+    onoff:
+      key: led_ostruvek_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: LED Ostrůvek - Zapnuto
+    dim:
+      key: led_ostruvek_dim
+      type: number
+      title: Jas
+      loxone_name: LED Ostrůvek - Jas
+      unit: '%'
+    light_saturation:
+      key: led_ostruvek_light_saturation
+      type: number
+      title: Color saturation
+      loxone_name: LED Ostrůvek - Color saturation
+    light_temperature:
+      key: led_ostruvek_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: LED Ostrůvek - Color temperature
+    light_hue:
+      key: led_ostruvek_light_hue
+      type: number
+      title: Hue
+      loxone_name: LED Ostrůvek - Hue
+    light_mode:
+      key: led_ostruvek_light_mode
+      type: enum
+      title: Light mode
+      loxone_name: LED Ostrůvek - Light mode
+    LEDstrip_audio:
+      key: led_ostruvek_ledstrip_audio
+      type: enum
+      title: Audio
+      loxone_name: LED Ostrůvek - Audio
+    LEDstrip_audio_effect:
+      key: led_ostruvek_ledstrip_audio_effect
+      type: enum
+      title: Audio effect
+      loxone_name: LED Ostrůvek - Audio effect
+    LEDstrip_preset:
+      key: led_ostruvek_ledstrip_preset
+      type: enum
+      title: Light preset
+      loxone_name: LED Ostrůvek - Light preset
+    LEDstrip_preset_speed:
+      key: led_ostruvek_ledstrip_preset_speed
+      type: number
+      title: Preset speed
+      loxone_name: LED Ostrůvek - Preset speed
+      unit: '%'
+  homey_id: 9703d5f4-861d-466c-a74c-6b1cdd75600f
+- name: LED Postel
+  slug: led_postel
+  capabilities:
+    onoff:
+      key: led_postel_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: LED Postel - Zapnuto
+    dim:
+      key: led_postel_dim
+      type: number
+      title: Jas
+      loxone_name: LED Postel - Jas
+      unit: '%'
+    light_hue:
+      key: led_postel_light_hue
+      type: number
+      title: Hue
+      loxone_name: LED Postel - Hue
+    light_mode:
+      key: led_postel_light_mode
+      type: enum
+      title: Light mode
+      loxone_name: LED Postel - Light mode
+    light_saturation:
+      key: led_postel_light_saturation
+      type: number
+      title: Color saturation
+      loxone_name: LED Postel - Color saturation
+    light_temperature:
+      key: led_postel_light_temperature
+      type: number
+      title: Color temperature
+      loxone_name: LED Postel - Color temperature
+    measure_power:
+      key: led_postel_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: LED Postel - Aktuální příkon
+      unit: W
+    meter_power:
+      key: led_postel_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: LED Postel - Spotřebovaná energie
+      unit: kWh
+    measure_voltage.input1:
+      key: led_postel_measure_voltage_input1
+      type: number
+      title: Input 1
+      loxone_name: LED Postel - Input 1
+      unit: V
+    measure_voltage.input2:
+      key: led_postel_measure_voltage_input2
+      type: number
+      title: Input 2
+      loxone_name: LED Postel - Input 2
+      unit: V
+    measure_voltage.input3:
+      key: led_postel_measure_voltage_input3
+      type: number
+      title: Input 3
+      loxone_name: LED Postel - Input 3
+      unit: V
+    measure_voltage.input4:
+      key: led_postel_measure_voltage_input4
+      type: number
+      title: Input 4
+      loxone_name: LED Postel - Input 4
+      unit: V
+  homey_id: 28dbc28c-131f-41b0-aa21-043f537a5acf
+- name: LED Schodiště
+  slug: led_schodiste
+  capabilities:
+    onoff:
+      key: led_schodiste_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: LED Schodiště - Zapnuto
+    dim:
+      key: led_schodiste_dim
+      type: number
+      title: Jas
+      loxone_name: LED Schodiště - Jas
+      unit: '%'
+  homey_id: c3b687d5-2fa8-4471-92a8-9fbd7d765f8c
+- name: Lustr Obývak
+  slug: lustr_obyvak
+  capabilities:
+    onoff:
+      key: lustr_obyvak_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Lustr Obývak - Zapnuto
+    measure_current:
+      key: lustr_obyvak_measure_current
+      type: number
+      title: Current
+      loxone_name: Lustr Obývak - Current
+      unit: A
+    measure_power:
+      key: lustr_obyvak_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Lustr Obývak - Aktuální příkon
+      unit: W
+    meter_power:
+      key: lustr_obyvak_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Lustr Obývak - Spotřebovaná energie
+      unit: kWh
+  homey_id: 375e4565-8f16-43b3-9250-0bdc6b75be41
+- name: Noční tlačítko
+  slug: nocni_tlacitko
+  capabilities:
+    measure_battery:
+      key: nocni_tlacitko_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Noční tlačítko - Battery
+      unit: '%'
+  homey_id: 0b70086b-0cc8-402a-83eb-72e3ebdf83c1
+- name: Pico Duo Switch (2)
+  slug: pico_duo_switch_2
+  capabilities:
+    onoff:
+      key: pico_duo_switch_2_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Pico Duo Switch (2) - Zapnuto
+    measure_current:
+      key: pico_duo_switch_2_measure_current
+      type: number
+      title: Current
+      loxone_name: Pico Duo Switch (2) - Current
+      unit: A
+    measure_power:
+      key: pico_duo_switch_2_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Pico Duo Switch (2) - Aktuální příkon
+      unit: W
+    meter_power:
+      key: pico_duo_switch_2_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Pico Duo Switch (2) - Spotřebovaná energie
+      unit: kWh
+  homey_id: c57aef64-8cec-4fee-8b04-df6eaf8c342c
+- name: Pohyb Chodba
+  slug: pohyb_chodba
+  capabilities:
+    measure_battery:
+      key: pohyb_chodba_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Pohyb Chodba - Battery
+      unit: '%'
+    measure_luminance:
+      key: pohyb_chodba_measure_luminance
+      type: number
+      title: Osvětlení
+      loxone_name: Pohyb Chodba - Osvětlení
+      unit: lx
+    measure_temperature:
+      key: pohyb_chodba_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Pohyb Chodba - Aktuální teplota
+      unit: °C
+    alarm_motion:
+      key: pohyb_chodba_alarm_motion
+      type: boolean
+      title: Pohyb
+      loxone_name: Pohyb Chodba - Pohyb
+    alarm_tamper:
+      key: pohyb_chodba_alarm_tamper
+      type: boolean
+      title: Sabotáž
+      loxone_name: Pohyb Chodba - Sabotáž
+  homey_id: 376f125c-9099-4681-8022-06407a016478
+- name: Předpověď počasí na zítra
+  slug: predpoved_pocasi_na_zitra
+  capabilities:
+    forecast_time:
+      key: predpoved_pocasi_na_zitra_forecast_time
+      type: string
+      title: Forecast time
+      loxone_name: Předpověď počasí na zítra - Forecast time
+    weather_description:
+      key: predpoved_pocasi_na_zitra_weather_description
+      type: string
+      title: Weather
+      loxone_name: Předpověď počasí na zítra - Weather
+    measure_temperature:
+      key: predpoved_pocasi_na_zitra_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Předpověď počasí na zítra - Aktuální teplota
+      unit: °C
+    measure_temperature.feels_like:
+      key: predpoved_pocasi_na_zitra_measure_temperature_feels_like
+      type: number
+      title: Feels like
+      loxone_name: Předpověď počasí na zítra - Feels like
+      unit: °C
+    measure_rain.next_1_hour:
+      key: predpoved_pocasi_na_zitra_measure_rain_next_1_hour
+      type: number
+      title: Rain next hour
+      loxone_name: Předpověď počasí na zítra - Rain next hour
+      unit: mm
+    measure_rain.next_6_hours:
+      key: predpoved_pocasi_na_zitra_measure_rain_next_6_hours
+      type: number
+      title: Rain next 6 hours
+      loxone_name: Předpověď počasí na zítra - Rain next 6 hours
+      unit: mm
+    measure_temperature.min_next_6_hours:
+      key: predpoved_pocasi_na_zitra_measure_temperature_min_next_6_hours
+      type: number
+      title: Min. temperature
+      loxone_name: Předpověď počasí na zítra - Min. temperature
+      unit: °C
+    measure_temperature.max_next_6_hours:
+      key: predpoved_pocasi_na_zitra_measure_temperature_max_next_6_hours
+      type: number
+      title: Max. temperature
+      loxone_name: Předpověď počasí na zítra - Max. temperature
+      unit: °C
+    measure_pressure:
+      key: predpoved_pocasi_na_zitra_measure_pressure
+      type: number
+      title: Air pressure at sea level
+      loxone_name: Předpověď počasí na zítra - Air pressure at sea level
+      unit: mbar
+    measure_humidity:
+      key: predpoved_pocasi_na_zitra_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Předpověď počasí na zítra - Vlhkost
+      unit: '%'
+    measure_cloud_area_fraction:
+      key: predpoved_pocasi_na_zitra_measure_cloud_area_fraction
+      type: number
+      title: Cloudiness
+      loxone_name: Předpověď počasí na zítra - Cloudiness
+      unit: '%'
+    measure_fog_area_fraction:
+      key: predpoved_pocasi_na_zitra_measure_fog_area_fraction
+      type: number
+      title: Fog
+      loxone_name: Předpověď počasí na zítra - Fog
+      unit: '%'
+    measure_wind_strength1:
+      key: predpoved_pocasi_na_zitra_measure_wind_strength1
+      type: number
+      title: Wind strength
+      loxone_name: Předpověď počasí na zítra - Wind strength
+      unit: m/s
+    measure_wind_direction:
+      key: predpoved_pocasi_na_zitra_measure_wind_direction
+      type: string
+      title: Wind direction
+      loxone_name: Předpověď počasí na zítra - Wind direction
+    measure_wind_angle:
+      key: predpoved_pocasi_na_zitra_measure_wind_angle
+      type: number
+      title: Wind angle
+      loxone_name: Předpověď počasí na zítra - Wind angle
+      unit: °
+    measure_ultraviolet:
+      key: predpoved_pocasi_na_zitra_measure_ultraviolet
+      type: number
+      title: Ultraviolet
+      loxone_name: Předpověď počasí na zítra - Ultraviolet
+      unit: UVI
+    sunrise_time:
+      key: predpoved_pocasi_na_zitra_sunrise_time
+      type: string
+      title: Sunrise
+      loxone_name: Předpověď počasí na zítra - Sunrise
+    sunset_time:
+      key: predpoved_pocasi_na_zitra_sunset_time
+      type: string
+      title: Sunset
+      loxone_name: Předpověď počasí na zítra - Sunset
+  homey_id: 0c8bd1ed-5d74-4488-80a9-de64585176f5
+- name: Režim domu
+  slug: rezim_domu
+  capabilities:
+    measure_Status.status1:
+      key: rezim_domu_measure_status_status1
+      type: number
+      title: Režim
+      loxone_name: Režim domu - Režim
+  homey_id: 28afc163-3e3d-45a5-b01a-b590a707cc51
+- name: Right Switch (S2/Q2)
+  slug: right_switch_s2_q2
+  capabilities:
+    measure_power:
+      key: right_switch_s2_q2_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Right Switch (S2/Q2) - Aktuální příkon
+      unit: W
+    meter_power:
+      key: right_switch_s2_q2_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Right Switch (S2/Q2) - Spotřebovaná energie
+      unit: kWh
+    onoff:
+      key: right_switch_s2_q2_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Right Switch (S2/Q2) - Zapnuto
+  homey_id: c1124cf9-9108-4c04-9083-2682e8e51264
+- name: STYRBAR Remote Control
+  slug: styrbar_remote_control
+  capabilities:
+    alarm_battery:
+      key: styrbar_remote_control_alarm_battery
+      type: boolean
+      title: Battery Alarm
+      loxone_name: STYRBAR Remote Control - Battery Alarm
+  homey_id: f91e190d-d1fe-4b73-8516-bd0314f5dc40
+- name: Světlo Chodba
+  slug: svetlo_chodba
+  capabilities:
+    onoff:
+      key: svetlo_chodba_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Světlo Chodba - Zapnuto
+  homey_id: c9b0bcb3-a956-4565-80e8-e93bf0093609
+- name: Světlo Koupelna 2
+  slug: svetlo_koupelna_2
+  capabilities:
+    measure_power:
+      key: svetlo_koupelna_2_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Světlo Koupelna 2 - Aktuální příkon
+      unit: W
+    meter_power:
+      key: svetlo_koupelna_2_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Světlo Koupelna 2 - Spotřebovaná energie
+      unit: kWh
+    onoff:
+      key: svetlo_koupelna_2_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Světlo Koupelna 2 - Zapnuto
+  homey_id: 14d11744-4694-4e4f-945f-bbfadb3f9cbf
+- name: Světlo Ložnice
+  slug: svetlo_loznice
+  capabilities:
+    onoff:
+      key: svetlo_loznice_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Světlo Ložnice - Zapnuto
+  homey_id: af3c3e25-a3ca-44d1-aeed-99a7de60e9ff
+- name: Světlo Schodiště
+  slug: svetlo_schodiste
+  capabilities:
+    onoff:
+      key: svetlo_schodiste_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Světlo Schodiště - Zapnuto
+  homey_id: 7b7d102f-ec82-486b-82eb-202b4d97da81
+- name: Světlo Vchod
+  slug: svetlo_vchod
+  capabilities:
+    onoff:
+      key: svetlo_vchod_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Světlo Vchod - Zapnuto
+    measure_voltage:
+      key: svetlo_vchod_measure_voltage
+      type: number
+      title: Voltage
+      loxone_name: Světlo Vchod - Voltage
+      unit: V
+    measure_current:
+      key: svetlo_vchod_measure_current
+      type: number
+      title: Current
+      loxone_name: Světlo Vchod - Current
+      unit: A
+    measure_power:
+      key: svetlo_vchod_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Světlo Vchod - Aktuální příkon
+      unit: W
+    meter_power:
+      key: svetlo_vchod_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Světlo Vchod - Spotřebovaná energie
+      unit: kWh
+  homey_id: de7b50cf-257b-4d42-94fa-7f6b2437ed91
+- name: Telka
+  slug: telka
+  capabilities:
+    onoff:
+      key: telka_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Telka - Zapnuto
+    volume_set:
+      key: telka_volume_set
+      type: number
+      title: Set volume
+      loxone_name: Telka - Set volume
+      unit: '%'
+    volume_mute:
+      key: telka_volume_mute
+      type: boolean
+      title: Volume muted
+      loxone_name: Telka - Volume muted
+    speaker_playing:
+      key: telka_speaker_playing
+      type: boolean
+      title: Playing
+      loxone_name: Telka - Playing
+  homey_id: f338b237-a46f-4552-918c-67006c2c6965
+- name: Teploměr Koupelna 1
+  slug: teplomer_koupelna_1
+  capabilities:
+    measure_temperature:
+      key: teplomer_koupelna_1_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Teploměr Koupelna 1 - Aktuální teplota
+      unit: °C
+    measure_humidity:
+      key: teplomer_koupelna_1_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Teploměr Koupelna 1 - Vlhkost
+      unit: '%'
+    measure_battery:
+      key: teplomer_koupelna_1_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Teploměr Koupelna 1 - Battery
+      unit: '%'
+  homey_id: d463df5b-8e8a-407c-b78f-61286f73f7ec
+- name: Teploměr Koupelna 2
+  slug: teplomer_koupelna_2
+  capabilities:
+    measure_temperature:
+      key: teplomer_koupelna_2_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Teploměr Koupelna 2 - Aktuální teplota
+      unit: °C
+    measure_humidity:
+      key: teplomer_koupelna_2_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Teploměr Koupelna 2 - Vlhkost
+      unit: '%'
+    measure_battery:
+      key: teplomer_koupelna_2_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Teploměr Koupelna 2 - Battery
+      unit: '%'
+  homey_id: c58a4997-2869-444d-bc63-c5fb29d29a1d
+- name: Teploměr Ložnice
+  slug: teplomer_loznice
+  capabilities:
+    measure_temperature:
+      key: teplomer_loznice_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Teploměr Ložnice - Aktuální teplota
+      unit: °C
+    measure_humidity:
+      key: teplomer_loznice_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Teploměr Ložnice - Vlhkost
+      unit: '%'
+    measure_battery:
+      key: teplomer_loznice_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Teploměr Ložnice - Battery
+      unit: '%'
+  homey_id: 478bc1bd-7dc5-4967-a5ae-3be3268960ed
+- name: Teploměr Obývák
+  slug: teplomer_obyvak
+  capabilities:
+    measure_temperature:
+      key: teplomer_obyvak_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Teploměr Obývák - Aktuální teplota
+      unit: °C
+    measure_humidity:
+      key: teplomer_obyvak_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Teploměr Obývák - Vlhkost
+      unit: '%'
+    measure_battery:
+      key: teplomer_obyvak_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Teploměr Obývák - Battery
+      unit: '%'
+  homey_id: f14bce70-4ae6-4853-8761-f2e9de44877e
+- name: Teploměr Pokojíček
+  slug: teplomer_pokojicek
+  capabilities:
+    measure_temperature:
+      key: teplomer_pokojicek_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Teploměr Pokojíček - Aktuální teplota
+      unit: °C
+    measure_humidity:
+      key: teplomer_pokojicek_measure_humidity
+      type: number
+      title: Vlhkost
+      loxone_name: Teploměr Pokojíček - Vlhkost
+      unit: '%'
+    measure_battery:
+      key: teplomer_pokojicek_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Teploměr Pokojíček - Battery
+      unit: '%'
+  homey_id: 365a2818-0bd7-4d25-b115-651c4ef09775
+- name: Termostat Koupelna 1
+  slug: termostat_koupelna_1
+  capabilities:
+    onoff:
+      key: termostat_koupelna_1_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Termostat Koupelna 1 - Zapnuto
+    vt_onoff:
+      key: termostat_koupelna_1_vt_onoff
+      type: boolean
+      title: State
+      loxone_name: Termostat Koupelna 1 - State
+    target_temperature:
+      key: termostat_koupelna_1_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: Termostat Koupelna 1 - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: termostat_koupelna_1_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Termostat Koupelna 1 - Aktuální teplota
+      unit: °C
+  homey_id: 5930882e-d8be-40df-bce1-310bcf87f553
+- name: Termostat Koupelna 2
+  slug: termostat_koupelna_2
+  capabilities:
+    onoff:
+      key: termostat_koupelna_2_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Termostat Koupelna 2 - Zapnuto
+    vt_onoff:
+      key: termostat_koupelna_2_vt_onoff
+      type: boolean
+      title: State
+      loxone_name: Termostat Koupelna 2 - State
+    target_temperature:
+      key: termostat_koupelna_2_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: Termostat Koupelna 2 - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: termostat_koupelna_2_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Termostat Koupelna 2 - Aktuální teplota
+      unit: °C
+  homey_id: 45c6a003-0883-4d5f-bddb-b66243b38a54
+- name: Termostat Ložnice
+  slug: termostat_loznice
+  capabilities:
+    onoff:
+      key: termostat_loznice_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Termostat Ložnice - Zapnuto
+    vt_onoff:
+      key: termostat_loznice_vt_onoff
+      type: boolean
+      title: State
+      loxone_name: Termostat Ložnice - State
+    target_temperature:
+      key: termostat_loznice_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: Termostat Ložnice - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: termostat_loznice_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Termostat Ložnice - Aktuální teplota
+      unit: °C
+  homey_id: 83e5f11b-5d97-4855-9ca7-bf9faf6bf005
+- name: Termostat Obývák
+  slug: termostat_obyvak
+  capabilities:
+    onoff:
+      key: termostat_obyvak_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Termostat Obývák - Zapnuto
+    vt_onoff:
+      key: termostat_obyvak_vt_onoff
+      type: boolean
+      title: State
+      loxone_name: Termostat Obývák - State
+    target_temperature:
+      key: termostat_obyvak_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: Termostat Obývák - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: termostat_obyvak_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Termostat Obývák - Aktuální teplota
+      unit: °C
+  homey_id: 85c8bbe2-7403-43e7-8e6f-d398c49b9f07
+- name: Termostat Pokojíček
+  slug: termostat_pokojicek
+  capabilities:
+    onoff:
+      key: termostat_pokojicek_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Termostat Pokojíček - Zapnuto
+    vt_onoff:
+      key: termostat_pokojicek_vt_onoff
+      type: boolean
+      title: State
+      loxone_name: Termostat Pokojíček - State
+    target_temperature:
+      key: termostat_pokojicek_target_temperature
+      type: number
+      title: Požadovaná teplota
+      loxone_name: Termostat Pokojíček - Požadovaná teplota
+      unit: °C
+    measure_temperature:
+      key: termostat_pokojicek_measure_temperature
+      type: number
+      title: Aktuální teplota
+      loxone_name: Termostat Pokojíček - Aktuální teplota
+      unit: °C
+  homey_id: f255a7f1-e80f-4a4e-9ef9-4592762c8a8f
+- name: VALLHORN Motion Sensor
+  slug: vallhorn_motion_sensor
+  capabilities:
+    alarm_motion:
+      key: vallhorn_motion_sensor_alarm_motion
+      type: boolean
+      title: Pohyb
+      loxone_name: VALLHORN Motion Sensor - Pohyb
+    measure_luminance:
+      key: vallhorn_motion_sensor_measure_luminance
+      type: number
+      title: Osvětlení
+      loxone_name: VALLHORN Motion Sensor - Osvětlení
+      unit: lx
+    measure_battery:
+      key: vallhorn_motion_sensor_measure_battery
+      type: number
+      title: Battery
+      loxone_name: VALLHORN Motion Sensor - Battery
+      unit: '%'
+  homey_id: 69d6393e-745d-4152-839e-0cc5e3b121b8
+- name: Vytápění
+  slug: vytapeni
+  capabilities:
+    onoff:
+      key: vytapeni_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Vytápění - Zapnuto
+    home_override:
+      key: vytapeni_home_override
+      type: boolean
+      title: Home override
+      loxone_name: Vytápění - Home override
+    night:
+      key: vytapeni_night
+      type: boolean
+      title: Night
+      loxone_name: Vytápění - Night
+    at_work:
+      key: vytapeni_at_work
+      type: boolean
+      title: At work
+      loxone_name: Vytápění - At work
+    heating:
+      key: vytapeni_heating
+      type: boolean
+      title: Heating
+      loxone_name: Vytápění - Heating
+    price_EUR:
+      key: vytapeni_price_eur
+      type: number
+      title: Price EUR/kWh
+      loxone_name: Vytápění - Price EUR/kWh
+      unit: EUR/kWh
+    price_ratio:
+      key: vytapeni_price_ratio
+      type: number
+      title: Price ratio
+      loxone_name: Vytápění - Price ratio
+  homey_id: adb405d6-b0b0-4313-be95-cc495e6c9e4a
+- name: Zahradní ventil
+  slug: zahradni_ventil
+  capabilities:
+    onoff:
+      key: zahradni_ventil_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Zahradní ventil - Zapnuto
+    measure_water:
+      key: zahradni_ventil_measure_water
+      type: number
+      title: Water flow
+      loxone_name: Zahradní ventil - Water flow
+      unit: L/min
+    meter_water:
+      key: zahradni_ventil_meter_water
+      type: number
+      title: Water meter
+      loxone_name: Zahradní ventil - Water meter
+      unit: m³
+    measure_battery:
+      key: zahradni_ventil_measure_battery
+      type: number
+      title: Battery
+      loxone_name: Zahradní ventil - Battery
+      unit: '%'
+  homey_id: 644680e3-6495-43df-945c-71697be8c7fe
+- name: Zásuvka
+  slug: zasuvka
+  capabilities:
+    measure_power:
+      key: zasuvka_measure_power
+      type: number
+      title: Aktuální příkon
+      loxone_name: Zásuvka - Aktuální příkon
+      unit: W
+    meter_power:
+      key: zasuvka_meter_power
+      type: number
+      title: Spotřebovaná energie
+      loxone_name: Zásuvka - Spotřebovaná energie
+      unit: kWh
+    onoff:
+      key: zasuvka_onoff
+      type: boolean
+      title: Zapnuto
+      loxone_name: Zásuvka - Zapnuto
+  homey_id: 42d54d2e-efcf-4626-a2f7-4213e724c02c

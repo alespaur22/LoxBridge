@@ -1,0 +1,6047 @@
+{
+  "exported_at": "2026-07-25T16:17:06.495Z",
+  "homey_ip": "192.168.68.112",
+  "device_count": 62,
+  "devices": [
+    {
+      "id": "4a54b6a3-4074-44f6-a109-7e41210e2ae2",
+      "name": "AC Koupelna 1",
+      "zone_id": "7ee96453-8a47-4295-b2c5-03ba118d3e5f",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:net.schmidt-cisternas.pcc-alt:aircon",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 918.08,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:35:53.726Z"
+        },
+        {
+          "id": "fan_speed",
+          "title": "Fan Speed",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Low",
+              "title": "Low"
+            },
+            {
+              "id": "LowMid",
+              "title": "LowMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "HighMid",
+              "title": "HighMid"
+            },
+            {
+              "id": "High",
+              "title": "High"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.069Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T01:34:41.063Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 26,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T01:34:41.093Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Inside Temperature",
+          "value": 20,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:56.706Z"
+        },
+        {
+          "id": "measure_temperature_outside",
+          "title": "Outside Temperature",
+          "value": 26,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:56.948Z"
+        },
+        {
+          "id": "measure_temperature_inside",
+          "title": "Inside Temperature",
+          "value": 20,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:56.725Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T01:34:41.093Z"
+        },
+        {
+          "id": "operation_mode",
+          "title": "Operation Mode",
+          "value": "Heat",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Dry",
+              "title": "Dry"
+            },
+            {
+              "id": "Cool",
+              "title": "Cool"
+            },
+            {
+              "id": "Heat",
+              "title": "Heat"
+            },
+            {
+              "id": "Fan",
+              "title": "Fan"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:10.002Z"
+        },
+        {
+          "id": "eco_mode",
+          "title": "Eco Mode",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Powerful",
+              "title": "Powerful"
+            },
+            {
+              "id": "Quiet",
+              "title": "Quiet"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:10.532Z"
+        },
+        {
+          "id": "air_swing_lr",
+          "title": "Air Swing LR",
+          "value": "Left",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Left",
+              "title": "Left"
+            },
+            {
+              "id": "LeftMid",
+              "title": "LeftMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "RightMid",
+              "title": "RightMid"
+            },
+            {
+              "id": "Right",
+              "title": "Right"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.095Z"
+        },
+        {
+          "id": "air_swing_ud",
+          "title": "Air Swing UD",
+          "value": "Up",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Up",
+              "title": "Up"
+            },
+            {
+              "id": "UpMid",
+              "title": "UpMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "DownMid",
+              "title": "DownMid"
+            },
+            {
+              "id": "Down",
+              "title": "Down"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.586Z"
+        },
+        {
+          "id": "fan_auto_mode",
+          "title": "Fan Auto Mode",
+          "value": "Disabled",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Disabled",
+              "title": "Disabled"
+            },
+            {
+              "id": "AirSwingAuto",
+              "title": "AirSwingAuto"
+            },
+            {
+              "id": "AirSwingLR",
+              "title": "AirSwingLR"
+            },
+            {
+              "id": "AirSwingUD",
+              "title": "AirSwingUD"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.056Z"
+        },
+        {
+          "id": "nanoe_mode",
+          "title": "Nanoe Mode",
+          "value": "On",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Unavailable",
+              "title": "Unavailable"
+            },
+            {
+              "id": "Off",
+              "title": "Off"
+            },
+            {
+              "id": "On",
+              "title": "On"
+            },
+            {
+              "id": "ModeG",
+              "title": "ModeG"
+            },
+            {
+              "id": "All",
+              "title": "All"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.566Z"
+        }
+      ]
+    },
+    {
+      "id": "4ed9337f-f40e-4160-a02e-67f99d8c1670",
+      "name": "AC Koupelna 2",
+      "zone_id": "4cca6676-f687-4432-9a9c-87c357fea28e",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:net.schmidt-cisternas.pcc-alt:aircon",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 915.47,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:33:54.077Z"
+        },
+        {
+          "id": "fan_speed",
+          "title": "Fan Speed",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Low",
+              "title": "Low"
+            },
+            {
+              "id": "LowMid",
+              "title": "LowMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "HighMid",
+              "title": "HighMid"
+            },
+            {
+              "id": "High",
+              "title": "High"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.122Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T05:43:07.857Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 23,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-15T20:23:31.623Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Inside Temperature",
+          "value": 20,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:56.885Z"
+        },
+        {
+          "id": "measure_temperature_outside",
+          "title": "Outside Temperature",
+          "value": 26,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:57.340Z"
+        },
+        {
+          "id": "measure_temperature_inside",
+          "title": "Inside Temperature",
+          "value": 20,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:57.008Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T05:43:07.871Z"
+        },
+        {
+          "id": "operation_mode",
+          "title": "Operation Mode",
+          "value": "Heat",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Dry",
+              "title": "Dry"
+            },
+            {
+              "id": "Cool",
+              "title": "Cool"
+            },
+            {
+              "id": "Heat",
+              "title": "Heat"
+            },
+            {
+              "id": "Fan",
+              "title": "Fan"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:10.042Z"
+        },
+        {
+          "id": "eco_mode",
+          "title": "Eco Mode",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Powerful",
+              "title": "Powerful"
+            },
+            {
+              "id": "Quiet",
+              "title": "Quiet"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:10.568Z"
+        },
+        {
+          "id": "air_swing_lr",
+          "title": "Air Swing LR",
+          "value": "Right",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Left",
+              "title": "Left"
+            },
+            {
+              "id": "LeftMid",
+              "title": "LeftMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "RightMid",
+              "title": "RightMid"
+            },
+            {
+              "id": "Right",
+              "title": "Right"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.130Z"
+        },
+        {
+          "id": "air_swing_ud",
+          "title": "Air Swing UD",
+          "value": "Up",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Up",
+              "title": "Up"
+            },
+            {
+              "id": "UpMid",
+              "title": "UpMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "DownMid",
+              "title": "DownMid"
+            },
+            {
+              "id": "Down",
+              "title": "Down"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.624Z"
+        },
+        {
+          "id": "fan_auto_mode",
+          "title": "Fan Auto Mode",
+          "value": "Disabled",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Disabled",
+              "title": "Disabled"
+            },
+            {
+              "id": "AirSwingAuto",
+              "title": "AirSwingAuto"
+            },
+            {
+              "id": "AirSwingLR",
+              "title": "AirSwingLR"
+            },
+            {
+              "id": "AirSwingUD",
+              "title": "AirSwingUD"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.111Z"
+        },
+        {
+          "id": "nanoe_mode",
+          "title": "Nanoe Mode",
+          "value": "On",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Unavailable",
+              "title": "Unavailable"
+            },
+            {
+              "id": "Off",
+              "title": "Off"
+            },
+            {
+              "id": "On",
+              "title": "On"
+            },
+            {
+              "id": "ModeG",
+              "title": "ModeG"
+            },
+            {
+              "id": "All",
+              "title": "All"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.609Z"
+        }
+      ]
+    },
+    {
+      "id": "35f4dddc-322d-4a19-97cb-d1d20691dafa",
+      "name": "AC Ložnice",
+      "zone_id": "e32b74d7-7c7e-460e-806f-3723f6473dee",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:net.schmidt-cisternas.pcc-alt:aircon",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 941.99,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:34:53.645Z"
+        },
+        {
+          "id": "fan_speed",
+          "title": "Fan Speed",
+          "value": "High",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Low",
+              "title": "Low"
+            },
+            {
+              "id": "LowMid",
+              "title": "LowMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "HighMid",
+              "title": "HighMid"
+            },
+            {
+              "id": "High",
+              "title": "High"
+            }
+          ],
+          "last_updated": "2026-06-20T14:06:07.499Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 276,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:04:56.355Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 22,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-19T12:07:34.905Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Inside Temperature",
+          "value": 19,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:56.685Z"
+        },
+        {
+          "id": "measure_temperature_outside",
+          "title": "Outside Temperature",
+          "value": 26,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:57.535Z"
+        },
+        {
+          "id": "measure_temperature_inside",
+          "title": "Inside Temperature",
+          "value": 19,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:56.716Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": true,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T13:59:42.338Z"
+        },
+        {
+          "id": "operation_mode",
+          "title": "Operation Mode",
+          "value": "Cool",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Dry",
+              "title": "Dry"
+            },
+            {
+              "id": "Cool",
+              "title": "Cool"
+            },
+            {
+              "id": "Heat",
+              "title": "Heat"
+            },
+            {
+              "id": "Fan",
+              "title": "Fan"
+            }
+          ],
+          "last_updated": "2026-06-20T16:27:24.714Z"
+        },
+        {
+          "id": "eco_mode",
+          "title": "Eco Mode",
+          "value": "Quiet",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Powerful",
+              "title": "Powerful"
+            },
+            {
+              "id": "Quiet",
+              "title": "Quiet"
+            }
+          ],
+          "last_updated": "2026-06-27T21:48:59.641Z"
+        },
+        {
+          "id": "air_swing_lr",
+          "title": "Air Swing LR",
+          "value": "Mid",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Left",
+              "title": "Left"
+            },
+            {
+              "id": "LeftMid",
+              "title": "LeftMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "RightMid",
+              "title": "RightMid"
+            },
+            {
+              "id": "Right",
+              "title": "Right"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.113Z"
+        },
+        {
+          "id": "air_swing_ud",
+          "title": "Air Swing UD",
+          "value": "Up",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Up",
+              "title": "Up"
+            },
+            {
+              "id": "UpMid",
+              "title": "UpMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "DownMid",
+              "title": "DownMid"
+            },
+            {
+              "id": "Down",
+              "title": "Down"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.610Z"
+        },
+        {
+          "id": "fan_auto_mode",
+          "title": "Fan Auto Mode",
+          "value": "Disabled",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Disabled",
+              "title": "Disabled"
+            },
+            {
+              "id": "AirSwingAuto",
+              "title": "AirSwingAuto"
+            },
+            {
+              "id": "AirSwingLR",
+              "title": "AirSwingLR"
+            },
+            {
+              "id": "AirSwingUD",
+              "title": "AirSwingUD"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.089Z"
+        },
+        {
+          "id": "nanoe_mode",
+          "title": "Nanoe Mode",
+          "value": "On",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Unavailable",
+              "title": "Unavailable"
+            },
+            {
+              "id": "Off",
+              "title": "Off"
+            },
+            {
+              "id": "On",
+              "title": "On"
+            },
+            {
+              "id": "ModeG",
+              "title": "ModeG"
+            },
+            {
+              "id": "All",
+              "title": "All"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.601Z"
+        }
+      ]
+    },
+    {
+      "id": "e4a4d03d-0a4c-4c17-bec7-e6a36ff7e077",
+      "name": "AC Obývák",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:net.schmidt-cisternas.pcc-alt:aircon",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 959.77,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:35:53.818Z"
+        },
+        {
+          "id": "fan_speed",
+          "title": "Fan Speed",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Low",
+              "title": "Low"
+            },
+            {
+              "id": "LowMid",
+              "title": "LowMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "HighMid",
+              "title": "HighMid"
+            },
+            {
+              "id": "High",
+              "title": "High"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.031Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-17T21:07:29.054Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 22,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-17T16:47:17.543Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Inside Temperature",
+          "value": 21,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:14:57.520Z"
+        },
+        {
+          "id": "measure_temperature_outside",
+          "title": "Outside Temperature",
+          "value": 26,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:56.687Z"
+        },
+        {
+          "id": "measure_temperature_inside",
+          "title": "Inside Temperature",
+          "value": 21,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:14:57.533Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-17T21:07:29.071Z"
+        },
+        {
+          "id": "operation_mode",
+          "title": "Operation Mode",
+          "value": "Cool",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Dry",
+              "title": "Dry"
+            },
+            {
+              "id": "Cool",
+              "title": "Cool"
+            },
+            {
+              "id": "Heat",
+              "title": "Heat"
+            },
+            {
+              "id": "Fan",
+              "title": "Fan"
+            }
+          ],
+          "last_updated": "2026-06-28T06:28:48.295Z"
+        },
+        {
+          "id": "eco_mode",
+          "title": "Eco Mode",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Powerful",
+              "title": "Powerful"
+            },
+            {
+              "id": "Quiet",
+              "title": "Quiet"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:10.481Z"
+        },
+        {
+          "id": "air_swing_lr",
+          "title": "Air Swing LR",
+          "value": "LeftMid",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Left",
+              "title": "Left"
+            },
+            {
+              "id": "LeftMid",
+              "title": "LeftMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "RightMid",
+              "title": "RightMid"
+            },
+            {
+              "id": "Right",
+              "title": "Right"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.037Z"
+        },
+        {
+          "id": "air_swing_ud",
+          "title": "Air Swing UD",
+          "value": "Down",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Up",
+              "title": "Up"
+            },
+            {
+              "id": "UpMid",
+              "title": "UpMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "DownMid",
+              "title": "DownMid"
+            },
+            {
+              "id": "Down",
+              "title": "Down"
+            }
+          ],
+          "last_updated": "2026-02-02T22:01:12.011Z"
+        },
+        {
+          "id": "fan_auto_mode",
+          "title": "Fan Auto Mode",
+          "value": "Disabled",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Disabled",
+              "title": "Disabled"
+            },
+            {
+              "id": "AirSwingAuto",
+              "title": "AirSwingAuto"
+            },
+            {
+              "id": "AirSwingLR",
+              "title": "AirSwingLR"
+            },
+            {
+              "id": "AirSwingUD",
+              "title": "AirSwingUD"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.012Z"
+        },
+        {
+          "id": "nanoe_mode",
+          "title": "Nanoe Mode",
+          "value": "Off",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Unavailable",
+              "title": "Unavailable"
+            },
+            {
+              "id": "Off",
+              "title": "Off"
+            },
+            {
+              "id": "On",
+              "title": "On"
+            },
+            {
+              "id": "ModeG",
+              "title": "ModeG"
+            },
+            {
+              "id": "All",
+              "title": "All"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.521Z"
+        }
+      ]
+    },
+    {
+      "id": "80809262-bc77-415c-8a34-6079a896b812",
+      "name": "AC Pokojíček",
+      "zone_id": "25ff8884-a4f0-48aa-84a6-042dfe6b1bd7",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:net.schmidt-cisternas.pcc-alt:aircon",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 918.47,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:35:54.057Z"
+        },
+        {
+          "id": "fan_speed",
+          "title": "Fan Speed",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Low",
+              "title": "Low"
+            },
+            {
+              "id": "LowMid",
+              "title": "LowMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "HighMid",
+              "title": "HighMid"
+            },
+            {
+              "id": "High",
+              "title": "High"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.055Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:55:52.906Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 22,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-19T12:07:27.427Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Inside Temperature",
+          "value": 20,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:16:57.091Z"
+        },
+        {
+          "id": "measure_temperature_outside",
+          "title": "Outside Temperature",
+          "value": 26,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:56.297Z"
+        },
+        {
+          "id": "measure_temperature_inside",
+          "title": "Inside Temperature",
+          "value": 20,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:16:57.104Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:55:52.926Z"
+        },
+        {
+          "id": "operation_mode",
+          "title": "Operation Mode",
+          "value": "Cool",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Dry",
+              "title": "Dry"
+            },
+            {
+              "id": "Cool",
+              "title": "Cool"
+            },
+            {
+              "id": "Heat",
+              "title": "Heat"
+            },
+            {
+              "id": "Fan",
+              "title": "Fan"
+            }
+          ],
+          "last_updated": "2026-06-21T15:54:56.032Z"
+        },
+        {
+          "id": "eco_mode",
+          "title": "Eco Mode",
+          "value": "Auto",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Auto",
+              "title": "Auto"
+            },
+            {
+              "id": "Powerful",
+              "title": "Powerful"
+            },
+            {
+              "id": "Quiet",
+              "title": "Quiet"
+            }
+          ],
+          "last_updated": "2026-06-21T16:18:36.140Z"
+        },
+        {
+          "id": "air_swing_lr",
+          "title": "Air Swing LR",
+          "value": "Right",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Left",
+              "title": "Left"
+            },
+            {
+              "id": "LeftMid",
+              "title": "LeftMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "RightMid",
+              "title": "RightMid"
+            },
+            {
+              "id": "Right",
+              "title": "Right"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.073Z"
+        },
+        {
+          "id": "air_swing_ud",
+          "title": "Air Swing UD",
+          "value": "Up",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Up",
+              "title": "Up"
+            },
+            {
+              "id": "UpMid",
+              "title": "UpMid"
+            },
+            {
+              "id": "Mid",
+              "title": "Mid"
+            },
+            {
+              "id": "DownMid",
+              "title": "DownMid"
+            },
+            {
+              "id": "Down",
+              "title": "Down"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:11.564Z"
+        },
+        {
+          "id": "fan_auto_mode",
+          "title": "Fan Auto Mode",
+          "value": "Disabled",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Disabled",
+              "title": "Disabled"
+            },
+            {
+              "id": "AirSwingAuto",
+              "title": "AirSwingAuto"
+            },
+            {
+              "id": "AirSwingLR",
+              "title": "AirSwingLR"
+            },
+            {
+              "id": "AirSwingUD",
+              "title": "AirSwingUD"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.031Z"
+        },
+        {
+          "id": "nanoe_mode",
+          "title": "Nanoe Mode",
+          "value": "On",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "Unavailable",
+              "title": "Unavailable"
+            },
+            {
+              "id": "Off",
+              "title": "Off"
+            },
+            {
+              "id": "On",
+              "title": "On"
+            },
+            {
+              "id": "ModeG",
+              "title": "ModeG"
+            },
+            {
+              "id": "All",
+              "title": "All"
+            }
+          ],
+          "last_updated": "2026-02-02T18:43:12.566Z"
+        }
+      ]
+    },
+    {
+      "id": "391dc32b-c1dc-44ae-9d36-3be8006488b3",
+      "name": "Advanced Virtual Device 3",
+      "zone_id": "85d20042-825d-475a-9d0d-c37672475f25",
+      "zone_name": null,
+      "class": "other",
+      "driver_id": "homey:app:nl.qluster-it.DeviceCapabilities:virtualdevice",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "devicecapabilities_starttext",
+          "title": "goto Device Maintainance/Repair",
+          "value": "To Start",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-28T06:59:38.587Z"
+        }
+      ]
+    },
+    {
+      "id": "1b539e9b-89e8-4219-8dd9-c7f36ca4f923",
+      "name": "Aktuální počasí",
+      "zone_id": "85d20042-825d-475a-9d0d-c37672475f25",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:no.yr:myr",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "forecast_time",
+          "title": "Forecast time",
+          "value": "26.07.2026 19:00",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.674Z"
+        },
+        {
+          "id": "weather_description",
+          "title": "Weather",
+          "value": "Partly cloudy",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T08:00:04.007Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 29.6,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.681Z"
+        },
+        {
+          "id": "measure_temperature.feels_like",
+          "title": "Feels like",
+          "value": 27.8,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.692Z"
+        },
+        {
+          "id": "measure_rain.next_1_hour",
+          "title": "Rain next hour",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mm",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T18:00:03.762Z"
+        },
+        {
+          "id": "measure_rain.next_6_hours",
+          "title": "Rain next 6 hours",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mm",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T18:00:03.766Z"
+        },
+        {
+          "id": "measure_temperature.min_next_6_hours",
+          "title": "Min. temperature",
+          "value": 23.4,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.698Z"
+        },
+        {
+          "id": "measure_temperature.max_next_6_hours",
+          "title": "Max. temperature",
+          "value": 28.5,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.704Z"
+        },
+        {
+          "id": "measure_pressure",
+          "title": "Air pressure at sea level",
+          "value": 1002,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mbar",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.727Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 26.3,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.735Z"
+        },
+        {
+          "id": "measure_cloud_area_fraction",
+          "title": "Cloudiness",
+          "value": 96.9,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.742Z"
+        },
+        {
+          "id": "measure_fog_area_fraction",
+          "title": "Fog",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-13T20:49:28.902Z"
+        },
+        {
+          "id": "measure_wind_strength1",
+          "title": "Wind strength",
+          "value": 5.7,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "m/s",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.748Z"
+        },
+        {
+          "id": "measure_wind_direction",
+          "title": "Wind direction",
+          "value": "WSW",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.757Z"
+        },
+        {
+          "id": "measure_wind_angle",
+          "title": "Wind angle",
+          "value": 256.7,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.766Z"
+        },
+        {
+          "id": "measure_ultraviolet",
+          "title": "Ultraviolet",
+          "value": 0.4,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "UVI",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:00:03.771Z"
+        },
+        {
+          "id": "sunrise_time",
+          "title": "Sunrise",
+          "value": "26.07.2026 05:23",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T22:25:06.851Z"
+        },
+        {
+          "id": "sunset_time",
+          "title": "Sunset",
+          "value": "26.07.2026 20:56",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T22:25:06.857Z"
+        }
+      ]
+    },
+    {
+      "id": "beccadf3-1eb1-4921-a9e3-706c3c31b872",
+      "name": "Automatická závlaha",
+      "zone_id": "49d7ffae-0d45-479f-90b8-eb6e127cd739",
+      "zone_name": null,
+      "class": "watervalve",
+      "driver_id": "homey:app:com.arjankranenburg.virtual:virtual_switch",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "meter_water",
+          "title": "Water meter",
+          "value": null,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "m³",
+          "min": 0,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "measure_water",
+          "title": "Water flow",
+          "value": null,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "L/min",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": true,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-17T21:07:41.356Z"
+        },
+        {
+          "id": "measure_rain",
+          "title": "Rain",
+          "value": null,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mm",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        }
+      ]
+    },
+    {
+      "id": "b7557c09-2e82-480b-86ad-14d69778f624",
+      "name": "Bazénová filtrace",
+      "zone_id": "49d7ffae-0d45-479f-90b8-eb6e127cd739",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.xiaomi-mi:plug.maeu01",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:05:21.528Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:05:21.609Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 22.02,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:07:53.840Z"
+        }
+      ]
+    },
+    {
+      "id": "f5394b8b-4241-40a8-830b-78c26e39e5ca",
+      "name": "Bodovka 1",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:01.983Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.227Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.241Z"
+        }
+      ]
+    },
+    {
+      "id": "3394e03b-312d-4ea2-960c-b6c521f5d637",
+      "name": "Bodovka 2",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:01.992Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.248Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.265Z"
+        }
+      ]
+    },
+    {
+      "id": "b2bb4dc1-62e4-4516-9c76-1c09f3bd79bc",
+      "name": "Bodovka 3",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": false,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-16T02:40:15.713Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.9,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-16T02:40:15.713Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.3,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-16T02:40:15.817Z"
+        }
+      ]
+    },
+    {
+      "id": "8985ab06-3f7a-4987-9b31-9564914ed993",
+      "name": "Bodovka 4",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:02.079Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.325Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.338Z"
+        }
+      ]
+    },
+    {
+      "id": "dda188e8-4338-4bbb-928b-93f6b95531f7",
+      "name": "Bodovka 5",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:02.105Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.368Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.368Z"
+        }
+      ]
+    },
+    {
+      "id": "360523f3-968e-49b6-b344-d77a8719664b",
+      "name": "Bodovka 6",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:02.140Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.381Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.424Z"
+        }
+      ]
+    },
+    {
+      "id": "25c8d5cb-61bc-4ce3-b710-aa51409ef009",
+      "name": "Bodovka 7",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:02.197Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.429Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.455Z"
+        }
+      ]
+    },
+    {
+      "id": "d08a6042-5bbe-4ae5-9889-9172dce1cc00",
+      "name": "Bodovka 8",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:02.290Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.550Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.548Z"
+        }
+      ]
+    },
+    {
+      "id": "d1a94483-2549-4c7e-9b9f-485a2852ad20",
+      "name": "Bodovka 9",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:02.234Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.495Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:24.519Z"
+        }
+      ]
+    },
+    {
+      "id": "e07f51c4-4888-4266-b19e-3dc007c9c267",
+      "name": "Bodovky",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:virtualdrivergroup:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:24:01.453Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.15,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.186Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.85,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:23.751Z"
+        }
+      ]
+    },
+    {
+      "id": "d33137e5-5a47-43bb-a8ac-c73f80199db2",
+      "name": "Bodovky Kuchyně",
+      "zone_id": "61a101df-ab1c-4673-bbee-a068287ddb9e",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:tech.sonoff:ZBMINI",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T09:55:53.549Z"
+        }
+      ]
+    },
+    {
+      "id": "b8452a09-5d95-4e0e-94c5-85257cbaca66",
+      "name": "Bodovky Obývak",
+      "zone_id": "d90fd5a4-5082-4c25-8cdc-506b0a205251",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.aeotec:ZGA003",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": true,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-14T16:45:50.452Z"
+        },
+        {
+          "id": "measure_voltage",
+          "title": "Voltage",
+          "value": 233.2,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:18:35.085Z"
+        },
+        {
+          "id": "measure_current",
+          "title": "Current",
+          "value": 0.03,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "A",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:10.808Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 1.1,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:18:35.168Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 13.94,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:16:33.424Z"
+        },
+        {
+          "id": "supports_switch_action",
+          "title": "Supports switch actions",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T15:24:29.878Z"
+        }
+      ]
+    },
+    {
+      "id": "19171f87-a4b3-4314-94af-6aa94fba3557",
+      "name": "Dobrou noc",
+      "zone_id": "9148d7a5-3842-4a7d-85c9-e760b16fc56f",
+      "zone_name": null,
+      "class": "other",
+      "driver_id": "homey:app:com.arjankranenburg.virtual:mode",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T06:00:00.563Z"
+        }
+      ]
+    },
+    {
+      "id": "94bf75a8-4f9d-48aa-a61e-74dda8de47aa",
+      "name": "Hey Google",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "speaker",
+      "driver_id": "homey:app:com.google.chromecast:cast",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "speaker_playing",
+          "title": "Playing",
+          "value": true,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T08:45:06.171Z"
+        },
+        {
+          "id": "speaker_next",
+          "title": "Next",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "speaker_prev",
+          "title": "Previous",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "speaker_artist",
+          "title": "Artist",
+          "value": "Michael Jackson",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T08:45:05.772Z"
+        },
+        {
+          "id": "speaker_album",
+          "title": "Album",
+          "value": "",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-20T11:06:11.006Z"
+        },
+        {
+          "id": "speaker_track",
+          "title": "Track",
+          "value": "Billie Jean",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T08:45:05.772Z"
+        },
+        {
+          "id": "volume_mute",
+          "title": "Volume muted",
+          "value": null,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "volume_set",
+          "title": "Set volume",
+          "value": 0.25,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T16:18:34.915Z"
+        }
+      ]
+    },
+    {
+      "id": "349f7b4c-acdb-4738-ac85-71b1e77d3b6b",
+      "name": "Lampička",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:com.philips.hue.zigbee:LWB000",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-27T09:58:23.675Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-03-01T17:25:54.796Z"
+        }
+      ]
+    },
+    {
+      "id": "99103851-a94e-4457-99aa-3f65bfced3e9",
+      "name": "LED Chodba",
+      "zone_id": "69d06f95-52e0-4442-adc2-7a9073858eb1",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:com.gledopto:gl-c-009p",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:00.265Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T21:29:44.161Z"
+        }
+      ]
+    },
+    {
+      "id": "f0571845-03fa-4933-86ac-bb86b925204a",
+      "name": "LED Koupelna",
+      "zone_id": "4cca6676-f687-4432-9a9c-87c357fea28e",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:cloud.shelly:shelly",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:58:58.357Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.66,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:58:53.726Z"
+        },
+        {
+          "id": "dim.white",
+          "title": "Dim level white",
+          "value": 0.35,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:53:53.369Z"
+        },
+        {
+          "id": "light_hue",
+          "title": "Hue",
+          "value": 0.1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:58:49.084Z"
+        },
+        {
+          "id": "light_saturation",
+          "title": "Color saturation",
+          "value": 0.33,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:58:53.734Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:59:53.844Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 0.48,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:59:53.845Z"
+        },
+        {
+          "id": "measure_voltage",
+          "title": "Voltage",
+          "value": 24.7,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:11:54.748Z"
+        },
+        {
+          "id": "measure_current",
+          "title": "Current",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "A",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:59:53.845Z"
+        },
+        {
+          "id": "onoff.whitemode",
+          "title": "Toggle white mode",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-12T21:09:24.260Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Device Temperature",
+          "value": 50.2,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:55.132Z"
+        },
+        {
+          "id": "rssi",
+          "title": "Signal",
+          "value": -44,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "RSSI",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:17:55.199Z"
+        },
+        {
+          "id": "button.enable_ble_script",
+          "title": "Start BLE Proxy",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "button.disable_ble_script",
+          "title": "Stop BLE Proxy",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "actionEvents",
+          "title": "Action Events",
+          "value": null,
+          "type": "string",
+          "getable": false,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "deviceGen2",
+          "title": "Device Generation 2",
+          "value": null,
+          "type": "string",
+          "getable": false,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "multiInputs",
+          "title": "Multi Inputs",
+          "value": null,
+          "type": "string",
+          "getable": false,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        }
+      ]
+    },
+    {
+      "id": "33c48917-9f57-4f2d-b323-8d15d6c34eab",
+      "name": "LED Obývák",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:com.fibaro:FGRGBWM-442",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:00.285Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.25,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:20.183Z"
+        },
+        {
+          "id": "light_hue",
+          "title": "Hue",
+          "value": 0.75,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:20.597Z"
+        },
+        {
+          "id": "light_mode",
+          "title": "Light mode",
+          "value": "color",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "color",
+              "title": "Color"
+            },
+            {
+              "id": "temperature",
+              "title": "Temperature"
+            }
+          ],
+          "last_updated": "2026-07-25T20:56:19.902Z"
+        },
+        {
+          "id": "light_saturation",
+          "title": "Color saturation",
+          "value": 1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:56:20.601Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.5,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:33:14.384Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-22T02:31:29.870Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 48.32,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T01:27:56.642Z"
+        },
+        {
+          "id": "measure_voltage.input1",
+          "title": "Input 1",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T11:35:39.600Z"
+        },
+        {
+          "id": "measure_voltage.input2",
+          "title": "Input 2",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T11:35:39.684Z"
+        },
+        {
+          "id": "measure_voltage.input3",
+          "title": "Input 3",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T11:35:39.765Z"
+        },
+        {
+          "id": "measure_voltage.input4",
+          "title": "Input 4",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T11:35:39.849Z"
+        }
+      ]
+    },
+    {
+      "id": "9703d5f4-861d-466c-a74c-6b1cdd75600f",
+      "name": "LED Ostrůvek",
+      "zone_id": "61a101df-ab1c-4673-bbee-a068287ddb9e",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:com.xiaomi-mi:light.acn132",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:00.351Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T21:29:45.370Z"
+        },
+        {
+          "id": "light_saturation",
+          "title": "Color saturation",
+          "value": 1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:33:08.314Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T11:13:25.929Z"
+        },
+        {
+          "id": "light_hue",
+          "title": "Hue",
+          "value": 0.11,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T20:33:08.314Z"
+        },
+        {
+          "id": "light_mode",
+          "title": "Light mode",
+          "value": "color",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "color",
+              "title": "Color"
+            },
+            {
+              "id": "temperature",
+              "title": "Temperature"
+            }
+          ],
+          "last_updated": "2026-07-25T20:33:08.317Z"
+        },
+        {
+          "id": "LEDstrip_audio",
+          "title": "Audio",
+          "value": "off",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "off",
+              "title": "Uitgeschakeld"
+            },
+            {
+              "id": "0",
+              "title": "Low sensitivity"
+            },
+            {
+              "id": "1",
+              "title": "Medium sensitivity"
+            },
+            {
+              "id": "2",
+              "title": "High sensitivity"
+            }
+          ],
+          "last_updated": "2026-02-08T11:13:20.441Z"
+        },
+        {
+          "id": "LEDstrip_audio_effect",
+          "title": "Audio effect",
+          "value": null,
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "0",
+              "title": "Willekeurig"
+            },
+            {
+              "id": "1",
+              "title": "Blink"
+            },
+            {
+              "id": "2",
+              "title": "Rainbow"
+            },
+            {
+              "id": "3",
+              "title": "Wave"
+            }
+          ],
+          "last_updated": null
+        },
+        {
+          "id": "LEDstrip_preset",
+          "title": "Light preset",
+          "value": null,
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "0",
+              "title": "Gala"
+            },
+            {
+              "id": "1",
+              "title": "Rainbow"
+            },
+            {
+              "id": "2",
+              "title": "Sea of Flowers"
+            },
+            {
+              "id": "3",
+              "title": "Heartbeat"
+            },
+            {
+              "id": "4",
+              "title": "Rythmic"
+            },
+            {
+              "id": "5",
+              "title": "Colorful"
+            },
+            {
+              "id": "6",
+              "title": "Exciting"
+            },
+            {
+              "id": "7",
+              "title": "Lively"
+            }
+          ],
+          "last_updated": "2026-02-08T11:12:12.169Z"
+        },
+        {
+          "id": "LEDstrip_preset_speed",
+          "title": "Preset speed",
+          "value": 0.34,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T11:13:10.134Z"
+        }
+      ]
+    },
+    {
+      "id": "28dbc28c-131f-41b0-aa21-043f537a5acf",
+      "name": "LED Postel",
+      "zone_id": "e32b74d7-7c7e-460e-806f-3723f6473dee",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:com.fibaro:FGRGBWM-442",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T13:37:55.906Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0.8,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T15:54:18.734Z"
+        },
+        {
+          "id": "light_hue",
+          "title": "Hue",
+          "value": 0.07,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T01:28:07.822Z"
+        },
+        {
+          "id": "light_mode",
+          "title": "Light mode",
+          "value": "temperature",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "color",
+              "title": "Color"
+            },
+            {
+              "id": "temperature",
+              "title": "Temperature"
+            }
+          ],
+          "last_updated": "2026-07-24T15:54:18.522Z"
+        },
+        {
+          "id": "light_saturation",
+          "title": "Color saturation",
+          "value": 1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T01:28:07.822Z"
+        },
+        {
+          "id": "light_temperature",
+          "title": "Color temperature",
+          "value": 0.5,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T15:54:18.611Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-18T20:57:03.368Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 6.43,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-22T02:31:22.554Z"
+        },
+        {
+          "id": "measure_voltage.input1",
+          "title": "Input 1",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-16T08:02:38.692Z"
+        },
+        {
+          "id": "measure_voltage.input2",
+          "title": "Input 2",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-16T08:02:38.774Z"
+        },
+        {
+          "id": "measure_voltage.input3",
+          "title": "Input 3",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-16T08:02:38.858Z"
+        },
+        {
+          "id": "measure_voltage.input4",
+          "title": "Input 4",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-16T08:02:38.940Z"
+        }
+      ]
+    },
+    {
+      "id": "c3b687d5-2fa8-4471-92a8-9fbd7d765f8c",
+      "name": "LED Schodiště",
+      "zone_id": "1d2381f8-1a4e-4e1a-9b2d-fe8fbcd11526",
+      "zone_name": null,
+      "class": "light",
+      "driver_id": "homey:app:com.gledopto:gl-c-009p",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:00.291Z"
+        },
+        {
+          "id": "dim",
+          "title": "Dim level",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T21:29:45.743Z"
+        }
+      ]
+    },
+    {
+      "id": "375e4565-8f16-43b3-9250-0bdc6b75be41",
+      "name": "Lustr Obývak",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.aeotec:ZGA003",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-26T22:09:24.396Z"
+        },
+        {
+          "id": "measure_current",
+          "title": "Current",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "A",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-17T21:16:14.400Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-17T21:16:18.809Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 0.07,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-17T21:15:16.739Z"
+        }
+      ]
+    },
+    {
+      "id": "0b70086b-0cc8-402a-83eb-72e3ebdf83c1",
+      "name": "Noční tlačítko",
+      "zone_id": "e32b74d7-7c7e-460e-806f-3723f6473dee",
+      "zone_name": null,
+      "class": "remote",
+      "driver_id": "homey:app:com.ikea.tradfri:somrig_shortcut_button",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 99,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-17T17:57:14.615Z"
+        }
+      ]
+    },
+    {
+      "id": "c57aef64-8cec-4fee-8b04-df6eaf8c342c",
+      "name": "Pico Duo Switch (2)",
+      "zone_id": "09b971cc-389d-47e9-87dc-5d6100812f1b",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.aeotec:ZGA003",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T15:28:12.614Z"
+        },
+        {
+          "id": "measure_current",
+          "title": "Current",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "A",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-17T23:57:06.919Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-16T08:54:23.696Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T15:28:06.617Z"
+        }
+      ]
+    },
+    {
+      "id": "376f125c-9099-4681-8022-06407a016478",
+      "name": "Pohyb Chodba",
+      "zone_id": "69d06f95-52e0-4442-adc2-7a9073858eb1",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:com.fibaro:FGMS-001-PLUS",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 100,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-04T18:47:04.927Z"
+        },
+        {
+          "id": "measure_luminance",
+          "title": "Luminance",
+          "value": 5,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "lx",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:00.173Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 24,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:23:41.473Z"
+        },
+        {
+          "id": "alarm_motion",
+          "title": "Motion Alarm",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:14:33.803Z"
+        },
+        {
+          "id": "alarm_tamper",
+          "title": "Tamper Alarm",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-04T18:47:35.229Z"
+        }
+      ]
+    },
+    {
+      "id": "0c8bd1ed-5d74-4488-80a9-de64585176f5",
+      "name": "Předpověď počasí na zítra",
+      "zone_id": "85d20042-825d-475a-9d0d-c37672475f25",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:no.yr:myr",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "forecast_time",
+          "title": "Forecast time",
+          "value": "27.07.2026 14:00",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T00:00:03.282Z"
+        },
+        {
+          "id": "weather_description",
+          "title": "Weather",
+          "value": "Fair",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T15:00:03.086Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 24.3,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.688Z"
+        },
+        {
+          "id": "measure_temperature.feels_like",
+          "title": "Feels like",
+          "value": 23.1,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.695Z"
+        },
+        {
+          "id": "measure_rain.next_1_hour",
+          "title": "Rain next hour",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mm",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-19T00:00:03.178Z"
+        },
+        {
+          "id": "measure_rain.next_6_hours",
+          "title": "Rain next 6 hours",
+          "value": 0.1,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mm",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.724Z"
+        },
+        {
+          "id": "measure_temperature.min_next_6_hours",
+          "title": "Min. temperature",
+          "value": 23,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.701Z"
+        },
+        {
+          "id": "measure_temperature.max_next_6_hours",
+          "title": "Max. temperature",
+          "value": 25.2,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.706Z"
+        },
+        {
+          "id": "measure_pressure",
+          "title": "Air pressure at sea level",
+          "value": 1012,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "mbar",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.711Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 37.5,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.717Z"
+        },
+        {
+          "id": "measure_cloud_area_fraction",
+          "title": "Cloudiness",
+          "value": 21.9,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.729Z"
+        },
+        {
+          "id": "measure_fog_area_fraction",
+          "title": "Fog",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-13T20:51:29.800Z"
+        },
+        {
+          "id": "measure_wind_strength1",
+          "title": "Wind strength",
+          "value": 6.6,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "m/s",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.733Z"
+        },
+        {
+          "id": "measure_wind_direction",
+          "title": "Wind direction",
+          "value": "WNW",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T03:00:03.473Z"
+        },
+        {
+          "id": "measure_wind_angle",
+          "title": "Wind angle",
+          "value": 300.1,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:00:03.739Z"
+        },
+        {
+          "id": "measure_ultraviolet",
+          "title": "Ultraviolet",
+          "value": 6.1,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "UVI",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T13:00:03.665Z"
+        },
+        {
+          "id": "sunrise_time",
+          "title": "Sunrise",
+          "value": "27.07.2026 05:24",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T00:06:13.372Z"
+        },
+        {
+          "id": "sunset_time",
+          "title": "Sunset",
+          "value": "27.07.2026 20:54",
+          "type": "string",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T00:06:13.378Z"
+        }
+      ]
+    },
+    {
+      "id": "550b045d-fcab-4c09-b60a-d98c16c32179",
+      "name": "Režim AC",
+      "zone_id": "85d20042-825d-475a-9d0d-c37672475f25",
+      "zone_name": null,
+      "class": "other",
+      "driver_id": "homey:app:nl.qluster-it.DeviceCapabilities:virtualdevice",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "devicecapabilities_picker-heating-cooling-off_list",
+          "title": "Volba režimu",
+          "value": "heating",
+          "type": "enum",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": [
+            {
+              "id": "heating",
+              "title": "Heating"
+            },
+            {
+              "id": "cooling",
+              "title": "Cooling"
+            },
+            {
+              "id": "off",
+              "title": "Off"
+            }
+          ],
+          "last_updated": "2026-06-28T07:13:33.163Z"
+        }
+      ]
+    },
+    {
+      "id": "28afc163-3e3d-45a5-b01a-b590a707cc51",
+      "name": "Režim domu",
+      "zone_id": "9148d7a5-3842-4a7d-85c9-e760b16fc56f",
+      "zone_name": null,
+      "class": "button",
+      "driver_id": "homey:app:nl.qluster-it.DeviceCapabilities:virtualdevice",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "devicecapabilities_text-custom_61.text1",
+          "title": "Režim dne",
+          "value": "Denní",
+          "type": "string",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T06:00:00.077Z"
+        },
+        {
+          "id": "measure_Status.status1",
+          "title": "Režim",
+          "value": null,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-07T21:58:00.020Z"
+        }
+      ]
+    },
+    {
+      "id": "c1124cf9-9108-4c04-9083-2682e8e51264",
+      "name": "Right Switch (S2/Q2)",
+      "zone_id": "09b971cc-389d-47e9-87dc-5d6100812f1b",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.fibaro:FGS-223",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T16:05:33.201Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T16:05:33.144Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T16:05:33.107Z"
+        }
+      ]
+    },
+    {
+      "id": "f91e190d-d1fe-4b73-8516-bd0314f5dc40",
+      "name": "STYRBAR Remote Control",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "remote",
+      "driver_id": "homey:app:com.ikea.tradfri:remote_control_n2",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "alarm_battery",
+          "title": "Battery Alarm",
+          "value": null,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-22T16:46:10.463Z"
+        }
+      ]
+    },
+    {
+      "id": "c9b0bcb3-a956-4565-80e8-e93bf0093609",
+      "name": "Světlo Chodba",
+      "zone_id": "69d06f95-52e0-4442-adc2-7a9073858eb1",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:virtualdrivermatter:driver",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button.identify",
+          "title": "Identify",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T18:21:04.930Z"
+        }
+      ]
+    },
+    {
+      "id": "14d11744-4694-4e4f-945f-bbfadb3f9cbf",
+      "name": "Světlo Koupelna 2",
+      "zone_id": "4cca6676-f687-4432-9a9c-87c357fea28e",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.fibaro:FGS-223",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 50,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:59:21.487Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 9.23,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T19:44:22.204Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": true,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:59:09.248Z"
+        }
+      ]
+    },
+    {
+      "id": "af3c3e25-a3ca-44d1-aeed-99a7de60e9ff",
+      "name": "Světlo Ložnice",
+      "zone_id": "e32b74d7-7c7e-460e-806f-3723f6473dee",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:tech.sonoff:ZBMINI",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T13:37:55.884Z"
+        }
+      ]
+    },
+    {
+      "id": "7b7d102f-ec82-486b-82eb-202b4d97da81",
+      "name": "Světlo Schodiště",
+      "zone_id": "1d2381f8-1a4e-4e1a-9b2d-fe8fbcd11526",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:tech.sonoff:ZBMINI",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T07:45:43.949Z"
+        }
+      ]
+    },
+    {
+      "id": "de7b50cf-257b-4d42-94fa-7f6b2437ed91",
+      "name": "Světlo Vchod",
+      "zone_id": "e851caf0-c9f9-4107-b987-145138068d68",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.aeotec:ZGA003",
+      "virtual_class": "light",
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T18:21:04.918Z"
+        },
+        {
+          "id": "measure_voltage",
+          "title": "Voltage",
+          "value": 233.1,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "V",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:18:31.236Z"
+        },
+        {
+          "id": "measure_current",
+          "title": "Current",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "A",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T20:14:39.292Z"
+        },
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T20:14:44.900Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 0.77,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-23T20:14:34.192Z"
+        },
+        {
+          "id": "supports_switch_action",
+          "title": "Supports switch actions",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-08T15:28:02.544Z"
+        }
+      ]
+    },
+    {
+      "id": "f338b237-a46f-4552-918c-67006c2c6965",
+      "name": "Telka",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "tv",
+      "driver_id": "homey:app:com.lg.webos:webos",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T12:07:58.303Z"
+        },
+        {
+          "id": "volume_set",
+          "title": "Set volume",
+          "value": 0.1,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "%",
+          "min": 0,
+          "max": 1,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T11:30:28.628Z"
+        },
+        {
+          "id": "volume_mute",
+          "title": "Volume muted",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-14T12:00:56.156Z"
+        },
+        {
+          "id": "speaker_next",
+          "title": "Next",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        },
+        {
+          "id": "speaker_playing",
+          "title": "Playing",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-21T16:43:46.875Z"
+        },
+        {
+          "id": "speaker_prev",
+          "title": "Previous",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        }
+      ]
+    },
+    {
+      "id": "d463df5b-8e8a-407c-b78f-61286f73f7ec",
+      "name": "Teploměr Koupelna 1",
+      "zone_id": "7ee96453-8a47-4295-b2c5-03ba118d3e5f",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:se.styrahem.sonoff.zigbee:SNZB-02P",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 23.9,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:16:22.157Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 52.6,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:18:28.259Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 86,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-13T05:31:18.756Z"
+        }
+      ]
+    },
+    {
+      "id": "c58a4997-2869-444d-bc63-c5fb29d29a1d",
+      "name": "Teploměr Koupelna 2",
+      "zone_id": "4cca6676-f687-4432-9a9c-87c357fea28e",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:se.styrahem.sonoff.zigbee:SNZB-02P",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 25,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:09.896Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 48.6,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:18:22.013Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 97,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-14T17:57:44.918Z"
+        }
+      ]
+    },
+    {
+      "id": "478bc1bd-7dc5-4967-a5ae-3be3268960ed",
+      "name": "Teploměr Ložnice",
+      "zone_id": "e32b74d7-7c7e-460e-806f-3723f6473dee",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:se.styrahem.sonoff.zigbee:SNZB-02D",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 22.9,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:41:27.787Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 55,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:16:58.327Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 60,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-28T10:05:22.966Z"
+        }
+      ]
+    },
+    {
+      "id": "f14bce70-4ae6-4853-8761-f2e9de44877e",
+      "name": "Teploměr Obývák",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:se.styrahem.sonoff.zigbee:SNZB-02D",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 23.6,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:52:07.208Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 52.8,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:14:46.628Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 100,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-03T21:03:48.730Z"
+        }
+      ]
+    },
+    {
+      "id": "365a2818-0bd7-4d25-b115-651c4ef09775",
+      "name": "Teploměr Pokojíček",
+      "zone_id": "25ff8884-a4f0-48aa-84a6-042dfe6b1bd7",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:se.styrahem.sonoff.zigbee:SNZB-02D",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 23.2,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:17.587Z"
+        },
+        {
+          "id": "measure_humidity",
+          "title": "Humidity",
+          "value": 50.5,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:09:26.264Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 100,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-02T19:30:35.705Z"
+        }
+      ]
+    },
+    {
+      "id": "5930882e-d8be-40df-bce1-310bcf87f553",
+      "name": "Termostat Koupelna 1",
+      "zone_id": "7ee96453-8a47-4295-b2c5-03ba118d3e5f",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:no.almli.thermostat:VThermo",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T05:40:06.910Z"
+        },
+        {
+          "id": "vt_onoff",
+          "title": "State",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T01:34:34.355Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 23,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-04-28T15:52:24.655Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 23.9,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:16:22.664Z"
+        }
+      ]
+    },
+    {
+      "id": "45c6a003-0883-4d5f-bddb-b66243b38a54",
+      "name": "Termostat Koupelna 2",
+      "zone_id": "4cca6676-f687-4432-9a9c-87c357fea28e",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:no.almli.thermostat:VThermo",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-25T14:00:02.365Z"
+        },
+        {
+          "id": "vt_onoff",
+          "title": "State",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-15T18:00:00.073Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 24,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:30:00.058Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 25,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:10.402Z"
+        }
+      ]
+    },
+    {
+      "id": "83e5f11b-5d97-4855-9ca7-bf9faf6bf005",
+      "name": "Termostat Ložnice",
+      "zone_id": "e32b74d7-7c7e-460e-806f-3723f6473dee",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:no.almli.thermostat:VThermo",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T05:00:00.599Z"
+        },
+        {
+          "id": "vt_onoff",
+          "title": "State",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-04-07T15:31:12.572Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 17.5,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-04-07T15:31:12.567Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 22.9,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:41:28.295Z"
+        }
+      ]
+    },
+    {
+      "id": "85c8bbe2-7403-43e7-8e6f-d398c49b9f07",
+      "name": "Termostat Obývák",
+      "zone_id": "8adfdb5a-abd1-4d89-ba6f-c1ba7a774446",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:no.almli.thermostat:VThermo",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T05:08:37.372Z"
+        },
+        {
+          "id": "vt_onoff",
+          "title": "State",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T05:43:02.087Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 24,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-14T14:21:57.902Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 23.6,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T15:52:07.717Z"
+        }
+      ]
+    },
+    {
+      "id": "f255a7f1-e80f-4a4e-9ef9-4592762c8a8f",
+      "name": "Termostat Pokojíček",
+      "zone_id": "25ff8884-a4f0-48aa-84a6-042dfe6b1bd7",
+      "zone_name": null,
+      "class": "thermostat",
+      "driver_id": "homey:app:no.almli.thermostat:VThermo",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T16:30:00.058Z"
+        },
+        {
+          "id": "vt_onoff",
+          "title": "State",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-03-30T11:42:34.523Z"
+        },
+        {
+          "id": "target_temperature",
+          "title": "Target temperature",
+          "value": 19,
+          "type": "number",
+          "getable": true,
+          "setable": true,
+          "units": "°C",
+          "min": 4,
+          "max": 35,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-20T15:38:10.848Z"
+        },
+        {
+          "id": "measure_temperature",
+          "title": "Temperature",
+          "value": 23.2,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "°C",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:18.098Z"
+        }
+      ]
+    },
+    {
+      "id": "69d6393e-745d-4152-839e-0cc5e3b121b8",
+      "name": "VALLHORN Motion Sensor",
+      "zone_id": "11f9332b-e96d-4fe9-b3c8-bb2bd49b03b8",
+      "zone_name": null,
+      "class": "sensor",
+      "driver_id": "homey:app:com.ikea.tradfri:vallhorn_motion_sensor",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "alarm_motion",
+          "title": "Motion Alarm",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:13:22.631Z"
+        },
+        {
+          "id": "measure_luminance",
+          "title": "Luminance",
+          "value": 5,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "lx",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:18:22.356Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 100,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-06T15:33:36.833Z"
+        }
+      ]
+    },
+    {
+      "id": "adb405d6-b0b0-4313-be95-cc495e6c9e4a",
+      "name": "Vytápění",
+      "zone_id": "d83e65e3-b122-49cc-bbbf-5bf45902b7fb",
+      "zone_name": null,
+      "class": "other",
+      "driver_id": "homey:app:no.almli.heatingcontroller:HeatingController",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T05:43:01.526Z"
+        },
+        {
+          "id": "home_override",
+          "title": "Home override",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-02-02T17:36:01.627Z"
+        },
+        {
+          "id": "night",
+          "title": "Night",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T05:00:07.088Z"
+        },
+        {
+          "id": "at_work",
+          "title": "At work",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-24T12:00:24.931Z"
+        },
+        {
+          "id": "heating",
+          "title": "Heating",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-06-16T05:00:55.451Z"
+        },
+        {
+          "id": "price_EUR",
+          "title": "Price EUR/kWh",
+          "value": 0.1299,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "EUR/kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:13.367Z"
+        },
+        {
+          "id": "price_ratio",
+          "title": "Price ratio",
+          "value": 0.410526,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:15:13.375Z"
+        }
+      ]
+    },
+    {
+      "id": "644680e3-6495-43df-945c-71697be8c7fe",
+      "name": "Zahradní ventil",
+      "zone_id": "49d7ffae-0d45-479f-90b8-eb6e127cd739",
+      "zone_name": null,
+      "class": "other",
+      "driver_id": "homey:app:se.styrahem.sonoff.zigbee:SWV",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:05:26.873Z"
+        },
+        {
+          "id": "measure_water",
+          "title": "Water flow",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "L/min",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:05:27.377Z"
+        },
+        {
+          "id": "meter_water",
+          "title": "Water meter",
+          "value": 2.15,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "m³",
+          "min": 0,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-26T17:05:27.386Z"
+        },
+        {
+          "id": "measure_battery",
+          "title": "Battery",
+          "value": 100,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "%",
+          "min": 0,
+          "max": 100,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-07-13T17:48:42.792Z"
+        }
+      ]
+    },
+    {
+      "id": "62528ff2-53bb-44a7-bcbb-f451540e5dea",
+      "name": "Zalít novou trávu",
+      "zone_id": "49d7ffae-0d45-479f-90b8-eb6e127cd739",
+      "zone_name": null,
+      "class": "button",
+      "driver_id": "homey:virtualdrivervirtualbutton:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button",
+          "title": "Button",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        }
+      ]
+    },
+    {
+      "id": "88795e90-fda8-40c7-a689-60a62d3a4efd",
+      "name": "Zalít starou trávu",
+      "zone_id": "49d7ffae-0d45-479f-90b8-eb6e127cd739",
+      "zone_name": null,
+      "class": "button",
+      "driver_id": "homey:virtualdrivervirtualbutton:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button",
+          "title": "Button",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        }
+      ]
+    },
+    {
+      "id": "42d54d2e-efcf-4626-a2f7-4213e724c02c",
+      "name": "Zásuvka",
+      "zone_id": "09b971cc-389d-47e9-87dc-5d6100812f1b",
+      "zone_name": null,
+      "class": "socket",
+      "driver_id": "homey:app:com.fibaro:FGWPx-102-PLUS",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "measure_power",
+          "title": "Power",
+          "value": 0,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "W",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-03-01T21:12:38.830Z"
+        },
+        {
+          "id": "meter_power",
+          "title": "Energy",
+          "value": 338.94,
+          "type": "number",
+          "getable": true,
+          "setable": false,
+          "units": "kWh",
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-03-01T20:59:32.827Z"
+        },
+        {
+          "id": "onoff",
+          "title": "Turned on",
+          "value": false,
+          "type": "boolean",
+          "getable": true,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": "2026-05-24T21:25:01.592Z"
+        }
+      ]
+    },
+    {
+      "id": "c185603e-9ba7-42e8-ae89-eba84e44180d",
+      "name": "Závlaha STOP",
+      "zone_id": "49d7ffae-0d45-479f-90b8-eb6e127cd739",
+      "zone_name": null,
+      "class": "button",
+      "driver_id": "homey:virtualdrivervirtualbutton:driver",
+      "virtual_class": null,
+      "available": true,
+      "capabilities": [
+        {
+          "id": "button",
+          "title": "Button",
+          "value": null,
+          "type": "boolean",
+          "getable": false,
+          "setable": true,
+          "units": null,
+          "min": null,
+          "max": null,
+          "step": null,
+          "values": null,
+          "last_updated": null
+        }
+      ]
+    }
+  ]
+}
