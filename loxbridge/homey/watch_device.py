@@ -4,9 +4,7 @@ from loxbridge.config.loader import ConfigLoader
 
 def main():
     config = ConfigLoader().load()
-
-    bridge = Bridge(config)
-    bridge.run()
+    Bridge(config).run()
 
 
 if __name__ == "__main__":
