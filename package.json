@@ -1,0 +1,11 @@
+{
+  "name": "loxbridge",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Realtime bridge mezi Homey Pro a Loxone",
+  "dependencies": {
+    "homey-api": "3.19.1",
+    "yaml": "2.8.1"
+  }
+}
