@@ -8,6 +8,7 @@ config/config.yaml
 logs/
 node_modules/
 config/config.generated.yaml
+exports/LoxBridge_VirtualOutputs.xml
 
 # Generated files
 exports/LoxBridge_VirtualInputs.xml

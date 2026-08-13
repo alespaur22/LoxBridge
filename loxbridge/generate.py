@@ -8,14 +8,33 @@ from typing import Any
 
 import yaml
 
-from loxbridge.addon.translations import get_capability_title
+from loxbridge.addon.translations import (
+    get_capability_title,
+)
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = (
+    Path(__file__).resolve().parents[1]
+)
 
-EXPORT_PATH = PROJECT_ROOT / "exports" / "homey_devices.json"
-CURRENT_CONFIG_PATH = PROJECT_ROOT / "config" / "config.yaml"
-GENERATED_CONFIG_PATH = PROJECT_ROOT / "config" / "config.generated.yaml"
+EXPORT_PATH = (
+    PROJECT_ROOT
+    / "exports"
+    / "homey_devices.json"
+)
+
+CURRENT_CONFIG_PATH = (
+    PROJECT_ROOT
+    / "config"
+    / "config.yaml"
+)
+
+GENERATED_CONFIG_PATH = (
+    PROJECT_ROOT
+    / "config"
+    / "config.generated.yaml"
+)
+
 
 SUPPORTED_TYPES = {
     "boolean",
@@ -24,77 +43,179 @@ SUPPORTED_TYPES = {
     "string",
 }
 
+
 IGNORED_CAPABILITY_PREFIXES = (
     "devicecapabilities_",
 )
+
 
 IGNORED_CAPABILITIES = {
     "button",
 }
 
 
-def slugify(value: str) -> str:
-    normalized = unicodedata.normalize("NFKD", value)
-    ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
+# Speciální mapování Homey enumů
+# na hodnoty používané blokem
+# Klimatizace v Loxone.
+#
+# operation_mode:
+#   1 = Auto
+#   2 = Heat
+#   3 = Cool
+#   4 = Dry
+#   5 = Fan
+#
+# fan_speed:
+#   0 = Off       - řeší samostatné onoff
+#   1 = Auto
+#   2 = Silent    - rezervováno
+#   3 = Low
+#   4 = LowMid
+#   5 = Mid
+#   6 = HighMid
+#   7 = High
+LOXONE_ENUM_MAPPINGS: dict[
+    str,
+    dict[str, int],
+] = {
+    "operation_mode": {
+        "Auto": 1,
+        "Heat": 2,
+        "Cool": 3,
+        "Dry": 4,
+        "Fan": 5,
+    },
+    "fan_speed": {
+        "Auto": 1,
+        "Low": 3,
+        "LowMid": 4,
+        "Mid": 5,
+        "HighMid": 6,
+        "High": 7,
+    },
+}
+
+
+def slugify(
+    value: str,
+) -> str:
+    normalized = unicodedata.normalize(
+        "NFKD",
+        value,
+    )
+
+    ascii_value = (
+        normalized
+        .encode(
+            "ascii",
+            "ignore",
+        )
+        .decode("ascii")
+    )
+
     ascii_value = ascii_value.lower()
 
-    slug = re.sub(r"[^a-z0-9]+", "_", ascii_value)
-    slug = re.sub(r"_+", "_", slug)
+    slug = re.sub(
+        r"[^a-z0-9]+",
+        "_",
+        ascii_value,
+    )
+
+    slug = re.sub(
+        r"_+",
+        "_",
+        slug,
+    )
+
     slug = slug.strip("_")
 
     return slug or "device"
 
 
-def load_yaml(path: Path) -> dict[str, Any]:
+def load_yaml(
+    path: Path,
+) -> dict[str, Any]:
     try:
-        with path.open("r", encoding="utf-8") as file:
-            data = yaml.safe_load(file)
+        with path.open(
+            "r",
+            encoding="utf-8",
+        ) as file:
+            data = yaml.safe_load(
+                file
+            )
 
     except FileNotFoundError as error:
         raise RuntimeError(
-            f"Soubor nebyl nalezen: {path}"
+            "Soubor nebyl nalezen: "
+            f"{path}"
         ) from error
 
     except yaml.YAMLError as error:
         raise RuntimeError(
-            f"Neplatný YAML v souboru {path}: {error}"
+            "Neplatný YAML v souboru "
+            f"{path}: {error}"
         ) from error
 
-    if not isinstance(data, dict):
+    if not isinstance(
+        data,
+        dict,
+    ):
         raise RuntimeError(
-            f"Soubor {path} neobsahuje YAML objekt."
+            f"Soubor {path} "
+            "neobsahuje YAML objekt."
         )
 
     return data
 
 
-def load_export(path: Path) -> dict[str, Any]:
+def load_export(
+    path: Path,
+) -> dict[str, Any]:
     try:
-        with path.open("r", encoding="utf-8") as file:
-            data = json.load(file)
+        with path.open(
+            "r",
+            encoding="utf-8",
+        ) as file:
+            data = json.load(
+                file
+            )
 
     except FileNotFoundError as error:
         raise RuntimeError(
-            f"Export zařízení nebyl nalezen: {path}\n"
+            "Export zařízení nebyl "
+            f"nalezen: {path}\n"
             "Nejdřív spusť:\n"
-            "node loxbridge/homey/export_devices.mjs"
+            "node "
+            "loxbridge/homey/"
+            "export_devices.mjs"
         ) from error
 
     except json.JSONDecodeError as error:
         raise RuntimeError(
-            f"Neplatný JSON v souboru {path}: {error}"
+            "Neplatný JSON v souboru "
+            f"{path}: {error}"
         ) from error
 
-    if not isinstance(data, dict):
+    if not isinstance(
+        data,
+        dict,
+    ):
         raise RuntimeError(
-            "Export zařízení neobsahuje JSON objekt."
+            "Export zařízení "
+            "neobsahuje JSON objekt."
         )
 
-    devices = data.get("devices")
+    devices = data.get(
+        "devices"
+    )
 
-    if not isinstance(devices, list):
+    if not isinstance(
+        devices,
+        list,
+    ):
         raise RuntimeError(
-            "V exportu chybí seznam devices."
+            "V exportu chybí "
+            "seznam devices."
         )
 
     return data
@@ -104,11 +225,21 @@ def should_include_capability(
     capability: dict[str, Any],
 ) -> bool:
     capability_id = str(
-        capability.get("id", "")
+        capability.get(
+            "id",
+            "",
+        )
     )
 
-    capability_type = capability.get("type")
-    getable = capability.get("getable")
+    capability_type = (
+        capability.get(
+            "type"
+        )
+    )
+
+    getable = capability.get(
+        "getable"
+    )
 
     if not capability_id:
         return False
@@ -116,10 +247,16 @@ def should_include_capability(
     if getable is not True:
         return False
 
-    if capability_type not in SUPPORTED_TYPES:
+    if (
+        capability_type
+        not in SUPPORTED_TYPES
+    ):
         return False
 
-    if capability_id in IGNORED_CAPABILITIES:
+    if (
+        capability_id
+        in IGNORED_CAPABILITIES
+    ):
         return False
 
     if capability_id.startswith(
@@ -131,35 +268,111 @@ def should_include_capability(
 
 
 def build_enum_values(
+    capability_id: str,
     capability: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    values = capability.get("values")
+    values = capability.get(
+        "values"
+    )
 
-    if not isinstance(values, list):
+    if not isinstance(
+        values,
+        list,
+    ):
         return []
 
-    result: list[dict[str, Any]] = []
+    valid_values: list[
+        dict[str, Any]
+    ] = []
 
-    for index, value in enumerate(values):
-        if not isinstance(value, dict):
+    for value in values:
+        if not isinstance(
+            value,
+            dict,
+        ):
             continue
 
-        value_id = value.get("id")
-
-        if value_id is None:
+        if (
+            value.get("id")
+            is None
+        ):
             continue
 
-        value_title = value.get("title")
+        valid_values.append(
+            value
+        )
+
+    mapping = (
+        LOXONE_ENUM_MAPPINGS.get(
+            capability_id
+        )
+    )
+
+    # Speciální Loxone mapování
+    # použijeme pouze tehdy,
+    # pokud známe všechny enum
+    # hodnoty dané capability.
+    #
+    # Pokud např. jiná integrace
+    # používá capability fan_speed
+    # s jinými enum hodnotami,
+    # automaticky se vrátíme
+    # k běžnému číslování 0..n.
+    use_loxone_mapping = (
+        mapping is not None
+        and bool(valid_values)
+        and all(
+            str(value["id"])
+            in mapping
+            for value
+            in valid_values
+        )
+    )
+
+    result: list[
+        dict[str, Any]
+    ] = []
+
+    for index, value in enumerate(
+        valid_values
+    ):
+        value_id = str(
+            value["id"]
+        )
+
+        value_title = (
+            value.get(
+                "title"
+            )
+        )
+
+        if (
+            use_loxone_mapping
+            and mapping is not None
+        ):
+            numeric_value = (
+                mapping[value_id]
+            )
+
+        else:
+            numeric_value = index
 
         result.append(
             {
-                "id": str(value_id),
+                "id": value_id,
                 "title": (
-                    str(value_title)
-                    if value_title is not None
-                    else str(value_id)
+                    str(
+                        value_title
+                    )
+                    if (
+                        value_title
+                        is not None
+                    )
+                    else value_id
                 ),
-                "value": index,
+                "value": (
+                    numeric_value
+                ),
             }
         )
 
@@ -175,34 +388,62 @@ def build_capability(
         capability["id"]
     )
 
-    title = get_capability_title(
-        capability_id,
-        capability.get("title"),
+    title = (
+        get_capability_title(
+            capability_id,
+            capability.get(
+                "title"
+            ),
+        )
     )
 
-    capability_type = capability.get("type")
-    unit = capability.get("units")
+    capability_type = (
+        capability.get(
+            "type"
+        )
+    )
 
-    data: dict[str, Any] = {
+    unit = capability.get(
+        "units"
+    )
+
+    data: dict[
+        str,
+        Any,
+    ] = {
         "key": loxone_key,
         "type": capability_type,
         "title": title,
-        "loxone_name": f"{device_name} - {title}",
+        "loxone_name": (
+            f"{device_name} - "
+            f"{title}"
+        ),
         "setable": bool(
-            capability.get("setable", False)
-    ),
-}
+            capability.get(
+                "setable",
+                False,
+            )
+        ),
+    }
 
     if unit:
         data["unit"] = unit
 
-    if capability_type == "enum":
-        enum_values = build_enum_values(
-            capability
+    if (
+        capability_type
+        == "enum"
+    ):
+        enum_values = (
+            build_enum_values(
+                capability_id,
+                capability,
+            )
         )
 
         if enum_values:
-            data["values"] = enum_values
+            data["values"] = (
+                enum_values
+            )
 
     return data
 
@@ -211,41 +452,77 @@ def make_unique_key(
     base_key: str,
     used_keys: set[str],
 ) -> str:
-    if base_key not in used_keys:
-        used_keys.add(base_key)
+    if (
+        base_key
+        not in used_keys
+    ):
+        used_keys.add(
+            base_key
+        )
+
         return base_key
 
     counter = 2
 
     while True:
-        candidate = f"{base_key}_{counter}"
+        candidate = (
+            f"{base_key}_"
+            f"{counter}"
+        )
 
-        if candidate not in used_keys:
-            used_keys.add(candidate)
+        if (
+            candidate
+            not in used_keys
+        ):
+            used_keys.add(
+                candidate
+            )
+
             return candidate
 
         counter += 1
 
 
 def generate_devices(
-    exported_devices: list[dict[str, Any]],
-) -> tuple[list[dict[str, Any]], int]:
-    generated_devices: list[dict[str, Any]] = []
+    exported_devices: list[
+        dict[str, Any]
+    ],
+) -> tuple[
+    list[dict[str, Any]],
+    int,
+]:
+    generated_devices: list[
+        dict[str, Any]
+    ] = []
+
     used_keys: set[str] = set()
+
     capability_count = 0
 
     name_counts = Counter(
-        str(device.get("name", "")).strip()
-        for device in exported_devices
+        str(
+            device.get(
+                "name",
+                "",
+            )
+        ).strip()
+        for device
+        in exported_devices
     )
 
     for device in exported_devices:
         device_name = str(
-            device.get("name", "")
+            device.get(
+                "name",
+                "",
+            )
         ).strip()
 
         device_id = str(
-            device.get("id", "")
+            device.get(
+                "id",
+                "",
+            )
         ).strip()
 
         if not device_name:
@@ -255,9 +532,15 @@ def generate_devices(
             device_name
         )
 
-        if name_counts[device_name] > 1 and device_id:
+        if (
+            name_counts[
+                device_name
+            ] > 1
+            and device_id
+        ):
             device_slug = (
-                f"{device_slug}_{device_id[:8]}"
+                f"{device_slug}_"
+                f"{device_id[:8]}"
             )
 
         generated_capabilities: dict[
@@ -265,20 +548,30 @@ def generate_devices(
             dict[str, Any],
         ] = {}
 
-        capabilities = device.get(
-            "capabilities",
-            [],
+        capabilities = (
+            device.get(
+                "capabilities",
+                [],
+            )
         )
 
-        if not isinstance(capabilities, list):
+        if not isinstance(
+            capabilities,
+            list,
+        ):
             continue
 
         for capability in capabilities:
-            if not isinstance(capability, dict):
+            if not isinstance(
+                capability,
+                dict,
+            ):
                 continue
 
-            if not should_include_capability(
-                capability
+            if not (
+                should_include_capability(
+                    capability
+                )
             ):
                 continue
 
@@ -286,78 +579,143 @@ def generate_devices(
                 capability["id"]
             )
 
-            capability_slug = slugify(
-                capability_id
+            capability_slug = (
+                slugify(
+                    capability_id
+                )
             )
 
             base_key = (
-                f"{device_slug}_{capability_slug}"
+                f"{device_slug}_"
+                f"{capability_slug}"
             )
 
-            loxone_key = make_unique_key(
-                base_key,
-                used_keys,
+            loxone_key = (
+                make_unique_key(
+                    base_key,
+                    used_keys,
+                )
             )
 
             generated_capabilities[
                 capability_id
             ] = build_capability(
-                device_name=device_name,
-                capability=capability,
-                loxone_key=loxone_key,
+                device_name=(
+                    device_name
+                ),
+                capability=(
+                    capability
+                ),
+                loxone_key=(
+                    loxone_key
+                ),
             )
 
             capability_count += 1
 
-        if not generated_capabilities:
+        if not (
+            generated_capabilities
+        ):
             continue
 
-        generated_device: dict[str, Any] = {
+        generated_device: dict[
+            str,
+            Any,
+        ] = {
             "name": device_name,
             "slug": device_slug,
-            "capabilities": generated_capabilities,
+            "capabilities": (
+                generated_capabilities
+            ),
         }
 
         if device_id:
-            generated_device["homey_id"] = device_id
+            generated_device[
+                "homey_id"
+            ] = device_id
 
         generated_devices.append(
             generated_device
         )
 
-    return generated_devices, capability_count
+    return (
+        generated_devices,
+        capability_count,
+    )
 
 
 def build_generated_config(
-    current_config: dict[str, Any],
-    export_data: dict[str, Any],
-) -> tuple[dict[str, Any], int]:
-    homey_config = current_config.get("homey")
-    loxone_config = current_config.get("loxone")
+    current_config: dict[
+        str,
+        Any,
+    ],
+    export_data: dict[
+        str,
+        Any,
+    ],
+) -> tuple[
+    dict[str, Any],
+    int,
+]:
+    homey_config = (
+        current_config.get(
+            "homey"
+        )
+    )
 
-    if not isinstance(homey_config, dict):
+    loxone_config = (
+        current_config.get(
+            "loxone"
+        )
+    )
+
+    if not isinstance(
+        homey_config,
+        dict,
+    ):
         raise RuntimeError(
-            "V config.yaml chybí sekce homey."
+            "V config.yaml "
+            "chybí sekce homey."
         )
 
-    if not isinstance(loxone_config, dict):
+    if not isinstance(
+        loxone_config,
+        dict,
+    ):
         raise RuntimeError(
-            "V config.yaml chybí sekce loxone."
+            "V config.yaml "
+            "chybí sekce loxone."
         )
 
-    exported_devices = export_data["devices"]
+    exported_devices = (
+        export_data[
+            "devices"
+        ]
+    )
 
-    generated_devices, capability_count = generate_devices(
+    (
+        generated_devices,
+        capability_count,
+    ) = generate_devices(
         exported_devices
     )
 
     generated_config = {
-        "homey": homey_config,
-        "loxone": loxone_config,
-        "devices": generated_devices,
+        "homey": (
+            homey_config
+        ),
+        "loxone": (
+            loxone_config
+        ),
+        "devices": (
+            generated_devices
+        ),
     }
 
-    return generated_config, capability_count
+    return (
+        generated_config,
+        capability_count,
+    )
 
 
 def save_generated_config(
@@ -384,52 +742,94 @@ def save_generated_config(
 
 
 def main() -> None:
-    print("LoxBridge Config Generator")
-    print("==========================")
-    print(f"Export:        {EXPORT_PATH}")
-    print(f"Zdroj configu: {CURRENT_CONFIG_PATH}")
-    print(f"Výstup:        {GENERATED_CONFIG_PATH}")
+    print(
+        "LoxBridge Config Generator"
+    )
+
+    print(
+        "=========================="
+    )
+
+    print(
+        f"Export:        "
+        f"{EXPORT_PATH}"
+    )
+
+    print(
+        f"Zdroj configu: "
+        f"{CURRENT_CONFIG_PATH}"
+    )
+
+    print(
+        f"Výstup:        "
+        f"{GENERATED_CONFIG_PATH}"
+    )
+
     print()
 
-    current_config = load_yaml(
-        CURRENT_CONFIG_PATH
+    current_config = (
+        load_yaml(
+            CURRENT_CONFIG_PATH
+        )
     )
 
-    export_data = load_export(
-        EXPORT_PATH
+    export_data = (
+        load_export(
+            EXPORT_PATH
+        )
     )
 
-    generated_config, capability_count = build_generated_config(
-        current_config=current_config,
-        export_data=export_data,
+    (
+        generated_config,
+        capability_count,
+    ) = build_generated_config(
+        current_config=(
+            current_config
+        ),
+        export_data=(
+            export_data
+        ),
     )
 
     save_generated_config(
         config=generated_config,
-        path=GENERATED_CONFIG_PATH,
+        path=(
+            GENERATED_CONFIG_PATH
+        ),
     )
 
     device_count = len(
-        generated_config["devices"]
+        generated_config[
+            "devices"
+        ]
     )
 
-    print("Generování dokončeno.")
+    print(
+        "Generování dokončeno."
+    )
+
     print(
         "Zařízení v exportu:     "
         f"{export_data.get('device_count', '?')}"
     )
+
     print(
         "Zařízení v konfiguraci: "
         f"{device_count}"
     )
+
     print(
         "Capabilities:           "
         f"{capability_count}"
     )
+
     print()
+
     print(
-        "Funkční config.yaml nebyl změněn."
+        "Funkční config.yaml "
+        "nebyl změněn."
     )
+
     print(
         "Nový návrh je uložen v: "
         f"{GENERATED_CONFIG_PATH}"
@@ -446,4 +846,6 @@ if __name__ == "__main__":
             file=sys.stderr,
         )
 
-        raise SystemExit(1) from error
+        raise SystemExit(
+            1
+        ) from error
