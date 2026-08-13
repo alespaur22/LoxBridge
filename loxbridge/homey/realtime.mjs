@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import process from 'node:process';
+import { createInterface } from 'node:readline';
 
 import { HomeyAPI } from 'homey-api';
 import YAML from 'yaml';
@@ -65,6 +66,7 @@ function parseCapability(
       key: capabilityConfig,
       type: null,
       values: [],
+      setable: false,
     };
   }
 
@@ -83,6 +85,8 @@ function parseCapability(
     )
       ? capabilityConfig.values
       : [],
+    setable:
+      capabilityConfig.setable === true,
   };
 }
 
@@ -111,6 +115,102 @@ function convertValue(
   }
 
   return match.value;
+}
+
+
+function convertCommandValue(
+  value,
+  capabilityConfig,
+) {
+  if (
+    capabilityConfig.type === 'boolean'
+  ) {
+    if (value === true || value === 1) {
+      return true;
+    }
+
+    if (value === false || value === 0) {
+      return false;
+    }
+
+    if (typeof value === 'string') {
+      const normalized =
+        value.trim().toLowerCase();
+
+      if (
+        ['1', 'true', 'on'].includes(
+          normalized,
+        )
+      ) {
+        return true;
+      }
+
+      if (
+        ['0', 'false', 'off'].includes(
+          normalized,
+        )
+      ) {
+        return false;
+      }
+    }
+
+    throw new Error(
+      `Neplatná boolean hodnota: ${value}`,
+    );
+  }
+
+  if (
+    capabilityConfig.type === 'number'
+  ) {
+    const numberValue = Number(value);
+
+    if (!Number.isFinite(numberValue)) {
+      throw new Error(
+        `Neplatná číselná hodnota: ${value}`,
+      );
+    }
+
+    return numberValue;
+  }
+
+  if (
+    capabilityConfig.type === 'enum'
+  ) {
+    const numericValue = Number(value);
+
+    if (Number.isFinite(numericValue)) {
+      const match =
+        capabilityConfig.values.find(
+          (enumValue) =>
+            enumValue?.value ===
+            numericValue,
+        );
+
+      if (match) {
+        return match.id;
+      }
+    }
+
+    const directMatch =
+      capabilityConfig.values.find(
+        (enumValue) =>
+          enumValue?.id === value,
+      );
+
+    if (directMatch) {
+      return directMatch.id;
+    }
+
+    throw new Error(
+      `Enum hodnota "${value}" ` +
+      'nemá mapování.',
+    );
+  }
+
+  throw new Error(
+    `Nepodporovaný typ capability: ` +
+    `${capabilityConfig.type}`,
+  );
 }
 
 
@@ -174,6 +274,7 @@ async function main() {
   }
 
   const subscriptions = [];
+  const commandMap = new Map();
 
   let skipped = 0;
   let missing = 0;
@@ -273,6 +374,20 @@ async function main() {
         continue;
       }
 
+      if (
+        capabilityConfig.setable === true &&
+        capability.setable === true
+      ) {
+        commandMap.set(
+          loxoneKey,
+          {
+            device,
+            capabilityId,
+            capabilityConfig,
+          },
+        );
+      }
+
       try {
         const initialValue =
           convertValue(
@@ -344,19 +459,183 @@ async function main() {
     );
   }
 
+  async function handleCommand(
+    command,
+  ) {
+    const requestId =
+      command.request_id ?? null;
+
+    const key = command.key;
+
+    if (
+      typeof key !== 'string' ||
+      !key
+    ) {
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: false,
+        message:
+          'Příkaz neobsahuje platný key.',
+      });
+
+      return;
+    }
+
+    const target =
+      commandMap.get(key);
+
+    if (!target) {
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: false,
+        key,
+        message:
+          `Příkaz "${key}" není setable ` +
+          'nebo nebyl nalezen.',
+      });
+
+      return;
+    }
+
+    try {
+      const homeyValue =
+        convertCommandValue(
+          command.value,
+          target.capabilityConfig,
+        );
+
+      await target.device
+        .setCapabilityValue(
+          target.capabilityId,
+          homeyValue,
+        );
+
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: true,
+        key,
+        device_name:
+          target.device.name,
+        device_id:
+          target.device.id,
+        capability_id:
+          target.capabilityId,
+        homey_value:
+          homeyValue,
+      });
+
+    } catch (error) {
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: false,
+        key,
+        device_name:
+          target.device.name,
+        capability_id:
+          target.capabilityId,
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
+
+
   writeEvent({
     type: 'ready',
     subscriptions:
       subscriptions.length,
+    commands:
+      commandMap.size,
     skipped,
     missing,
   });
+
+
+  const input =
+    createInterface({
+      input: process.stdin,
+      crlfDelay: Infinity,
+    });
+
+  let commandQueue =
+    Promise.resolve();
+
+  input.on(
+    'line',
+    (line) => {
+      const message = line.trim();
+
+      if (!message) {
+        return;
+      }
+
+      commandQueue =
+        commandQueue.then(
+          async () => {
+            let command;
+
+            try {
+              command =
+                JSON.parse(message);
+            } catch {
+              writeEvent({
+                type: 'command_result',
+                success: false,
+                message:
+                  'Neplatný JSON příkaz.',
+              });
+
+              return;
+            }
+
+            if (
+              command?.type !==
+              'command'
+            ) {
+              writeEvent({
+                type: 'command_result',
+                request_id:
+                  command?.request_id ??
+                  null,
+                success: false,
+                message:
+                  'Neznámý typ příkazu.',
+              });
+
+              return;
+            }
+
+            await handleCommand(
+              command,
+            );
+          },
+        ).catch(
+          (error) => {
+            writeEvent({
+              type: 'command_result',
+              success: false,
+              message:
+                error?.message ??
+                String(error),
+            });
+          },
+        );
+    },
+  );
+
 
   const shutdown =
     async (signal) => {
       writeLog(
         `Ukončuji spojení: ${signal}`,
       );
+
+      input.close();
 
       for (
         const subscription
@@ -371,6 +650,7 @@ async function main() {
 
       process.exit(0);
     };
+
 
   process.on(
     'SIGINT',

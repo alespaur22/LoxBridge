@@ -188,7 +188,10 @@ def build_capability(
         "type": capability_type,
         "title": title,
         "loxone_name": f"{device_name} - {title}",
-    }
+        "setable": bool(
+            capability.get("setable", False)
+    ),
+}
 
     if unit:
         data["unit"] = unit

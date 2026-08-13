@@ -10,43 +10,82 @@ import yaml
 
 from loxbridge.logger.logger import logger
 from loxbridge.loxone.udp import send_value
+from loxbridge.loxone.udp_listener import (
+    listen_for_commands,
+)
 
 
 RESTART_DELAY = 3.0
-SUPPORTED_TYPES = {"boolean", "number", "enum"}
+
+SUPPORTED_TYPES = {
+    "boolean",
+    "number",
+    "enum",
+}
 
 
 class Bridge:
     def __init__(self, config):
         self.config = config
+
         self.process: subprocess.Popen[str] | None = None
+
         self.stop_requested = False
 
+        self.command_stop_event = threading.Event()
+
+        self.command_thread: (
+            threading.Thread | None
+        ) = None
+
+        self.stdin_lock = threading.Lock()
+
     @staticmethod
-    def convert_for_loxone(value: object) -> bool | int | float | str:
+    def convert_for_loxone(
+        value: object,
+    ) -> bool | int | float | str:
         if isinstance(value, bool):
             return 1 if value else 0
 
         if value is None:
-            raise RuntimeError("Capability nemá žádnou hodnotu.")
+            raise RuntimeError(
+                "Capability nemá žádnou hodnotu."
+            )
 
-        if isinstance(value, (int, float, str)):
+        if isinstance(
+            value,
+            (int, float, str),
+        ):
             return value
 
         raise RuntimeError(
-            f"Nepodporovaný typ hodnoty: {type(value).__name__}"
+            "Nepodporovaný typ hodnoty: "
+            f"{type(value).__name__}"
         )
 
     @staticmethod
     def project_root() -> Path:
-        return Path(__file__).resolve().parents[2]
+        return Path(
+            __file__
+        ).resolve().parents[2]
 
     @classmethod
-    def runtime_config_path(cls) -> Path:
+    def runtime_config_path(
+        cls,
+    ) -> Path:
         root = cls.project_root()
 
-        generated_path = root / "config" / "config.generated.yaml"
-        base_path = root / "config" / "config.yaml"
+        generated_path = (
+            root
+            / "config"
+            / "config.generated.yaml"
+        )
+
+        base_path = (
+            root
+            / "config"
+            / "config.yaml"
+        )
 
         if generated_path.is_file():
             return generated_path
@@ -54,60 +93,109 @@ class Bridge:
         return base_path
 
     @staticmethod
-    def load_yaml(path: Path) -> dict[str, Any]:
+    def load_yaml(
+        path: Path,
+    ) -> dict[str, Any]:
         try:
-            with path.open("r", encoding="utf-8") as file:
-                config = yaml.safe_load(file)
+            with path.open(
+                "r",
+                encoding="utf-8",
+            ) as file:
+                config = yaml.safe_load(
+                    file
+                )
 
         except FileNotFoundError as error:
             raise RuntimeError(
-                f"Konfigurace nebyla nalezena: {path}"
+                "Konfigurace nebyla nalezena: "
+                f"{path}"
             ) from error
 
         except yaml.YAMLError as error:
             raise RuntimeError(
-                f"Neplatný YAML v {path}: {error}"
+                f"Neplatný YAML v {path}: "
+                f"{error}"
             ) from error
 
-        if not isinstance(config, dict):
+        if not isinstance(
+            config,
+            dict,
+        ):
             raise RuntimeError(
-                f"{path} neobsahuje platný YAML objekt."
+                f"{path} neobsahuje "
+                "platný YAML objekt."
             )
 
         return config
 
-    def validate_config(self) -> tuple[str, int]:
+    def validate_config(
+        self,
+    ) -> tuple[str, int]:
         try:
-            homey_config = self.config["homey"]
-            loxone_config = self.config["loxone"]
+            homey_config = (
+                self.config["homey"]
+            )
+
+            loxone_config = (
+                self.config["loxone"]
+            )
 
             homey_config["ip"]
             homey_config["token"]
 
-            loxone_ip = str(loxone_config["ip"])
-            loxone_port = int(loxone_config["port"])
+            loxone_ip = str(
+                loxone_config["ip"]
+            )
 
-            return loxone_ip, loxone_port
+            loxone_port = int(
+                loxone_config["port"]
+            )
 
-        except (ValueError, KeyError, TypeError) as error:
+            return (
+                loxone_ip,
+                loxone_port,
+            )
+
+        except (
+            ValueError,
+            KeyError,
+            TypeError,
+        ) as error:
             raise RuntimeError(
-                f"Chyba konfigurace: {error}"
+                f"Chyba konfigurace: "
+                f"{error}"
             ) from error
 
     @staticmethod
-    def capability_is_supported(capability_config: object) -> bool:
+    def capability_is_supported(
+        capability_config: object,
+    ) -> bool:
         # Původní formát:
         # alarm_motion: chodba_pohyb
-        if isinstance(capability_config, str):
+        if isinstance(
+            capability_config,
+            str,
+        ):
             return True
 
         # Nový generovaný formát:
         # alarm_motion:
         #   key: pohyb_chodba_alarm_motion
         #   type: boolean
-        if isinstance(capability_config, dict):
-            capability_type = capability_config.get("type")
-            return capability_type in SUPPORTED_TYPES
+        if isinstance(
+            capability_config,
+            dict,
+        ):
+            capability_type = (
+                capability_config.get(
+                    "type"
+                )
+            )
+
+            return (
+                capability_type
+                in SUPPORTED_TYPES
+            )
 
         return False
 
@@ -116,56 +204,120 @@ class Bridge:
         loxone_ip: str,
         loxone_port: int,
     ) -> None:
-        config_path = self.runtime_config_path()
-        runtime_config = self.load_yaml(config_path)
+        config_path = (
+            self.runtime_config_path()
+        )
 
-        devices = runtime_config.get("devices", [])
+        runtime_config = (
+            self.load_yaml(
+                config_path
+            )
+        )
+
+        devices = runtime_config.get(
+            "devices",
+            [],
+        )
 
         device_count = 0
         capability_count = 0
         skipped_count = 0
 
-        if isinstance(devices, list):
+        if isinstance(
+            devices,
+            list,
+        ):
             for device in devices:
-                if not isinstance(device, dict):
+                if not isinstance(
+                    device,
+                    dict,
+                ):
                     continue
 
                 device_count += 1
 
-                capabilities = device.get("capabilities", {})
+                capabilities = (
+                    device.get(
+                        "capabilities",
+                        {},
+                    )
+                )
 
-                if not isinstance(capabilities, dict):
+                if not isinstance(
+                    capabilities,
+                    dict,
+                ):
                     continue
 
-                for capability_config in capabilities.values():
-                    if self.capability_is_supported(capability_config):
+                for (
+                    capability_config
+                ) in capabilities.values():
+                    if (
+                        self
+                        .capability_is_supported(
+                            capability_config
+                        )
+                    ):
                         capability_count += 1
                     else:
                         skipped_count += 1
 
-        logger.info("LoxBridge realtime spuštěn")
-        logger.info(f"Homey: {self.config['homey']['ip']}")
-        logger.info(f"Loxone: {loxone_ip}:{loxone_port}")
-        logger.info(f"Realtime config: {config_path.name}")
-        logger.info(f"Zařízení: {device_count}")
-        logger.info(f"Realtime capabilities: {capability_count}")
+        logger.info(
+            "LoxBridge realtime spuštěn"
+        )
+
+        logger.info(
+            "Homey: "
+            f"{self.config['homey']['ip']}"
+        )
+
+        logger.info(
+            f"Loxone: "
+            f"{loxone_ip}:"
+            f"{loxone_port}"
+        )
+
+        logger.info(
+            "Realtime config: "
+            f"{config_path.name}"
+        )
+
+        logger.info(
+            f"Zařízení: "
+            f"{device_count}"
+        )
+
+        logger.info(
+            "Realtime capabilities: "
+            f"{capability_count}"
+        )
 
         if skipped_count:
             logger.info(
-                f"Zatím přeskočeno nepodporovaných capability: {skipped_count}"
+                "Zatím přeskočeno "
+                "nepodporovaných capability: "
+                f"{skipped_count}"
             )
 
-        logger.info("Ukončení: Ctrl + C")
+        logger.info(
+            "Ukončení: Ctrl + C"
+        )
 
     @staticmethod
-    def log_helper_stderr(stream: TextIO) -> None:
+    def log_helper_stderr(
+        stream: TextIO,
+    ) -> None:
         for line in stream:
             message = line.rstrip()
 
             if message:
-                logger.info(message)
+                logger.info(
+                    message
+                )
 
-    def start_helper(self) -> subprocess.Popen[str]:
+    def start_helper(
+        self,
+    ) -> subprocess.Popen[str]:
         root = self.project_root()
 
         helper_path = (
@@ -175,16 +327,22 @@ class Bridge:
             / "realtime.mjs"
         )
 
-        config_path = self.runtime_config_path()
+        config_path = (
+            self.runtime_config_path()
+        )
 
         if not helper_path.is_file():
             raise RuntimeError(
-                f"Realtime helper nebyl nalezen: {helper_path}"
+                "Realtime helper "
+                "nebyl nalezen: "
+                f"{helper_path}"
             )
 
         if not config_path.is_file():
             raise RuntimeError(
-                f"Konfigurace nebyla nalezena: {config_path}"
+                "Konfigurace nebyla "
+                "nalezena: "
+                f"{config_path}"
             )
 
         try:
@@ -195,6 +353,7 @@ class Bridge:
                     str(config_path),
                 ],
                 cwd=root,
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
@@ -204,25 +363,124 @@ class Bridge:
 
         except FileNotFoundError as error:
             raise RuntimeError(
-                "Příkaz node nebyl nalezen."
+                "Příkaz node "
+                "nebyl nalezen."
             ) from error
 
-        if process.stdout is None or process.stderr is None:
+        if (
+            process.stdin is None
+            or process.stdout is None
+            or process.stderr is None
+        ):
             process.terminate()
 
             raise RuntimeError(
-                "Nepodařilo se otevřít výstup realtime helperu."
+                "Nepodařilo se otevřít "
+                "komunikaci s realtime "
+                "helperem."
             )
 
-        stderr_thread = threading.Thread(
-            target=self.log_helper_stderr,
-            args=(process.stderr,),
-            daemon=True,
+        stderr_thread = (
+            threading.Thread(
+                target=(
+                    self.log_helper_stderr
+                ),
+                args=(
+                    process.stderr,
+                ),
+                daemon=True,
+            )
         )
 
         stderr_thread.start()
 
         return process
+
+    def send_homey_command(
+        self,
+        key: str,
+        value: str,
+    ) -> None:
+        process = self.process
+
+        if (
+            process is None
+            or process.poll()
+            is not None
+            or process.stdin is None
+        ):
+            logger.warning(
+                "Homey realtime spojení "
+                "není připravené "
+                "pro příkaz."
+            )
+
+            return
+
+        request_id = (
+            f"udp-{time.time_ns()}"
+        )
+
+        command = {
+            "type": "command",
+            "key": key,
+            "value": value,
+            "request_id": (
+                request_id
+            ),
+        }
+
+        message = json.dumps(
+            command,
+            ensure_ascii=False,
+        )
+
+        try:
+            with self.stdin_lock:
+                process.stdin.write(
+                    message + "\n"
+                )
+
+                process.stdin.flush()
+
+        except (
+            BrokenPipeError,
+            OSError,
+        ) as error:
+            logger.error(
+                "Nepodařilo se "
+                "odeslat příkaz "
+                "do Homey: "
+                f"{error}"
+            )
+
+    def start_command_listener(
+        self,
+    ) -> None:
+        if (
+            self.command_thread
+            is not None
+            and self.command_thread
+            .is_alive()
+        ):
+            return
+
+        self.command_stop_event.clear()
+
+        self.command_thread = (
+            threading.Thread(
+                target=(
+                    listen_for_commands
+                ),
+                args=(
+                    self.send_homey_command,
+                    self.command_stop_event,
+                ),
+                daemon=True,
+            )
+        )
+
+        self.command_thread.start()
 
     @staticmethod
     def process_event(
@@ -230,25 +488,98 @@ class Bridge:
         loxone_ip: str,
         loxone_port: int,
     ) -> None:
-        event_type = event.get("type")
+        event_type = event.get(
+            "type"
+        )
 
         if event_type == "ready":
-            subscriptions = event.get("subscriptions", 0)
-            skipped = event.get("skipped", 0)
-            missing = event.get("missing", 0)
+            subscriptions = (
+                event.get(
+                    "subscriptions",
+                    0,
+                )
+            )
+
+            commands = event.get(
+                "commands",
+                0,
+            )
+
+            skipped = event.get(
+                "skipped",
+                0,
+            )
+
+            missing = event.get(
+                "missing",
+                0,
+            )
 
             logger.info(
-                f"Realtime spojení aktivní. Odběry: {subscriptions}"
+                "Realtime spojení "
+                "aktivní. Odběry: "
+                f"{subscriptions}"
+            )
+
+            logger.info(
+                "Homey ovladatelných "
+                "capability: "
+                f"{commands}"
             )
 
             if skipped:
                 logger.info(
-                    f"Realtime nepodporované capability: {skipped}"
+                    "Realtime "
+                    "nepodporované "
+                    "capability: "
+                    f"{skipped}"
                 )
 
             if missing:
                 logger.warning(
-                    f"Chybějící zařízení/capability: {missing}"
+                    "Chybějící "
+                    "zařízení/capability: "
+                    f"{missing}"
+                )
+
+            return
+
+        if (
+            event_type
+            == "command_result"
+        ):
+            success = bool(
+                event.get(
+                    "success",
+                    False,
+                )
+            )
+
+            key = str(
+                event.get(
+                    "key",
+                    "",
+                )
+            )
+
+            if success:
+                logger.info(
+                    "Homey příkaz "
+                    "potvrzen: "
+                    f"{key} → "
+                    f"{event.get('device_name')} "
+                    "/ "
+                    f"{event.get('capability_id')}"
+                    "="
+                    f"{event.get('homey_value')!r}"
+                )
+
+            else:
+                logger.error(
+                    "Homey příkaz "
+                    "selhal: "
+                    f"{key} - "
+                    f"{event.get('message')}"
                 )
 
             return
@@ -262,6 +593,7 @@ class Bridge:
                     )
                 )
             )
+
             return
 
         if event_type == "fatal":
@@ -269,25 +601,49 @@ class Bridge:
                 str(
                     event.get(
                         "message",
-                        "Realtime helper selhal.",
+                        "Realtime helper "
+                        "selhal.",
                     )
                 )
             )
 
         if event_type != "value":
             logger.warning(
-                f"Neznámá zpráva realtime helperu: {event!r}"
+                "Neznámá zpráva "
+                "realtime helperu: "
+                f"{event!r}"
             )
+
             return
 
-        device_name = str(event["device_name"])
-        capability_id = str(event["capability_id"])
-        loxone_key = str(event["loxone_key"])
+        device_name = str(
+            event["device_name"]
+        )
 
-        value = event.get("value")
-        initial = bool(event.get("initial", False))
+        capability_id = str(
+            event["capability_id"]
+        )
 
-        loxone_value = Bridge.convert_for_loxone(value)
+        loxone_key = str(
+            event["loxone_key"]
+        )
+
+        value = event.get(
+            "value"
+        )
+
+        initial = bool(
+            event.get(
+                "initial",
+                False,
+            )
+        )
+
+        loxone_value = (
+            Bridge.convert_for_loxone(
+                value
+            )
+        )
 
         send_value(
             ip=loxone_ip,
@@ -304,8 +660,11 @@ class Bridge:
 
         logger.info(
             f"{device_name}: "
-            f"{capability_id}={value!r} "
-            f"→ {loxone_key}={loxone_value} "
+            f"{capability_id}="
+            f"{value!r} "
+            f"→ "
+            f"{loxone_key}="
+            f"{loxone_value} "
             f"[{event_label}]"
         )
 
@@ -314,11 +673,20 @@ class Bridge:
         loxone_ip: str,
         loxone_port: int,
     ) -> int:
-        self.process = self.start_helper()
+        self.process = (
+            self.start_helper()
+        )
 
-        assert self.process.stdout is not None
+        self.start_command_listener()
 
-        for line in self.process.stdout:
+        assert (
+            self.process.stdout
+            is not None
+        )
+
+        for line in (
+            self.process.stdout
+        ):
             if self.stop_requested:
                 break
 
@@ -328,19 +696,28 @@ class Bridge:
                 continue
 
             try:
-                event = json.loads(message)
-
-            except json.JSONDecodeError:
-                logger.warning(
-                    f"Neplatná zpráva realtime helperu: {message}"
+                event = json.loads(
+                    message
                 )
+
+            except (
+                json.JSONDecodeError
+            ):
+                logger.warning(
+                    "Neplatná zpráva "
+                    "realtime helperu: "
+                    f"{message}"
+                )
+
                 continue
 
             try:
                 self.process_event(
                     event=event,
                     loxone_ip=loxone_ip,
-                    loxone_port=loxone_port,
+                    loxone_port=(
+                        loxone_port
+                    ),
                 )
 
             except (
@@ -350,83 +727,152 @@ class Bridge:
                 RuntimeError,
             ) as error:
                 logger.error(
-                    f"Chyba realtime události: {error}"
+                    "Chyba realtime "
+                    "události: "
+                    f"{error}"
                 )
 
-        return self.process.wait()
+        return (
+            self.process.wait()
+        )
 
-    def stop_helper(self) -> None:
+    def stop_helper(
+        self,
+    ) -> None:
         self.stop_requested = True
 
         if self.process is None:
             return
 
-        if self.process.poll() is not None:
+        if (
+            self.process.poll()
+            is not None
+        ):
             return
 
         self.process.terminate()
 
         try:
-            self.process.wait(timeout=5)
+            self.process.wait(
+                timeout=5
+            )
 
-        except subprocess.TimeoutExpired:
+        except (
+            subprocess.TimeoutExpired
+        ):
             self.process.kill()
-            self.process.wait(timeout=5)
 
-    def run(self) -> None:
+            self.process.wait(
+                timeout=5
+            )
+
+    def stop_command_listener(
+        self,
+    ) -> None:
+        self.command_stop_event.set()
+
+        if (
+            self.command_thread
+            is None
+        ):
+            return
+
+        self.command_thread.join(
+            timeout=2
+        )
+
+    def run(
+        self,
+    ) -> None:
         try:
-            loxone_ip, loxone_port = self.validate_config()
+            (
+                loxone_ip,
+                loxone_port,
+            ) = self.validate_config()
 
         except RuntimeError as error:
-            logger.error(str(error))
+            logger.error(
+                str(error)
+            )
+
             sys.exit(1)
 
         try:
             self.log_configuration(
                 loxone_ip=loxone_ip,
-                loxone_port=loxone_port,
+                loxone_port=(
+                    loxone_port
+                ),
             )
 
         except RuntimeError as error:
-            logger.error(str(error))
+            logger.error(
+                str(error)
+            )
+
             sys.exit(1)
 
         try:
-            while not self.stop_requested:
+            while not (
+                self.stop_requested
+            ):
                 try:
-                    return_code = self.run_helper(
-                        loxone_ip=loxone_ip,
-                        loxone_port=loxone_port,
+                    return_code = (
+                        self.run_helper(
+                            loxone_ip=(
+                                loxone_ip
+                            ),
+                            loxone_port=(
+                                loxone_port
+                            ),
+                        )
                     )
 
-                    if self.stop_requested:
+                    if (
+                        self.stop_requested
+                    ):
                         break
 
                     logger.error(
-                        "Realtime spojení bylo ukončeno "
-                        f"s kódem {return_code}."
+                        "Realtime spojení "
+                        "bylo ukončeno "
+                        "s kódem "
+                        f"{return_code}."
                     )
 
-                except RuntimeError as error:
+                except (
+                    RuntimeError
+                ) as error:
                     logger.error(
-                        f"Chyba realtime komunikace: {error}"
+                        "Chyba realtime "
+                        "komunikace: "
+                        f"{error}"
                     )
 
                 if self.stop_requested:
                     break
 
                 logger.info(
-                    "Nový pokus o připojení za "
+                    "Nový pokus "
+                    "o připojení za "
                     f"{RESTART_DELAY:g} s."
                 )
 
-                time.sleep(RESTART_DELAY)
+                time.sleep(
+                    RESTART_DELAY
+                )
 
         except KeyboardInterrupt:
             logger.info(
-                "Požadováno ukončení LoxBridge."
+                "Požadováno ukončení "
+                "LoxBridge."
             )
 
         finally:
+            self.stop_command_listener()
+
             self.stop_helper()
-            logger.info("LoxBridge ukončen.")
+
+            logger.info(
+                "LoxBridge ukončen."
+            )
