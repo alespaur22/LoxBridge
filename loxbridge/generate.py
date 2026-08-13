@@ -49,8 +49,12 @@ def load_yaml(path: Path) -> dict[str, Any]:
     try:
         with path.open("r", encoding="utf-8") as file:
             data = yaml.safe_load(file)
+
     except FileNotFoundError as error:
-        raise RuntimeError(f"Soubor nebyl nalezen: {path}") from error
+        raise RuntimeError(
+            f"Soubor nebyl nalezen: {path}"
+        ) from error
+
     except yaml.YAMLError as error:
         raise RuntimeError(
             f"Neplatný YAML v souboru {path}: {error}"
@@ -68,12 +72,14 @@ def load_export(path: Path) -> dict[str, Any]:
     try:
         with path.open("r", encoding="utf-8") as file:
             data = json.load(file)
+
     except FileNotFoundError as error:
         raise RuntimeError(
             f"Export zařízení nebyl nalezen: {path}\n"
             "Nejdřív spusť:\n"
             "node loxbridge/homey/export_devices.mjs"
         ) from error
+
     except json.JSONDecodeError as error:
         raise RuntimeError(
             f"Neplatný JSON v souboru {path}: {error}"
@@ -97,7 +103,10 @@ def load_export(path: Path) -> dict[str, Any]:
 def should_include_capability(
     capability: dict[str, Any],
 ) -> bool:
-    capability_id = str(capability.get("id", ""))
+    capability_id = str(
+        capability.get("id", "")
+    )
+
     capability_type = capability.get("type")
     getable = capability.get("getable")
 
@@ -121,17 +130,50 @@ def should_include_capability(
     return True
 
 
+def build_enum_values(
+    capability: dict[str, Any],
+) -> list[dict[str, Any]]:
+    values = capability.get("values")
+
+    if not isinstance(values, list):
+        return []
+
+    result: list[dict[str, Any]] = []
+
+    for index, value in enumerate(values):
+        if not isinstance(value, dict):
+            continue
+
+        value_id = value.get("id")
+
+        if value_id is None:
+            continue
+
+        value_title = value.get("title")
+
+        result.append(
+            {
+                "id": str(value_id),
+                "title": (
+                    str(value_title)
+                    if value_title is not None
+                    else str(value_id)
+                ),
+                "value": index,
+            }
+        )
+
+    return result
+
+
 def build_capability(
     device_name: str,
     capability: dict[str, Any],
     loxone_key: str,
 ) -> dict[str, Any]:
-    """
-    Vytvoří kompletní popis capability
-    pro config.generated.yaml.
-    """
-
-    capability_id = str(capability["id"])
+    capability_id = str(
+        capability["id"]
+    )
 
     title = get_capability_title(
         capability_id,
@@ -150,6 +192,14 @@ def build_capability(
 
     if unit:
         data["unit"] = unit
+
+    if capability_type == "enum":
+        enum_values = build_enum_values(
+            capability
+        )
+
+        if enum_values:
+            data["values"] = enum_values
 
     return data
 
@@ -198,7 +248,9 @@ def generate_devices(
         if not device_name:
             continue
 
-        device_slug = slugify(device_name)
+        device_slug = slugify(
+            device_name
+        )
 
         if name_counts[device_name] > 1 and device_id:
             device_slug = (
@@ -264,9 +316,7 @@ def generate_devices(
         }
 
         if device_id:
-            generated_device["homey_id"] = (
-                device_id
-            )
+            generated_device["homey_id"] = device_id
 
         generated_devices.append(
             generated_device
@@ -294,8 +344,8 @@ def build_generated_config(
 
     exported_devices = export_data["devices"]
 
-    generated_devices, capability_count = (
-        generate_devices(exported_devices)
+    generated_devices, capability_count = generate_devices(
+        exported_devices
     )
 
     generated_config = {
@@ -346,11 +396,9 @@ def main() -> None:
         EXPORT_PATH
     )
 
-    generated_config, capability_count = (
-        build_generated_config(
-            current_config=current_config,
-            export_data=export_data,
-        )
+    generated_config, capability_count = build_generated_config(
+        current_config=current_config,
+        export_data=export_data,
     )
 
     save_generated_config(
@@ -388,9 +436,11 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
+
     except RuntimeError as error:
         print(
             f"Chyba: {error}",
             file=sys.stderr,
         )
+
         raise SystemExit(1) from error

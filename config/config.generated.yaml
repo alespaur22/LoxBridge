@@ -19,6 +19,25 @@ devices:
       type: enum
       title: Rychlost ventilátoru
       loxone_name: AC Koupelna 1 - Rychlost ventilátoru
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Low
+        title: Low
+        value: 1
+      - id: LowMid
+        title: LowMid
+        value: 2
+      - id: Mid
+        title: Mid
+        value: 3
+      - id: HighMid
+        title: HighMid
+        value: 4
+      - id: High
+        title: High
+        value: 5
     measure_power:
       key: ac_koupelna_1_measure_power
       type: number
@@ -59,31 +78,118 @@ devices:
       type: enum
       title: Režim
       loxone_name: AC Koupelna 1 - Režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Dry
+        title: Dry
+        value: 1
+      - id: Cool
+        title: Cool
+        value: 2
+      - id: Heat
+        title: Heat
+        value: 3
+      - id: Fan
+        title: Fan
+        value: 4
     eco_mode:
       key: ac_koupelna_1_eco_mode
       type: enum
       title: Eco režim
       loxone_name: AC Koupelna 1 - Eco režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Powerful
+        title: Powerful
+        value: 1
+      - id: Quiet
+        title: Quiet
+        value: 2
     air_swing_lr:
       key: ac_koupelna_1_air_swing_lr
       type: enum
       title: Směr lamel vlevo–vpravo
       loxone_name: AC Koupelna 1 - Směr lamel vlevo–vpravo
+      values:
+      - id: Left
+        title: Left
+        value: 0
+      - id: LeftMid
+        title: LeftMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: RightMid
+        title: RightMid
+        value: 3
+      - id: Right
+        title: Right
+        value: 4
     air_swing_ud:
       key: ac_koupelna_1_air_swing_ud
       type: enum
       title: Směr lamel nahoru–dolů
       loxone_name: AC Koupelna 1 - Směr lamel nahoru–dolů
+      values:
+      - id: Up
+        title: Up
+        value: 0
+      - id: UpMid
+        title: UpMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: DownMid
+        title: DownMid
+        value: 3
+      - id: Down
+        title: Down
+        value: 4
     fan_auto_mode:
       key: ac_koupelna_1_fan_auto_mode
       type: enum
       title: Fan Auto Mode
       loxone_name: AC Koupelna 1 - Fan Auto Mode
+      values:
+      - id: Disabled
+        title: Disabled
+        value: 0
+      - id: AirSwingAuto
+        title: AirSwingAuto
+        value: 1
+      - id: AirSwingLR
+        title: AirSwingLR
+        value: 2
+      - id: AirSwingUD
+        title: AirSwingUD
+        value: 3
     nanoe_mode:
       key: ac_koupelna_1_nanoe_mode
       type: enum
       title: Nanoe
       loxone_name: AC Koupelna 1 - Nanoe
+      values:
+      - id: Unavailable
+        title: Unavailable
+        value: 0
+      - id: 'Off'
+        title: 'Off'
+        value: 1
+      - id: 'On'
+        title: 'On'
+        value: 2
+      - id: ModeG
+        title: ModeG
+        value: 3
+      - id: All
+        title: All
+        value: 4
   homey_id: 4a54b6a3-4074-44f6-a109-7e41210e2ae2
 - name: AC Koupelna 2
   slug: ac_koupelna_2
@@ -99,6 +205,25 @@ devices:
       type: enum
       title: Rychlost ventilátoru
       loxone_name: AC Koupelna 2 - Rychlost ventilátoru
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Low
+        title: Low
+        value: 1
+      - id: LowMid
+        title: LowMid
+        value: 2
+      - id: Mid
+        title: Mid
+        value: 3
+      - id: HighMid
+        title: HighMid
+        value: 4
+      - id: High
+        title: High
+        value: 5
     measure_power:
       key: ac_koupelna_2_measure_power
       type: number
@@ -139,31 +264,118 @@ devices:
       type: enum
       title: Režim
       loxone_name: AC Koupelna 2 - Režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Dry
+        title: Dry
+        value: 1
+      - id: Cool
+        title: Cool
+        value: 2
+      - id: Heat
+        title: Heat
+        value: 3
+      - id: Fan
+        title: Fan
+        value: 4
     eco_mode:
       key: ac_koupelna_2_eco_mode
       type: enum
       title: Eco režim
       loxone_name: AC Koupelna 2 - Eco režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Powerful
+        title: Powerful
+        value: 1
+      - id: Quiet
+        title: Quiet
+        value: 2
     air_swing_lr:
       key: ac_koupelna_2_air_swing_lr
       type: enum
       title: Směr lamel vlevo–vpravo
       loxone_name: AC Koupelna 2 - Směr lamel vlevo–vpravo
+      values:
+      - id: Left
+        title: Left
+        value: 0
+      - id: LeftMid
+        title: LeftMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: RightMid
+        title: RightMid
+        value: 3
+      - id: Right
+        title: Right
+        value: 4
     air_swing_ud:
       key: ac_koupelna_2_air_swing_ud
       type: enum
       title: Směr lamel nahoru–dolů
       loxone_name: AC Koupelna 2 - Směr lamel nahoru–dolů
+      values:
+      - id: Up
+        title: Up
+        value: 0
+      - id: UpMid
+        title: UpMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: DownMid
+        title: DownMid
+        value: 3
+      - id: Down
+        title: Down
+        value: 4
     fan_auto_mode:
       key: ac_koupelna_2_fan_auto_mode
       type: enum
       title: Fan Auto Mode
       loxone_name: AC Koupelna 2 - Fan Auto Mode
+      values:
+      - id: Disabled
+        title: Disabled
+        value: 0
+      - id: AirSwingAuto
+        title: AirSwingAuto
+        value: 1
+      - id: AirSwingLR
+        title: AirSwingLR
+        value: 2
+      - id: AirSwingUD
+        title: AirSwingUD
+        value: 3
     nanoe_mode:
       key: ac_koupelna_2_nanoe_mode
       type: enum
       title: Nanoe
       loxone_name: AC Koupelna 2 - Nanoe
+      values:
+      - id: Unavailable
+        title: Unavailable
+        value: 0
+      - id: 'Off'
+        title: 'Off'
+        value: 1
+      - id: 'On'
+        title: 'On'
+        value: 2
+      - id: ModeG
+        title: ModeG
+        value: 3
+      - id: All
+        title: All
+        value: 4
   homey_id: 4ed9337f-f40e-4160-a02e-67f99d8c1670
 - name: AC Ložnice
   slug: ac_loznice
@@ -179,6 +391,25 @@ devices:
       type: enum
       title: Rychlost ventilátoru
       loxone_name: AC Ložnice - Rychlost ventilátoru
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Low
+        title: Low
+        value: 1
+      - id: LowMid
+        title: LowMid
+        value: 2
+      - id: Mid
+        title: Mid
+        value: 3
+      - id: HighMid
+        title: HighMid
+        value: 4
+      - id: High
+        title: High
+        value: 5
     measure_power:
       key: ac_loznice_measure_power
       type: number
@@ -219,31 +450,118 @@ devices:
       type: enum
       title: Režim
       loxone_name: AC Ložnice - Režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Dry
+        title: Dry
+        value: 1
+      - id: Cool
+        title: Cool
+        value: 2
+      - id: Heat
+        title: Heat
+        value: 3
+      - id: Fan
+        title: Fan
+        value: 4
     eco_mode:
       key: ac_loznice_eco_mode
       type: enum
       title: Eco režim
       loxone_name: AC Ložnice - Eco režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Powerful
+        title: Powerful
+        value: 1
+      - id: Quiet
+        title: Quiet
+        value: 2
     air_swing_lr:
       key: ac_loznice_air_swing_lr
       type: enum
       title: Směr lamel vlevo–vpravo
       loxone_name: AC Ložnice - Směr lamel vlevo–vpravo
+      values:
+      - id: Left
+        title: Left
+        value: 0
+      - id: LeftMid
+        title: LeftMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: RightMid
+        title: RightMid
+        value: 3
+      - id: Right
+        title: Right
+        value: 4
     air_swing_ud:
       key: ac_loznice_air_swing_ud
       type: enum
       title: Směr lamel nahoru–dolů
       loxone_name: AC Ložnice - Směr lamel nahoru–dolů
+      values:
+      - id: Up
+        title: Up
+        value: 0
+      - id: UpMid
+        title: UpMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: DownMid
+        title: DownMid
+        value: 3
+      - id: Down
+        title: Down
+        value: 4
     fan_auto_mode:
       key: ac_loznice_fan_auto_mode
       type: enum
       title: Fan Auto Mode
       loxone_name: AC Ložnice - Fan Auto Mode
+      values:
+      - id: Disabled
+        title: Disabled
+        value: 0
+      - id: AirSwingAuto
+        title: AirSwingAuto
+        value: 1
+      - id: AirSwingLR
+        title: AirSwingLR
+        value: 2
+      - id: AirSwingUD
+        title: AirSwingUD
+        value: 3
     nanoe_mode:
       key: ac_loznice_nanoe_mode
       type: enum
       title: Nanoe
       loxone_name: AC Ložnice - Nanoe
+      values:
+      - id: Unavailable
+        title: Unavailable
+        value: 0
+      - id: 'Off'
+        title: 'Off'
+        value: 1
+      - id: 'On'
+        title: 'On'
+        value: 2
+      - id: ModeG
+        title: ModeG
+        value: 3
+      - id: All
+        title: All
+        value: 4
   homey_id: 35f4dddc-322d-4a19-97cb-d1d20691dafa
 - name: AC Obývák
   slug: ac_obyvak
@@ -259,6 +577,25 @@ devices:
       type: enum
       title: Rychlost ventilátoru
       loxone_name: AC Obývák - Rychlost ventilátoru
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Low
+        title: Low
+        value: 1
+      - id: LowMid
+        title: LowMid
+        value: 2
+      - id: Mid
+        title: Mid
+        value: 3
+      - id: HighMid
+        title: HighMid
+        value: 4
+      - id: High
+        title: High
+        value: 5
     measure_power:
       key: ac_obyvak_measure_power
       type: number
@@ -299,31 +636,118 @@ devices:
       type: enum
       title: Režim
       loxone_name: AC Obývák - Režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Dry
+        title: Dry
+        value: 1
+      - id: Cool
+        title: Cool
+        value: 2
+      - id: Heat
+        title: Heat
+        value: 3
+      - id: Fan
+        title: Fan
+        value: 4
     eco_mode:
       key: ac_obyvak_eco_mode
       type: enum
       title: Eco režim
       loxone_name: AC Obývák - Eco režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Powerful
+        title: Powerful
+        value: 1
+      - id: Quiet
+        title: Quiet
+        value: 2
     air_swing_lr:
       key: ac_obyvak_air_swing_lr
       type: enum
       title: Směr lamel vlevo–vpravo
       loxone_name: AC Obývák - Směr lamel vlevo–vpravo
+      values:
+      - id: Left
+        title: Left
+        value: 0
+      - id: LeftMid
+        title: LeftMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: RightMid
+        title: RightMid
+        value: 3
+      - id: Right
+        title: Right
+        value: 4
     air_swing_ud:
       key: ac_obyvak_air_swing_ud
       type: enum
       title: Směr lamel nahoru–dolů
       loxone_name: AC Obývák - Směr lamel nahoru–dolů
+      values:
+      - id: Up
+        title: Up
+        value: 0
+      - id: UpMid
+        title: UpMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: DownMid
+        title: DownMid
+        value: 3
+      - id: Down
+        title: Down
+        value: 4
     fan_auto_mode:
       key: ac_obyvak_fan_auto_mode
       type: enum
       title: Fan Auto Mode
       loxone_name: AC Obývák - Fan Auto Mode
+      values:
+      - id: Disabled
+        title: Disabled
+        value: 0
+      - id: AirSwingAuto
+        title: AirSwingAuto
+        value: 1
+      - id: AirSwingLR
+        title: AirSwingLR
+        value: 2
+      - id: AirSwingUD
+        title: AirSwingUD
+        value: 3
     nanoe_mode:
       key: ac_obyvak_nanoe_mode
       type: enum
       title: Nanoe
       loxone_name: AC Obývák - Nanoe
+      values:
+      - id: Unavailable
+        title: Unavailable
+        value: 0
+      - id: 'Off'
+        title: 'Off'
+        value: 1
+      - id: 'On'
+        title: 'On'
+        value: 2
+      - id: ModeG
+        title: ModeG
+        value: 3
+      - id: All
+        title: All
+        value: 4
   homey_id: e4a4d03d-0a4c-4c17-bec7-e6a36ff7e077
 - name: AC Pokojíček
   slug: ac_pokojicek
@@ -339,6 +763,25 @@ devices:
       type: enum
       title: Rychlost ventilátoru
       loxone_name: AC Pokojíček - Rychlost ventilátoru
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Low
+        title: Low
+        value: 1
+      - id: LowMid
+        title: LowMid
+        value: 2
+      - id: Mid
+        title: Mid
+        value: 3
+      - id: HighMid
+        title: HighMid
+        value: 4
+      - id: High
+        title: High
+        value: 5
     measure_power:
       key: ac_pokojicek_measure_power
       type: number
@@ -379,31 +822,118 @@ devices:
       type: enum
       title: Režim
       loxone_name: AC Pokojíček - Režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Dry
+        title: Dry
+        value: 1
+      - id: Cool
+        title: Cool
+        value: 2
+      - id: Heat
+        title: Heat
+        value: 3
+      - id: Fan
+        title: Fan
+        value: 4
     eco_mode:
       key: ac_pokojicek_eco_mode
       type: enum
       title: Eco režim
       loxone_name: AC Pokojíček - Eco režim
+      values:
+      - id: Auto
+        title: Auto
+        value: 0
+      - id: Powerful
+        title: Powerful
+        value: 1
+      - id: Quiet
+        title: Quiet
+        value: 2
     air_swing_lr:
       key: ac_pokojicek_air_swing_lr
       type: enum
       title: Směr lamel vlevo–vpravo
       loxone_name: AC Pokojíček - Směr lamel vlevo–vpravo
+      values:
+      - id: Left
+        title: Left
+        value: 0
+      - id: LeftMid
+        title: LeftMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: RightMid
+        title: RightMid
+        value: 3
+      - id: Right
+        title: Right
+        value: 4
     air_swing_ud:
       key: ac_pokojicek_air_swing_ud
       type: enum
       title: Směr lamel nahoru–dolů
       loxone_name: AC Pokojíček - Směr lamel nahoru–dolů
+      values:
+      - id: Up
+        title: Up
+        value: 0
+      - id: UpMid
+        title: UpMid
+        value: 1
+      - id: Mid
+        title: Mid
+        value: 2
+      - id: DownMid
+        title: DownMid
+        value: 3
+      - id: Down
+        title: Down
+        value: 4
     fan_auto_mode:
       key: ac_pokojicek_fan_auto_mode
       type: enum
       title: Fan Auto Mode
       loxone_name: AC Pokojíček - Fan Auto Mode
+      values:
+      - id: Disabled
+        title: Disabled
+        value: 0
+      - id: AirSwingAuto
+        title: AirSwingAuto
+        value: 1
+      - id: AirSwingLR
+        title: AirSwingLR
+        value: 2
+      - id: AirSwingUD
+        title: AirSwingUD
+        value: 3
     nanoe_mode:
       key: ac_pokojicek_nanoe_mode
       type: enum
       title: Nanoe
       loxone_name: AC Pokojíček - Nanoe
+      values:
+      - id: Unavailable
+        title: Unavailable
+        value: 0
+      - id: 'Off'
+        title: 'Off'
+        value: 1
+      - id: 'On'
+        title: 'On'
+        value: 2
+      - id: ModeG
+        title: ModeG
+        value: 3
+      - id: All
+        title: All
+        value: 4
   homey_id: 80809262-bc77-415c-8a34-6079a896b812
 - name: Aktuální počasí
   slug: aktualni_pocasi
@@ -972,6 +1502,13 @@ devices:
       type: enum
       title: Light mode
       loxone_name: LED Obývák - Light mode
+      values:
+      - id: color
+        title: Color
+        value: 0
+      - id: temperature
+        title: Temperature
+        value: 1
     light_saturation:
       key: led_obyvak_light_saturation
       type: number
@@ -1053,21 +1590,79 @@ devices:
       type: enum
       title: Light mode
       loxone_name: LED Ostrůvek - Light mode
+      values:
+      - id: color
+        title: Color
+        value: 0
+      - id: temperature
+        title: Temperature
+        value: 1
     LEDstrip_audio:
       key: led_ostruvek_ledstrip_audio
       type: enum
       title: Audio
       loxone_name: LED Ostrůvek - Audio
+      values:
+      - id: 'off'
+        title: Uitgeschakeld
+        value: 0
+      - id: '0'
+        title: Low sensitivity
+        value: 1
+      - id: '1'
+        title: Medium sensitivity
+        value: 2
+      - id: '2'
+        title: High sensitivity
+        value: 3
     LEDstrip_audio_effect:
       key: led_ostruvek_ledstrip_audio_effect
       type: enum
       title: Audio effect
       loxone_name: LED Ostrůvek - Audio effect
+      values:
+      - id: '0'
+        title: Willekeurig
+        value: 0
+      - id: '1'
+        title: Blink
+        value: 1
+      - id: '2'
+        title: Rainbow
+        value: 2
+      - id: '3'
+        title: Wave
+        value: 3
     LEDstrip_preset:
       key: led_ostruvek_ledstrip_preset
       type: enum
       title: Light preset
       loxone_name: LED Ostrůvek - Light preset
+      values:
+      - id: '0'
+        title: Gala
+        value: 0
+      - id: '1'
+        title: Rainbow
+        value: 1
+      - id: '2'
+        title: Sea of Flowers
+        value: 2
+      - id: '3'
+        title: Heartbeat
+        value: 3
+      - id: '4'
+        title: Rythmic
+        value: 4
+      - id: '5'
+        title: Colorful
+        value: 5
+      - id: '6'
+        title: Exciting
+        value: 6
+      - id: '7'
+        title: Lively
+        value: 7
     LEDstrip_preset_speed:
       key: led_ostruvek_ledstrip_preset_speed
       type: number
@@ -1099,6 +1694,13 @@ devices:
       type: enum
       title: Light mode
       loxone_name: LED Postel - Light mode
+      values:
+      - id: color
+        title: Color
+        value: 0
+      - id: temperature
+        title: Temperature
+        value: 1
     light_saturation:
       key: led_postel_light_saturation
       type: number
