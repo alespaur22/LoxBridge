@@ -1,8 +1,12 @@
 .venv/
 __pycache__/
 *.pyc
+*.save
+
 .env
 config/config.yaml
 logs/
 node_modules/
-node_modules/
+
+# Generated files
+exports/LoxBridge_VirtualInputs.xml
