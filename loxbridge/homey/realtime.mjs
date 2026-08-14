@@ -214,6 +214,267 @@ function convertCommandValue(
 }
 
 
+function parseLoxoneRgb(value) {
+  const numericValue = Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    throw new Error(
+      `Neplatná RGB hodnota: ${value}`,
+    );
+  }
+
+  const packedValue = Math.round(numericValue);
+
+  if (
+    packedValue < 0 ||
+    Math.abs(numericValue - packedValue) > 0.01
+  ) {
+    throw new Error(
+      `RGB hodnota musí být celé kladné číslo: ${value}`,
+    );
+  }
+
+  const packedText = String(packedValue);
+
+  if (packedText.length > 9) {
+    throw new Error(
+      `RGB hodnota je příliš dlouhá: ${value}`,
+    );
+  }
+
+  const normalized =
+    packedText.padStart(9, '0');
+
+  const blue = Number(
+    normalized.slice(0, 3),
+  );
+
+  const green = Number(
+    normalized.slice(3, 6),
+  );
+
+  const red = Number(
+    normalized.slice(6, 9),
+  );
+
+  for (
+    const [name, channel]
+    of [
+      ['R', red],
+      ['G', green],
+      ['B', blue],
+    ]
+  ) {
+    if (
+      !Number.isInteger(channel) ||
+      channel < 0 ||
+      channel > 100
+    ) {
+      throw new Error(
+        `RGB kanál ${name} je mimo ` +
+        `rozsah 0–100: ${channel}`,
+      );
+    }
+  }
+
+  return {
+    red,
+    green,
+    blue,
+  };
+}
+
+
+function rgbToHomeyHsv(
+  red,
+  green,
+  blue,
+) {
+  const r = red / 100;
+  const g = green / 100;
+  const b = blue / 100;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let hue = 0;
+
+  if (delta !== 0) {
+    if (max === r) {
+      hue = ((g - b) / delta) % 6;
+    } else if (max === g) {
+      hue = ((b - r) / delta) + 2;
+    } else {
+      hue = ((r - g) / delta) + 4;
+    }
+
+    hue /= 6;
+
+    if (hue < 0) {
+      hue += 1;
+    }
+  }
+
+  const saturation =
+    max === 0
+      ? 0
+      : delta / max;
+
+  return {
+    hue,
+    saturation,
+    dim: max,
+  };
+}
+
+
+async function setTargetValue(
+  target,
+  value,
+) {
+  const homeyValue =
+    convertCommandValue(
+      value,
+      target.capabilityConfig,
+    );
+
+  await target.device
+    .setCapabilityValue(
+      target.capabilityId,
+      homeyValue,
+    );
+
+  return homeyValue;
+}
+
+
+function getConfiguredCommandTarget(
+  deviceConfig,
+  capabilityId,
+  commandMap,
+) {
+  const rawConfig =
+    deviceConfig.capabilities?.[
+      capabilityId
+    ];
+
+  const capabilityConfig =
+    parseCapability(
+      capabilityId,
+      rawConfig,
+    );
+
+  if (
+    !capabilityConfig?.key ||
+    capabilityConfig.setable !== true
+  ) {
+    return null;
+  }
+
+  return commandMap.get(
+    capabilityConfig.key,
+  ) ?? null;
+}
+
+
+function buildRgbCommandMap(
+  config,
+  commandMap,
+) {
+  const rgbCommandMap = new Map();
+
+  for (
+    const deviceConfig
+    of config.devices
+  ) {
+    const onoff =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'onoff',
+        commandMap,
+      );
+
+    const dim =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'dim',
+        commandMap,
+      );
+
+    const hue =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_hue',
+        commandMap,
+      );
+
+    const saturation =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_saturation',
+        commandMap,
+      );
+
+    const mode =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_mode',
+        commandMap,
+      );
+
+    if (
+      !onoff ||
+      !dim ||
+      !hue ||
+      !saturation ||
+      !mode
+    ) {
+      continue;
+    }
+
+    const rawOnOff =
+      deviceConfig.capabilities?.onoff;
+
+    const onoffConfig =
+      parseCapability(
+        'onoff',
+        rawOnOff,
+      );
+
+    const onoffKey =
+      onoffConfig?.key;
+
+    if (
+      typeof onoffKey !== 'string' ||
+      !onoffKey.endsWith('_onoff')
+    ) {
+      continue;
+    }
+
+    const baseKey =
+      onoffKey.slice(
+        0,
+        -'_onoff'.length,
+      );
+
+    rgbCommandMap.set(
+      `${baseKey}_rgb`,
+      {
+        device: onoff.device,
+        onoff,
+        dim,
+        hue,
+        saturation,
+        mode,
+      },
+    );
+  }
+
+  return rgbCommandMap;
+}
+
+
 async function main() {
   const configPath = process.argv[2];
 
@@ -459,6 +720,100 @@ async function main() {
     );
   }
 
+  const rgbCommandMap =
+    buildRgbCommandMap(
+      config,
+      commandMap,
+    );
+
+
+  async function handleRgbCommand(
+    command,
+    key,
+    target,
+  ) {
+    const requestId =
+      command.request_id ?? null;
+
+    try {
+      const rgb =
+        parseLoxoneRgb(
+          command.value,
+        );
+
+      const hsv =
+        rgbToHomeyHsv(
+          rgb.red,
+          rgb.green,
+          rgb.blue,
+        );
+
+      if (hsv.dim === 0) {
+        await setTargetValue(
+          target.onoff,
+          false,
+        );
+      } else {
+        await setTargetValue(
+          target.mode,
+          'color',
+        );
+
+        await setTargetValue(
+          target.hue,
+          hsv.hue,
+        );
+
+        await setTargetValue(
+          target.saturation,
+          hsv.saturation,
+        );
+
+        await setTargetValue(
+          target.dim,
+          hsv.dim,
+        );
+
+        await setTargetValue(
+          target.onoff,
+          true,
+        );
+      }
+
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: true,
+        key,
+        device_name:
+          target.device.name,
+        device_id:
+          target.device.id,
+        capability_id: 'rgb',
+        homey_value: {
+          hue: hsv.hue,
+          saturation: hsv.saturation,
+          dim: hsv.dim,
+        },
+      });
+
+    } catch (error) {
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: false,
+        key,
+        device_name:
+          target.device.name,
+        capability_id: 'rgb',
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
+
+
   async function handleCommand(
     command,
   ) {
@@ -482,6 +837,20 @@ async function main() {
       return;
     }
 
+    const rgbTarget =
+      rgbCommandMap.get(key);
+
+    if (rgbTarget) {
+      await handleRgbCommand(
+        command,
+        key,
+        rgbTarget,
+      );
+
+      return;
+    }
+
+
     const target =
       commandMap.get(key);
 
@@ -501,15 +870,9 @@ async function main() {
 
     try {
       const homeyValue =
-        convertCommandValue(
+        await setTargetValue(
+          target,
           command.value,
-          target.capabilityConfig,
-        );
-
-      await target.device
-        .setCapabilityValue(
-          target.capabilityId,
-          homeyValue,
         );
 
       writeEvent({
@@ -550,7 +913,10 @@ async function main() {
     subscriptions:
       subscriptions.length,
     commands:
-      commandMap.size,
+      commandMap.size +
+      rgbCommandMap.size,
+    synthetic_rgb_commands:
+      rgbCommandMap.size,
     skipped,
     missing,
   });

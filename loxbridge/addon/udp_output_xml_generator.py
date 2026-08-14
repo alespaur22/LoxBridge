@@ -187,6 +187,126 @@ def get_command_title(
     )
 
 
+def get_setable_capability(
+    capabilities: dict[str, Any],
+    capability_id: str,
+    expected_type: str,
+) -> dict[str, Any] | None:
+    capability = capabilities.get(
+        capability_id
+    )
+
+    if not isinstance(
+        capability,
+        dict,
+    ):
+        return None
+
+    if (
+        capability.get("setable")
+        is not True
+    ):
+        return None
+
+    if (
+        capability.get("type")
+        != expected_type
+    ):
+        return None
+
+    key = capability.get(
+        "key"
+    )
+
+    if (
+        not isinstance(key, str)
+        or not key
+    ):
+        return None
+
+    return capability
+
+
+def get_rgb_command_key(
+    capabilities: dict[str, Any],
+) -> str | None:
+    onoff = get_setable_capability(
+        capabilities,
+        "onoff",
+        "boolean",
+    )
+
+    dim = get_setable_capability(
+        capabilities,
+        "dim",
+        "number",
+    )
+
+    hue = get_setable_capability(
+        capabilities,
+        "light_hue",
+        "number",
+    )
+
+    saturation = get_setable_capability(
+        capabilities,
+        "light_saturation",
+        "number",
+    )
+
+    mode = get_setable_capability(
+        capabilities,
+        "light_mode",
+        "enum",
+    )
+
+    if (
+        onoff is None
+        or dim is None
+        or hue is None
+        or saturation is None
+        or mode is None
+    ):
+        return None
+
+    mode_values = mode.get(
+        "values"
+    )
+
+    if not isinstance(
+        mode_values,
+        list,
+    ):
+        return None
+
+    has_color_mode = any(
+        isinstance(value, dict)
+        and value.get("id") == "color"
+        for value in mode_values
+    )
+
+    if not has_color_mode:
+        return None
+
+    onoff_key = onoff.get(
+        "key"
+    )
+
+    if (
+        not isinstance(onoff_key, str)
+        or not onoff_key.endswith(
+            "_onoff"
+        )
+    ):
+        return None
+
+    base_key = onoff_key[
+        :-len("_onoff")
+    ]
+
+    return f"{base_key}_rgb"
+
+
 def generate_commands(
     root: ET.Element,
     config: dict[str, Any],
@@ -196,6 +316,7 @@ def generate_commands(
         "boolean": 0,
         "number": 0,
         "enum": 0,
+        "synthetic_rgb": 0,
         "unsupported": 0,
         "missing_key": 0,
     }
@@ -324,6 +445,36 @@ def generate_commands(
                 stats[
                     capability_type
                 ] += 1
+
+            stats["generated"] += 1
+
+        rgb_key = get_rgb_command_key(
+            capabilities
+        )
+
+        if rgb_key is not None:
+            if rgb_key in used_keys:
+                raise RuntimeError(
+                    "Duplicitní syntetický "
+                    "RGB key: "
+                    f"{rgb_key}"
+                )
+
+            used_keys.add(
+                rgb_key
+            )
+
+            create_analog_command(
+                root=root,
+                title=(
+                    f"{device_name} - RGB"
+                ),
+                key=rgb_key,
+            )
+
+            stats[
+                "synthetic_rgb"
+            ] += 1
 
             stats["generated"] += 1
 
@@ -478,6 +629,11 @@ def main() -> None:
     print(
         "Enum:                     "
         f"{stats['enum']}"
+    )
+
+    print(
+        "Syntetické RGB:           "
+        f"{stats['synthetic_rgb']}"
     )
 
     print(
