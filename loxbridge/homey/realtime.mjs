@@ -15,6 +15,7 @@ const SUPPORTED_TYPES = new Set([
 
 const WHITE_WARM_KELVIN = 2700;
 const WHITE_COLD_KELVIN = 6500;
+const LIGHT_MERGE_DELAY_MS = 120;
 
 
 function writeEvent(event) {
@@ -353,6 +354,13 @@ function parseLoxoneLumitech(value) {
     );
   }
 
+  if (packedValue === 0) {
+    return {
+      brightness: 0,
+      kelvin: null,
+    };
+  }
+
   const normalized =
     String(packedValue).padStart(9, '0');
 
@@ -655,6 +663,230 @@ function buildLumitechCommandMap(
 }
 
 
+function getLightProfileState(
+  states,
+  device,
+) {
+  let state = states.get(
+    device.id,
+  );
+
+  if (!state) {
+    state = {
+      device,
+      rgb: null,
+      lumitech: null,
+      last_changed_mode: null,
+      rgb_target: null,
+      lumitech_target: null,
+      timer: null,
+      pending_results: [],
+      apply_queue: Promise.resolve(),
+    };
+
+    states.set(
+      device.id,
+      state,
+    );
+  }
+
+  return state;
+}
+
+
+function selectLightProfileMode(
+  rgb,
+  lumitech,
+  lastChangedMode,
+) {
+  const rgbHsv =
+    rgb
+      ? rgbToHomeyHsv(
+          rgb.red,
+          rgb.green,
+          rgb.blue,
+        )
+      : null;
+
+  const rgbActive =
+    rgbHsv !== null &&
+    rgbHsv.dim > 0;
+
+  const lumitechActive =
+    lumitech !== null &&
+    lumitech.brightness > 0;
+
+  if (
+    rgbActive &&
+    lumitechActive
+  ) {
+    if (
+      lastChangedMode === 'lumitech'
+    ) {
+      return {
+        mode: 'lumitech',
+        rgbHsv,
+      };
+    }
+
+    return {
+      mode: 'rgb',
+      rgbHsv,
+    };
+  }
+
+  if (rgbActive) {
+    return {
+      mode: 'rgb',
+      rgbHsv,
+    };
+  }
+
+  if (lumitechActive) {
+    return {
+      mode: 'lumitech',
+      rgbHsv,
+    };
+  }
+
+  return {
+    mode: 'off',
+    rgbHsv,
+  };
+}
+
+
+async function applyLightProfileSnapshot(
+  snapshot,
+) {
+  const selected =
+    selectLightProfileMode(
+      snapshot.rgb,
+      snapshot.lumitech,
+      snapshot.last_changed_mode,
+    );
+
+  if (selected.mode === 'rgb') {
+    const target =
+      snapshot.rgb_target;
+
+    if (!target) {
+      throw new Error(
+        'Chybí RGB target pro světelný profil.',
+      );
+    }
+
+    const hsv =
+      selected.rgbHsv;
+
+    await setTargetValue(
+      target.mode,
+      'color',
+    );
+
+    await setTargetValue(
+      target.hue,
+      hsv.hue,
+    );
+
+    await setTargetValue(
+      target.saturation,
+      hsv.saturation,
+    );
+
+    await setTargetValue(
+      target.dim,
+      hsv.dim,
+    );
+
+    await setTargetValue(
+      target.onoff,
+      true,
+    );
+
+    return {
+      mode: 'color',
+      hue: hsv.hue,
+      saturation: hsv.saturation,
+      dim: hsv.dim,
+    };
+  }
+
+  if (
+    selected.mode === 'lumitech'
+  ) {
+    const target =
+      snapshot.lumitech_target;
+
+    if (!target) {
+      throw new Error(
+        'Chybí Lumitech target pro světelný profil.',
+      );
+    }
+
+    const lumitech =
+      snapshot.lumitech;
+
+    const dim =
+      lumitech.brightness / 100;
+
+    const temperature =
+      kelvinToHomeyTemperature(
+        lumitech.kelvin,
+      );
+
+    await setTargetValue(
+      target.mode,
+      'temperature',
+    );
+
+    await setTargetValue(
+      target.temperature,
+      temperature,
+    );
+
+    await setTargetValue(
+      target.dim,
+      dim,
+    );
+
+    await setTargetValue(
+      target.onoff,
+      true,
+    );
+
+    return {
+      mode: 'temperature',
+      brightness:
+        lumitech.brightness,
+      kelvin:
+        lumitech.kelvin,
+      dim,
+      temperature,
+    };
+  }
+
+  const offTarget =
+    snapshot.rgb_target?.onoff ??
+    snapshot.lumitech_target?.onoff;
+
+  if (!offTarget) {
+    throw new Error(
+      'Chybí onoff target pro světelný profil.',
+    );
+  }
+
+  await setTargetValue(
+    offTarget,
+    false,
+  );
+
+  return {
+    mode: 'off',
+  };
+}
+
+
 async function main() {
   const configPath = process.argv[2];
 
@@ -914,6 +1146,108 @@ async function main() {
     );
 
 
+  const lightProfileStates =
+    new Map();
+
+
+  function flushLightProfile(
+    state,
+  ) {
+    const snapshot = {
+      device: state.device,
+      rgb: state.rgb,
+      lumitech: state.lumitech,
+      last_changed_mode:
+        state.last_changed_mode,
+      rgb_target:
+        state.rgb_target,
+      lumitech_target:
+        state.lumitech_target,
+      pending_results:
+        state.pending_results.splice(0),
+    };
+
+    state.timer = null;
+
+    state.apply_queue =
+      state.apply_queue.then(
+        async () => {
+          try {
+            const homeyValue =
+              await applyLightProfileSnapshot(
+                snapshot,
+              );
+
+            for (
+              const pending
+              of snapshot.pending_results
+            ) {
+              writeEvent({
+                type: 'command_result',
+                request_id:
+                  pending.request_id,
+                success: true,
+                key:
+                  pending.key,
+                device_name:
+                  snapshot.device.name,
+                device_id:
+                  snapshot.device.id,
+                capability_id:
+                  pending.capability_id,
+                homey_value:
+                  homeyValue,
+              });
+            }
+
+          } catch (error) {
+            for (
+              const pending
+              of snapshot.pending_results
+            ) {
+              writeEvent({
+                type: 'command_result',
+                request_id:
+                  pending.request_id,
+                success: false,
+                key:
+                  pending.key,
+                device_name:
+                  snapshot.device.name,
+                capability_id:
+                  pending.capability_id,
+                message:
+                  error?.message ??
+                  String(error),
+              });
+            }
+          }
+        },
+      );
+  }
+
+
+  function scheduleLightProfile(
+    state,
+  ) {
+    if (state.timer) {
+      clearTimeout(
+        state.timer,
+      );
+    }
+
+    state.timer =
+      setTimeout(
+        () => {
+          flushLightProfile(
+            state,
+          );
+        },
+        LIGHT_MERGE_DELAY_MS,
+      );
+  }
+
+
   async function handleRgbCommand(
     command,
     key,
@@ -928,61 +1262,25 @@ async function main() {
           command.value,
         );
 
-      const hsv =
-        rgbToHomeyHsv(
-          rgb.red,
-          rgb.green,
-          rgb.blue,
+      const state =
+        getLightProfileState(
+          lightProfileStates,
+          target.device,
         );
 
-      if (hsv.dim === 0) {
-        await setTargetValue(
-          target.onoff,
-          false,
-        );
-      } else {
-        await setTargetValue(
-          target.mode,
-          'color',
-        );
+      state.rgb = rgb;
+      state.rgb_target = target;
+      state.last_changed_mode = 'rgb';
 
-        await setTargetValue(
-          target.hue,
-          hsv.hue,
-        );
-
-        await setTargetValue(
-          target.saturation,
-          hsv.saturation,
-        );
-
-        await setTargetValue(
-          target.dim,
-          hsv.dim,
-        );
-
-        await setTargetValue(
-          target.onoff,
-          true,
-        );
-      }
-
-      writeEvent({
-        type: 'command_result',
+      state.pending_results.push({
         request_id: requestId,
-        success: true,
         key,
-        device_name:
-          target.device.name,
-        device_id:
-          target.device.id,
         capability_id: 'rgb',
-        homey_value: {
-          hue: hsv.hue,
-          saturation: hsv.saturation,
-          dim: hsv.dim,
-        },
       });
+
+      scheduleLightProfile(
+        state,
+      );
 
     } catch (error) {
       writeEvent({
@@ -1015,60 +1313,26 @@ async function main() {
           command.value,
         );
 
-      const dim =
-        lumitech.brightness / 100;
-
-      const temperature =
-        kelvinToHomeyTemperature(
-          lumitech.kelvin,
+      const state =
+        getLightProfileState(
+          lightProfileStates,
+          target.device,
         );
 
-      if (dim === 0) {
-        await setTargetValue(
-          target.onoff,
-          false,
-        );
-      } else {
-        await setTargetValue(
-          target.mode,
-          'temperature',
-        );
+      state.lumitech = lumitech;
+      state.lumitech_target = target;
+      state.last_changed_mode =
+        'lumitech';
 
-        await setTargetValue(
-          target.temperature,
-          temperature,
-        );
-
-        await setTargetValue(
-          target.dim,
-          dim,
-        );
-
-        await setTargetValue(
-          target.onoff,
-          true,
-        );
-      }
-
-      writeEvent({
-        type: 'command_result',
+      state.pending_results.push({
         request_id: requestId,
-        success: true,
         key,
-        device_name:
-          target.device.name,
-        device_id:
-          target.device.id,
         capability_id: 'lumitech',
-        homey_value: {
-          brightness:
-            lumitech.brightness,
-          kelvin:
-            lumitech.kelvin,
-          dim,
-          temperature,
-        },
       });
+
+      scheduleLightProfile(
+        state,
+      );
 
     } catch (error) {
       writeEvent({
@@ -1291,6 +1555,17 @@ async function main() {
       );
 
       input.close();
+
+      for (
+        const state
+        of lightProfileStates.values()
+      ) {
+        if (state.timer) {
+          clearTimeout(
+            state.timer,
+          );
+        }
+      }
 
       for (
         const subscription
