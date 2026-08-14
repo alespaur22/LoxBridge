@@ -331,6 +331,12 @@ def get_rgb_command_key(
 def get_lumitech_command_key(
     capabilities: dict[str, Any],
 ) -> str | None:
+    onoff = get_setable_capability(
+        capabilities,
+        "onoff",
+        "boolean",
+    )
+
     dim = get_setable_capability(
         capabilities,
         "dim",
@@ -343,6 +349,13 @@ def get_lumitech_command_key(
         "number",
     )
 
+    if (
+        onoff is None
+        or dim is None
+        or temperature is None
+    ):
+        return None
+
     mode = get_setable_capability(
         capabilities,
         "light_mode",
@@ -350,15 +363,11 @@ def get_lumitech_command_key(
     )
 
     if (
-        dim is None
-        or temperature is None
-        or mode is None
-    ):
-        return None
-
-    if not enum_has_value(
-        mode,
-        "temperature",
+        mode is not None
+        and not enum_has_value(
+            mode,
+            "temperature",
+        )
     ):
         return None
 

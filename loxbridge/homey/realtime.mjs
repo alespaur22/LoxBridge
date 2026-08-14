@@ -616,8 +616,7 @@ function buildLumitechCommandMap(
     if (
       !onoff ||
       !dim ||
-      !temperature ||
-      !mode
+      !temperature
     ) {
       continue;
     }
@@ -941,10 +940,12 @@ async function applyLightProfileSnapshot(
         lumitech.kelvin,
       );
 
-    await setTargetValue(
-      target.mode,
-      'temperature',
-    );
+    if (target.mode) {
+      await setTargetValue(
+        target.mode,
+        'temperature',
+      );
+    }
 
     await setTargetValue(
       target.temperature,
