@@ -663,6 +663,112 @@ function buildLumitechCommandMap(
 }
 
 
+function buildDimmerCommandMap(
+  config,
+  commandMap,
+) {
+  const dimmerCommandMap =
+    new Map();
+
+  for (
+    const deviceConfig
+    of config.devices
+  ) {
+    const onoff =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'onoff',
+        commandMap,
+      );
+
+    const dim =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'dim',
+        commandMap,
+      );
+
+    if (
+      !onoff ||
+      !dim
+    ) {
+      continue;
+    }
+
+    const capabilities =
+      deviceConfig.capabilities ?? {};
+
+    const advancedCapabilities = [
+      'light_hue',
+      'light_saturation',
+      'light_temperature',
+      'dim.white',
+    ];
+
+    const hasAdvancedLight =
+      advancedCapabilities.some(
+        (capabilityId) => {
+          const rawConfig =
+            capabilities[
+              capabilityId
+            ];
+
+          const capabilityConfig =
+            parseCapability(
+              capabilityId,
+              rawConfig,
+            );
+
+          return (
+            capabilityConfig?.setable ===
+            true
+          );
+        },
+      );
+
+    if (hasAdvancedLight) {
+      continue;
+    }
+
+    const rawOnOff =
+      capabilities.onoff;
+
+    const onoffConfig =
+      parseCapability(
+        'onoff',
+        rawOnOff,
+      );
+
+    const onoffKey =
+      onoffConfig?.key;
+
+    if (
+      typeof onoffKey !== 'string' ||
+      !onoffKey.endsWith('_onoff')
+    ) {
+      continue;
+    }
+
+    const baseKey =
+      onoffKey.slice(
+        0,
+        -'_onoff'.length,
+      );
+
+    dimmerCommandMap.set(
+      `${baseKey}_dimmer`,
+      {
+        device: onoff.device,
+        onoff,
+        dim,
+      },
+    );
+  }
+
+  return dimmerCommandMap;
+}
+
+
 function getLightProfileState(
   states,
   device,
@@ -1138,13 +1244,17 @@ async function main() {
       commandMap,
     );
 
-
   const lumitechCommandMap =
     buildLumitechCommandMap(
       config,
       commandMap,
     );
 
+  const dimmerCommandMap =
+    buildDimmerCommandMap(
+      config,
+      commandMap,
+    );
 
   const lightProfileStates =
     new Map();
@@ -1351,6 +1461,85 @@ async function main() {
   }
 
 
+  async function handleDimmerCommand(
+    command,
+    key,
+    target,
+  ) {
+    const requestId =
+      command.request_id ?? null;
+
+    try {
+      const brightness =
+        Number(command.value);
+
+      if (
+        !Number.isFinite(brightness) ||
+        brightness < 0 ||
+        brightness > 100
+      ) {
+        throw new Error(
+          `Dimmer hodnota musí být ` +
+          `v rozsahu 0–100: ` +
+          `${command.value}`,
+        );
+      }
+
+      const dim =
+        brightness / 100;
+
+      if (dim === 0) {
+        await setTargetValue(
+          target.onoff,
+          false,
+        );
+      } else {
+        await setTargetValue(
+          target.dim,
+          dim,
+        );
+
+        await setTargetValue(
+          target.onoff,
+          true,
+        );
+      }
+
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: true,
+        key,
+        device_name:
+          target.device.name,
+        device_id:
+          target.device.id,
+        capability_id: 'dimmer',
+        homey_value: {
+          brightness,
+          dim,
+          onoff:
+            dim > 0,
+        },
+      });
+
+    } catch (error) {
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: false,
+        key,
+        device_name:
+          target.device.name,
+        capability_id: 'dimmer',
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
+
+
   async function handleCommand(
     command,
   ) {
@@ -1400,6 +1589,18 @@ async function main() {
       return;
     }
 
+    const dimmerTarget =
+      dimmerCommandMap.get(key);
+
+    if (dimmerTarget) {
+      await handleDimmerCommand(
+        command,
+        key,
+        dimmerTarget,
+      );
+
+      return;
+    }
 
     const target =
       commandMap.get(key);
@@ -1465,11 +1666,14 @@ async function main() {
     commands:
       commandMap.size +
       rgbCommandMap.size +
-      lumitechCommandMap.size,
+      lumitechCommandMap.size +
+      dimmerCommandMap.size,
     synthetic_rgb_commands:
       rgbCommandMap.size,
     synthetic_lumitech_commands:
       lumitechCommandMap.size,
+    synthetic_dimmer_commands:
+      dimmerCommandMap.size,
     skipped,
     missing,
   });

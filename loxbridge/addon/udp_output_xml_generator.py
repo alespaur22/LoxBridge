@@ -227,7 +227,7 @@ def get_setable_capability(
     return capability
 
 
-def get_rgb_command_key(
+def get_base_key(
     capabilities: dict[str, Any],
 ) -> str | None:
     onoff = get_setable_capability(
@@ -236,6 +236,50 @@ def get_rgb_command_key(
         "boolean",
     )
 
+    if onoff is None:
+        return None
+
+    onoff_key = onoff.get(
+        "key"
+    )
+
+    if (
+        not isinstance(onoff_key, str)
+        or not onoff_key.endswith(
+            "_onoff"
+        )
+    ):
+        return None
+
+    return onoff_key[
+        :-len("_onoff")
+    ]
+
+
+def enum_has_value(
+    capability: dict[str, Any],
+    enum_id: str,
+) -> bool:
+    values = capability.get(
+        "values"
+    )
+
+    if not isinstance(
+        values,
+        list,
+    ):
+        return False
+
+    return any(
+        isinstance(value, dict)
+        and value.get("id") == enum_id
+        for value in values
+    )
+
+
+def get_rgb_command_key(
+    capabilities: dict[str, Any],
+) -> str | None:
     dim = get_setable_capability(
         capabilities,
         "dim",
@@ -261,50 +305,124 @@ def get_rgb_command_key(
     )
 
     if (
-        onoff is None
-        or dim is None
+        dim is None
         or hue is None
         or saturation is None
         or mode is None
     ):
         return None
 
-    mode_values = mode.get(
-        "values"
-    )
-
-    if not isinstance(
-        mode_values,
-        list,
+    if not enum_has_value(
+        mode,
+        "color",
     ):
         return None
 
-    has_color_mode = any(
-        isinstance(value, dict)
-        and value.get("id") == "color"
-        for value in mode_values
+    base_key = get_base_key(
+        capabilities
     )
 
-    if not has_color_mode:
+    if base_key is None:
         return None
 
-    onoff_key = onoff.get(
-        "key"
+    return f"{base_key}_rgb"
+
+
+def get_lumitech_command_key(
+    capabilities: dict[str, Any],
+) -> str | None:
+    dim = get_setable_capability(
+        capabilities,
+        "dim",
+        "number",
+    )
+
+    temperature = get_setable_capability(
+        capabilities,
+        "light_temperature",
+        "number",
+    )
+
+    mode = get_setable_capability(
+        capabilities,
+        "light_mode",
+        "enum",
     )
 
     if (
-        not isinstance(onoff_key, str)
-        or not onoff_key.endswith(
-            "_onoff"
-        )
+        dim is None
+        or temperature is None
+        or mode is None
     ):
         return None
 
-    base_key = onoff_key[
-        :-len("_onoff")
-    ]
+    if not enum_has_value(
+        mode,
+        "temperature",
+    ):
+        return None
 
-    return f"{base_key}_rgb"
+    base_key = get_base_key(
+        capabilities
+    )
+
+    if base_key is None:
+        return None
+
+    return f"{base_key}_lumitech"
+
+
+def get_dimmer_command_key(
+    capabilities: dict[str, Any],
+) -> str | None:
+    onoff = get_setable_capability(
+        capabilities,
+        "onoff",
+        "boolean",
+    )
+
+    dim = get_setable_capability(
+        capabilities,
+        "dim",
+        "number",
+    )
+
+    if (
+        onoff is None
+        or dim is None
+    ):
+        return None
+
+    advanced_capabilities = {
+        "light_hue": "number",
+        "light_saturation": "number",
+        "light_temperature": "number",
+        "dim.white": "number",
+    }
+
+    for (
+        capability_id,
+        capability_type,
+    ) in advanced_capabilities.items():
+        capability = (
+            get_setable_capability(
+                capabilities,
+                capability_id,
+                capability_type,
+            )
+        )
+
+        if capability is not None:
+            return None
+
+    base_key = get_base_key(
+        capabilities
+    )
+
+    if base_key is None:
+        return None
+
+    return f"{base_key}_dimmer"
 
 
 def generate_commands(
@@ -317,6 +435,8 @@ def generate_commands(
         "number": 0,
         "enum": 0,
         "synthetic_rgb": 0,
+        "synthetic_lumitech": 0,
+        "synthetic_dimmer": 0,
         "unsupported": 0,
         "missing_key": 0,
     }
@@ -478,6 +598,70 @@ def generate_commands(
 
             stats["generated"] += 1
 
+        lumitech_key = (
+            get_lumitech_command_key(
+                capabilities
+            )
+        )
+
+        if lumitech_key is not None:
+            if lumitech_key in used_keys:
+                raise RuntimeError(
+                    "Duplicitní syntetický "
+                    "Lumitech key: "
+                    f"{lumitech_key}"
+                )
+
+            used_keys.add(
+                lumitech_key
+            )
+
+            create_analog_command(
+                root=root,
+                title=(
+                    f"{device_name} - Lumitech"
+                ),
+                key=lumitech_key,
+            )
+
+            stats[
+                "synthetic_lumitech"
+            ] += 1
+
+            stats["generated"] += 1
+
+        dimmer_key = (
+            get_dimmer_command_key(
+                capabilities
+            )
+        )
+
+        if dimmer_key is not None:
+            if dimmer_key in used_keys:
+                raise RuntimeError(
+                    "Duplicitní syntetický "
+                    "Dimmer key: "
+                    f"{dimmer_key}"
+                )
+
+            used_keys.add(
+                dimmer_key
+            )
+
+            create_analog_command(
+                root=root,
+                title=(
+                    f"{device_name} - Dimmer"
+                ),
+                key=dimmer_key,
+            )
+
+            stats[
+                "synthetic_dimmer"
+            ] += 1
+
+            stats["generated"] += 1
+
     return stats
 
 
@@ -634,6 +818,16 @@ def main() -> None:
     print(
         "Syntetické RGB:           "
         f"{stats['synthetic_rgb']}"
+    )
+
+    print(
+        "Syntetické Lumitech:      "
+        f"{stats['synthetic_lumitech']}"
+    )
+
+    print(
+        "Syntetické Dimmer:        "
+        f"{stats['synthetic_dimmer']}"
     )
 
     print(
