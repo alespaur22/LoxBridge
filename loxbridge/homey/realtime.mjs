@@ -5,62 +5,38 @@ import { createInterface } from 'node:readline';
 import { HomeyAPI } from 'homey-api';
 import YAML from 'yaml';
 
-
-const SUPPORTED_TYPES = new Set([
-  'boolean',
-  'number',
-  'enum',
-]);
-
-
+const SUPPORTED_TYPES = new Set(['boolean', 'number', 'enum']);
 const WHITE_WARM_KELVIN = 2700;
 const WHITE_COLD_KELVIN = 6500;
 const LIGHT_MERGE_DELAY_MS = 120;
-
+const RGBW_WHITE_MASTER_DIM = 0.01;
 
 function writeEvent(event) {
-  process.stdout.write(
-    `${JSON.stringify(event)}\n`,
-  );
+  process.stdout.write(`${JSON.stringify(event)}\n`);
 }
-
 
 function writeLog(message) {
-  process.stderr.write(
-    `[Homey realtime] ${message}\n`,
-  );
+  process.stderr.write(`[Homey realtime] ${message}\n`);
 }
 
-
 async function loadConfig(configPath) {
-  const source = await fs.readFile(
-    configPath,
-    'utf8',
-  );
-
+  const source = await fs.readFile(configPath, 'utf8');
   const config = YAML.parse(source);
 
   if (!config?.homey?.ip) {
-    throw new Error(
-      'V konfiguraci chybí homey.ip.',
-    );
+    throw new Error('V konfiguraci chybí homey.ip.');
   }
 
   if (!config?.homey?.token) {
-    throw new Error(
-      'V konfiguraci chybí homey.token.',
-    );
+    throw new Error('V konfiguraci chybí homey.token.');
   }
 
   if (!Array.isArray(config.devices)) {
-    throw new Error(
-      'V konfiguraci chybí devices.',
-    );
+    throw new Error('V konfiguraci chybí devices.');
   }
 
   return config;
 }
-
 
 function parseCapability(
   capabilityId,
@@ -85,51 +61,40 @@ function parseCapability(
   return {
     key: capabilityConfig.key,
     type: capabilityConfig.type ?? null,
-    values: Array.isArray(
-      capabilityConfig.values,
-    )
+    values: Array.isArray(capabilityConfig.values)
       ? capabilityConfig.values
       : [],
-    setable:
-      capabilityConfig.setable === true,
+    setable: capabilityConfig.setable === true,
   };
 }
-
 
 function convertValue(
   value,
   capabilityConfig,
 ) {
-  if (
-    capabilityConfig.type !== 'enum'
-  ) {
+  if (capabilityConfig.type !== 'enum') {
     return value;
   }
 
-  const match =
-    capabilityConfig.values.find(
-      (enumValue) =>
-        enumValue?.id === value,
-    );
+  const match = capabilityConfig.values.find(
+    (enumValue) =>
+      enumValue?.id === value,
+  );
 
   if (!match) {
     throw new Error(
-      `Enum hodnota "${value}" ` +
-      'nemá číselné mapování.',
+      `Enum hodnota "${value}" nemá číselné mapování.`,
     );
   }
 
   return match.value;
 }
 
-
 function convertCommandValue(
   value,
   capabilityConfig,
 ) {
-  if (
-    capabilityConfig.type === 'boolean'
-  ) {
+  if (capabilityConfig.type === 'boolean') {
     if (value === true || value === 1) {
       return true;
     }
@@ -164,9 +129,7 @@ function convertCommandValue(
     );
   }
 
-  if (
-    capabilityConfig.type === 'number'
-  ) {
+  if (capabilityConfig.type === 'number') {
     const numberValue = Number(value);
 
     if (!Number.isFinite(numberValue)) {
@@ -178,9 +141,7 @@ function convertCommandValue(
     return numberValue;
   }
 
-  if (
-    capabilityConfig.type === 'enum'
-  ) {
+  if (capabilityConfig.type === 'enum') {
     const numericValue = Number(value);
 
     if (Number.isFinite(numericValue)) {
@@ -207,17 +168,14 @@ function convertCommandValue(
     }
 
     throw new Error(
-      `Enum hodnota "${value}" ` +
-      'nemá mapování.',
+      `Enum hodnota "${value}" nemá mapování.`,
     );
   }
 
   throw new Error(
-    `Nepodporovaný typ capability: ` +
-    `${capabilityConfig.type}`,
+    `Nepodporovaný typ capability: ${capabilityConfig.type}`,
   );
 }
-
 
 function parseLoxoneRgb(value) {
   const numericValue = Number(value);
@@ -228,18 +186,22 @@ function parseLoxoneRgb(value) {
     );
   }
 
-  const packedValue = Math.round(numericValue);
+  const packedValue =
+    Math.round(numericValue);
 
   if (
     packedValue < 0 ||
-    Math.abs(numericValue - packedValue) > 0.01
+    Math.abs(
+      numericValue - packedValue,
+    ) > 0.01
   ) {
     throw new Error(
       `RGB hodnota musí být celé kladné číslo: ${value}`,
     );
   }
 
-  const packedText = String(packedValue);
+  const packedText =
+    String(packedValue);
 
   if (packedText.length > 9) {
     throw new Error(
@@ -247,6 +209,8 @@ function parseLoxoneRgb(value) {
     );
   }
 
+  // Loxone posílá BBBGGGRRR.
+  // Vedoucí nuly se mohou při UDP číslu ztratit.
   const normalized =
     packedText.padStart(9, '0');
 
@@ -276,8 +240,7 @@ function parseLoxoneRgb(value) {
       channel > 100
     ) {
       throw new Error(
-        `RGB kanál ${name} je mimo ` +
-        `rozsah 0–100: ${channel}`,
+        `RGB kanál ${name} je mimo rozsah 0–100: ${channel}`,
       );
     }
   }
@@ -289,7 +252,6 @@ function parseLoxoneRgb(value) {
   };
 }
 
-
 function rgbToHomeyHsv(
   red,
   green,
@@ -299,19 +261,27 @@ function rgbToHomeyHsv(
   const g = green / 100;
   const b = blue / 100;
 
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const delta = max - min;
+  const max =
+    Math.max(r, g, b);
+
+  const min =
+    Math.min(r, g, b);
+
+  const delta =
+    max - min;
 
   let hue = 0;
 
   if (delta !== 0) {
     if (max === r) {
-      hue = ((g - b) / delta) % 6;
+      hue =
+        ((g - b) / delta) % 6;
     } else if (max === g) {
-      hue = ((b - r) / delta) + 2;
+      hue =
+        ((b - r) / delta) + 2;
     } else {
-      hue = ((r - g) / delta) + 4;
+      hue =
+        ((r - g) / delta) + 4;
     }
 
     hue /= 6;
@@ -333,9 +303,9 @@ function rgbToHomeyHsv(
   };
 }
 
-
 function parseLoxoneLumitech(value) {
-  const numericValue = Number(value);
+  const numericValue =
+    Number(value);
 
   if (!Number.isFinite(numericValue)) {
     throw new Error(
@@ -343,11 +313,14 @@ function parseLoxoneLumitech(value) {
     );
   }
 
-  const packedValue = Math.round(numericValue);
+  const packedValue =
+    Math.round(numericValue);
 
   if (
     packedValue < 0 ||
-    Math.abs(numericValue - packedValue) > 0.01
+    Math.abs(
+      numericValue - packedValue,
+    ) > 0.01
   ) {
     throw new Error(
       `Lumitech hodnota musí být celé číslo: ${value}`,
@@ -362,7 +335,8 @@ function parseLoxoneLumitech(value) {
   }
 
   const normalized =
-    String(packedValue).padStart(9, '0');
+    String(packedValue)
+      .padStart(9, '0');
 
   if (
     normalized.length !== 9 ||
@@ -373,13 +347,15 @@ function parseLoxoneLumitech(value) {
     );
   }
 
-  const brightness = Number(
-    normalized.slice(2, 5),
-  );
+  const brightness =
+    Number(
+      normalized.slice(2, 5),
+    );
 
-  const kelvin = Number(
-    normalized.slice(5, 9),
-  );
+  const kelvin =
+    Number(
+      normalized.slice(5, 9),
+    );
 
   if (
     brightness < 0 ||
@@ -405,6 +381,25 @@ function parseLoxoneLumitech(value) {
   };
 }
 
+function parsePercent(
+  value,
+  label,
+) {
+  const percent =
+    Number(value);
+
+  if (
+    !Number.isFinite(percent) ||
+    percent < 0 ||
+    percent > 100
+  ) {
+    throw new Error(
+      `${label} musí být v rozsahu 0–100: ${value}`,
+    );
+  }
+
+  return percent;
+}
 
 function kelvinToHomeyTemperature(
   kelvin,
@@ -427,7 +422,6 @@ function kelvinToHomeyTemperature(
   );
 }
 
-
 async function setTargetValue(
   target,
   value,
@@ -446,7 +440,6 @@ async function setTargetValue(
 
   return homeyValue;
 }
-
 
 function getConfiguredCommandTarget(
   deviceConfig,
@@ -476,12 +469,40 @@ function getConfiguredCommandTarget(
   ) ?? null;
 }
 
+function getBaseKey(
+  deviceConfig,
+) {
+  const onoffConfig =
+    parseCapability(
+      'onoff',
+      deviceConfig
+        .capabilities?.onoff,
+    );
+
+  const onoffKey =
+    onoffConfig?.key;
+
+  if (
+    typeof onoffKey !== 'string' ||
+    !onoffKey.endsWith(
+      '_onoff',
+    )
+  ) {
+    return null;
+  }
+
+  return onoffKey.slice(
+    0,
+    -'_onoff'.length,
+  );
+}
 
 function buildRgbCommandMap(
   config,
   commandMap,
 ) {
-  const rgbCommandMap = new Map();
+  const result =
+    new Map();
 
   for (
     const deviceConfig
@@ -532,35 +553,20 @@ function buildRgbCommandMap(
       continue;
     }
 
-    const rawOnOff =
-      deviceConfig.capabilities?.onoff;
-
-    const onoffConfig =
-      parseCapability(
-        'onoff',
-        rawOnOff,
+    const baseKey =
+      getBaseKey(
+        deviceConfig,
       );
 
-    const onoffKey =
-      onoffConfig?.key;
-
-    if (
-      typeof onoffKey !== 'string' ||
-      !onoffKey.endsWith('_onoff')
-    ) {
+    if (!baseKey) {
       continue;
     }
 
-    const baseKey =
-      onoffKey.slice(
-        0,
-        -'_onoff'.length,
-      );
-
-    rgbCommandMap.set(
+    result.set(
       `${baseKey}_rgb`,
       {
-        device: onoff.device,
+        device:
+          onoff.device,
         onoff,
         dim,
         hue,
@@ -570,15 +576,14 @@ function buildRgbCommandMap(
     );
   }
 
-  return rgbCommandMap;
+  return result;
 }
-
 
 function buildLumitechCommandMap(
   config,
   commandMap,
 ) {
-  const lumitechCommandMap =
+  const result =
     new Map();
 
   for (
@@ -621,35 +626,20 @@ function buildLumitechCommandMap(
       continue;
     }
 
-    const rawOnOff =
-      deviceConfig.capabilities?.onoff;
-
-    const onoffConfig =
-      parseCapability(
-        'onoff',
-        rawOnOff,
+    const baseKey =
+      getBaseKey(
+        deviceConfig,
       );
 
-    const onoffKey =
-      onoffConfig?.key;
-
-    if (
-      typeof onoffKey !== 'string' ||
-      !onoffKey.endsWith('_onoff')
-    ) {
+    if (!baseKey) {
       continue;
     }
 
-    const baseKey =
-      onoffKey.slice(
-        0,
-        -'_onoff'.length,
-      );
-
-    lumitechCommandMap.set(
+    result.set(
       `${baseKey}_lumitech`,
       {
-        device: onoff.device,
+        device:
+          onoff.device,
         onoff,
         dim,
         temperature,
@@ -658,15 +648,14 @@ function buildLumitechCommandMap(
     );
   }
 
-  return lumitechCommandMap;
+  return result;
 }
-
 
 function buildDimmerCommandMap(
   config,
   commandMap,
 ) {
-  const dimmerCommandMap =
+  const result =
     new Map();
 
   for (
@@ -694,10 +683,7 @@ function buildDimmerCommandMap(
       continue;
     }
 
-    const capabilities =
-      deviceConfig.capabilities ?? {};
-
-    const advancedCapabilities = [
+    const advancedIds = [
       'light_hue',
       'light_saturation',
       'light_temperature',
@@ -705,21 +691,19 @@ function buildDimmerCommandMap(
     ];
 
     const hasAdvancedLight =
-      advancedCapabilities.some(
+      advancedIds.some(
         (capabilityId) => {
-          const rawConfig =
-            capabilities[
-              capabilityId
-            ];
-
-          const capabilityConfig =
+          const parsed =
             parseCapability(
               capabilityId,
-              rawConfig,
+              deviceConfig
+                .capabilities?.[
+                  capabilityId
+                ],
             );
 
           return (
-            capabilityConfig?.setable ===
+            parsed?.setable ===
             true
           );
         },
@@ -729,64 +713,173 @@ function buildDimmerCommandMap(
       continue;
     }
 
-    const rawOnOff =
-      capabilities.onoff;
-
-    const onoffConfig =
-      parseCapability(
-        'onoff',
-        rawOnOff,
+    const baseKey =
+      getBaseKey(
+        deviceConfig,
       );
 
-    const onoffKey =
-      onoffConfig?.key;
-
-    if (
-      typeof onoffKey !== 'string' ||
-      !onoffKey.endsWith('_onoff')
-    ) {
+    if (!baseKey) {
       continue;
     }
 
-    const baseKey =
-      onoffKey.slice(
-        0,
-        -'_onoff'.length,
-      );
-
-    dimmerCommandMap.set(
+    result.set(
       `${baseKey}_dimmer`,
       {
-        device: onoff.device,
+        device:
+          onoff.device,
         onoff,
         dim,
       },
     );
   }
 
-  return dimmerCommandMap;
+  return result;
 }
 
+function buildRgbwWhiteChannelMaps(
+  config,
+  commandMap,
+) {
+  const rgb =
+    new Map();
 
-function getLightProfileState(
+  const white =
+    new Map();
+
+  for (
+    const deviceConfig
+    of config.devices
+  ) {
+    /*
+     * Profil pro zařízení:
+     *
+     * onoff
+     * dim
+     * light_hue
+     * light_saturation
+     * dim.white
+     *
+     * bez light_mode.
+     *
+     * onoff.whitemode záměrně NEPOUŽÍVÁME.
+     * U testovaného driveru fyzicky vynutí
+     * bílou na 100 %, i když dim.white
+     * v Homey zůstává například 0.25.
+     */
+
+    const mode =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_mode',
+        commandMap,
+      );
+
+    if (mode) {
+      continue;
+    }
+
+    const onoff =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'onoff',
+        commandMap,
+      );
+
+    const dim =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'dim',
+        commandMap,
+      );
+
+    const hue =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_hue',
+        commandMap,
+      );
+
+    const saturation =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_saturation',
+        commandMap,
+      );
+
+    const whiteDim =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'dim.white',
+        commandMap,
+      );
+
+    if (
+      !onoff ||
+      !dim ||
+      !hue ||
+      !saturation ||
+      !whiteDim
+    ) {
+      continue;
+    }
+
+    const baseKey =
+      getBaseKey(
+        deviceConfig,
+      );
+
+    if (!baseKey) {
+      continue;
+    }
+
+    const target = {
+      device:
+        onoff.device,
+      onoff,
+      dim,
+      hue,
+      saturation,
+      whiteDim,
+    };
+
+    rgb.set(
+      `${baseKey}_rgb`,
+      target,
+    );
+
+    white.set(
+      `${baseKey}_white`,
+      target,
+    );
+  }
+
+  return {
+    rgb,
+    white,
+  };
+}
+
+function getMergedLightState(
   states,
   device,
 ) {
-  let state = states.get(
-    device.id,
-  );
+  let state =
+    states.get(
+      device.id,
+    );
 
   if (!state) {
     state = {
       device,
       rgb: null,
       lumitech: null,
-      last_changed_mode: null,
-      rgb_target: null,
-      lumitech_target: null,
+      lastChangedMode: null,
+      rgbTarget: null,
+      lumitechTarget: null,
       timer: null,
-      pending_results: [],
-      apply_queue: Promise.resolve(),
+      pendingResults: [],
+      applyQueue:
+        Promise.resolve(),
     };
 
     states.set(
@@ -798,18 +891,15 @@ function getLightProfileState(
   return state;
 }
 
-
-function selectLightProfileMode(
-  rgb,
-  lumitech,
-  lastChangedMode,
+function selectMergedLightMode(
+  snapshot,
 ) {
   const rgbHsv =
-    rgb
+    snapshot.rgb
       ? rgbToHomeyHsv(
-          rgb.red,
-          rgb.green,
-          rgb.blue,
+          snapshot.rgb.red,
+          snapshot.rgb.green,
+          snapshot.rgb.blue,
         )
       : null;
 
@@ -817,25 +907,22 @@ function selectLightProfileMode(
     rgbHsv !== null &&
     rgbHsv.dim > 0;
 
-  const lumitechActive =
-    lumitech !== null &&
-    lumitech.brightness > 0;
+  const whiteActive =
+    snapshot.lumitech !== null &&
+    snapshot.lumitech
+      .brightness > 0;
 
   if (
     rgbActive &&
-    lumitechActive
+    whiteActive
   ) {
-    if (
-      lastChangedMode === 'lumitech'
-    ) {
-      return {
-        mode: 'lumitech',
-        rgbHsv,
-      };
-    }
-
     return {
-      mode: 'rgb',
+      mode:
+        snapshot
+          .lastChangedMode ===
+        'lumitech'
+          ? 'lumitech'
+          : 'rgb',
       rgbHsv,
     };
   }
@@ -847,7 +934,7 @@ function selectLightProfileMode(
     };
   }
 
-  if (lumitechActive) {
+  if (whiteActive) {
     return {
       mode: 'lumitech',
       rgbHsv,
@@ -860,29 +947,25 @@ function selectLightProfileMode(
   };
 }
 
-
-async function applyLightProfileSnapshot(
+async function applyMergedLightSnapshot(
   snapshot,
 ) {
   const selected =
-    selectLightProfileMode(
-      snapshot.rgb,
-      snapshot.lumitech,
-      snapshot.last_changed_mode,
+    selectMergedLightMode(
+      snapshot,
     );
 
-  if (selected.mode === 'rgb') {
+  if (
+    selected.mode === 'rgb'
+  ) {
     const target =
-      snapshot.rgb_target;
+      snapshot.rgbTarget;
 
     if (!target) {
       throw new Error(
         'Chybí RGB target pro světelný profil.',
       );
     }
-
-    const hsv =
-      selected.rgbHsv;
 
     await setTargetValue(
       target.mode,
@@ -891,17 +974,18 @@ async function applyLightProfileSnapshot(
 
     await setTargetValue(
       target.hue,
-      hsv.hue,
+      selected.rgbHsv.hue,
     );
 
     await setTargetValue(
       target.saturation,
-      hsv.saturation,
+      selected.rgbHsv
+        .saturation,
     );
 
     await setTargetValue(
       target.dim,
-      hsv.dim,
+      selected.rgbHsv.dim,
     );
 
     await setTargetValue(
@@ -911,17 +995,22 @@ async function applyLightProfileSnapshot(
 
     return {
       mode: 'color',
-      hue: hsv.hue,
-      saturation: hsv.saturation,
-      dim: hsv.dim,
+      hue:
+        selected.rgbHsv.hue,
+      saturation:
+        selected.rgbHsv
+          .saturation,
+      dim:
+        selected.rgbHsv.dim,
     };
   }
 
   if (
-    selected.mode === 'lumitech'
+    selected.mode ===
+    'lumitech'
   ) {
     const target =
-      snapshot.lumitech_target;
+      snapshot.lumitechTarget;
 
     if (!target) {
       throw new Error(
@@ -929,15 +1018,14 @@ async function applyLightProfileSnapshot(
       );
     }
 
-    const lumitech =
-      snapshot.lumitech;
-
     const dim =
-      lumitech.brightness / 100;
+      snapshot.lumitech
+        .brightness / 100;
 
     const temperature =
       kelvinToHomeyTemperature(
-        lumitech.kelvin,
+        snapshot.lumitech
+          .kelvin,
       );
 
     if (target.mode) {
@@ -963,19 +1051,24 @@ async function applyLightProfileSnapshot(
     );
 
     return {
-      mode: 'temperature',
+      mode:
+        'temperature',
       brightness:
-        lumitech.brightness,
+        snapshot.lumitech
+          .brightness,
       kelvin:
-        lumitech.kelvin,
+        snapshot.lumitech
+          .kelvin,
       dim,
       temperature,
     };
   }
 
   const offTarget =
-    snapshot.rgb_target?.onoff ??
-    snapshot.lumitech_target?.onoff;
+    snapshot
+      .rgbTarget?.onoff ??
+    snapshot
+      .lumitechTarget?.onoff;
 
   if (!offTarget) {
     throw new Error(
@@ -993,9 +1086,210 @@ async function applyLightProfileSnapshot(
   };
 }
 
+function getRgbwState(
+  states,
+  device,
+) {
+  let state =
+    states.get(
+      device.id,
+    );
+
+  if (!state) {
+    state = {
+      device,
+      rgb: null,
+      white: 0,
+      lastChangedMode: null,
+      target: null,
+      timer: null,
+      pendingResults: [],
+      applyQueue:
+        Promise.resolve(),
+    };
+
+    states.set(
+      device.id,
+      state,
+    );
+  }
+
+  return state;
+}
+
+function selectRgbwMode(
+  snapshot,
+) {
+  const rgbHsv =
+    snapshot.rgb
+      ? rgbToHomeyHsv(
+          snapshot.rgb.red,
+          snapshot.rgb.green,
+          snapshot.rgb.blue,
+        )
+      : null;
+
+  const rgbActive =
+    rgbHsv !== null &&
+    rgbHsv.dim > 0;
+
+  const whiteActive =
+    snapshot.white > 0;
+
+  if (
+    rgbActive &&
+    whiteActive
+  ) {
+    return {
+      mode:
+        snapshot
+          .lastChangedMode ===
+        'white'
+          ? 'white'
+          : 'rgb',
+      rgbHsv,
+    };
+  }
+
+  if (rgbActive) {
+    return {
+      mode: 'rgb',
+      rgbHsv,
+    };
+  }
+
+  if (whiteActive) {
+    return {
+      mode: 'white',
+      rgbHsv,
+    };
+  }
+
+  return {
+    mode: 'off',
+    rgbHsv,
+  };
+}
+
+async function applyRgbwSnapshot(
+  snapshot,
+) {
+  const target =
+    snapshot.target;
+
+  if (!target) {
+    throw new Error(
+      'Chybí target pro RGBW profil.',
+    );
+  }
+
+  const selected =
+    selectRgbwMode(
+      snapshot,
+    );
+
+  if (
+    selected.mode === 'rgb'
+  ) {
+    /*
+     * Nejprve vypneme samostatný
+     * white kanál.
+     */
+
+    await setTargetValue(
+      target.whiteDim,
+      0,
+    );
+
+    await setTargetValue(
+      target.hue,
+      selected.rgbHsv.hue,
+    );
+
+    await setTargetValue(
+      target.saturation,
+      selected.rgbHsv
+        .saturation,
+    );
+
+    await setTargetValue(
+      target.dim,
+      selected.rgbHsv.dim,
+    );
+
+    await setTargetValue(
+      target.onoff,
+      true,
+    );
+
+    return {
+      mode: 'color',
+      hue:
+        selected.rgbHsv.hue,
+      saturation:
+        selected.rgbHsv
+          .saturation,
+      dim:
+        selected.rgbHsv.dim,
+    };
+  }
+
+  if (
+    selected.mode === 'white'
+  ) {
+    const whiteDim =
+      snapshot.white / 100;
+
+    /*
+     * Ověřené chování Homey RGBW driveru:
+     *
+     * dim = 0.01
+     * dim.white = požadovaný jas bílé
+     * onoff = true
+     *
+     * onoff.whitemode se NESMÍ použít,
+     * protože fyzicky vynutí bílou 100 %.
+     */
+
+    await setTargetValue(
+      target.dim,
+      RGBW_WHITE_MASTER_DIM,
+    );
+
+    await setTargetValue(
+      target.whiteDim,
+      whiteDim,
+    );
+
+    await setTargetValue(
+      target.onoff,
+      true,
+    );
+
+    return {
+      mode: 'white',
+      brightness:
+        snapshot.white,
+      dim:
+        whiteDim,
+      master_dim:
+        RGBW_WHITE_MASTER_DIM,
+    };
+  }
+
+  await setTargetValue(
+    target.onoff,
+    false,
+  );
+
+  return {
+    mode: 'off',
+  };
+}
 
 async function main() {
-  const configPath = process.argv[2];
+  const configPath =
+    process.argv[2];
 
   if (!configPath) {
     throw new Error(
@@ -1003,9 +1297,10 @@ async function main() {
     );
   }
 
-  const config = await loadConfig(
-    configPath,
-  );
+  const config =
+    await loadConfig(
+      configPath,
+    );
 
   const address =
     `http://${config.homey.ip}`;
@@ -1021,7 +1316,8 @@ async function main() {
   const homeyApi =
     await HomeyAPI.createLocalAPI({
       address,
-      token: config.homey.token,
+      token:
+        config.homey.token,
     });
 
   writeLog(
@@ -1033,10 +1329,15 @@ async function main() {
   );
 
   const devices =
-    await homeyApi.devices.getDevices();
+    await homeyApi
+      .devices
+      .getDevices();
 
-  const devicesById = new Map();
-  const devicesByName = new Map();
+  const devicesById =
+    new Map();
+
+  const devicesByName =
+    new Map();
 
   for (
     const device
@@ -1048,13 +1349,15 @@ async function main() {
     );
 
     devicesByName.set(
-      device.name.toLocaleLowerCase(),
+      device.name
+        .toLocaleLowerCase(),
       device,
     );
   }
 
   const subscriptions = [];
-  const commandMap = new Map();
+  const commandMap =
+    new Map();
 
   let skipped = 0;
   let missing = 0;
@@ -1065,7 +1368,9 @@ async function main() {
   ) {
     let device = null;
 
-    if (deviceConfig.homey_id) {
+    if (
+      deviceConfig.homey_id
+    ) {
       device =
         devicesById.get(
           deviceConfig.homey_id,
@@ -1087,8 +1392,7 @@ async function main() {
       writeEvent({
         type: 'warning',
         message:
-          `Zařízení "${deviceConfig.name}" ` +
-          'nebylo nalezeno.',
+          `Zařízení "${deviceConfig.name}" nebylo nalezeno.`,
       });
 
       missing += 1;
@@ -1096,14 +1400,17 @@ async function main() {
     }
 
     const capabilities =
-      deviceConfig.capabilities ?? {};
+      deviceConfig
+        .capabilities ?? {};
 
     for (
       const [
         capabilityId,
         rawConfig,
       ]
-      of Object.entries(capabilities)
+      of Object.entries(
+        capabilities,
+      )
     ) {
       const capabilityConfig =
         parseCapability(
@@ -1117,7 +1424,8 @@ async function main() {
       }
 
       if (
-        capabilityConfig.type !== null &&
+        capabilityConfig.type !==
+          null &&
         !SUPPORTED_TYPES.has(
           capabilityConfig.type,
         )
@@ -1130,7 +1438,8 @@ async function main() {
         capabilityConfig.key;
 
       if (
-        typeof loxoneKey !== 'string' ||
+        typeof loxoneKey !==
+          'string' ||
         !loxoneKey
       ) {
         missing += 1;
@@ -1138,16 +1447,16 @@ async function main() {
       }
 
       const capability =
-        device.capabilitiesObj?.[
-          capabilityId
-        ];
+        device
+          .capabilitiesObj?.[
+            capabilityId
+          ];
 
       if (!capability) {
         writeEvent({
           type: 'warning',
           message:
-            `Zařízení "${device.name}" ` +
-            `nemá capability "${capabilityId}".`,
+            `Zařízení "${device.name}" nemá capability "${capabilityId}".`,
         });
 
         missing += 1;
@@ -1155,8 +1464,10 @@ async function main() {
       }
 
       if (
-        capabilityConfig.setable === true &&
-        capability.setable === true
+        capabilityConfig
+          .setable === true &&
+        capability
+          .setable === true
       ) {
         commandMap.set(
           loxoneKey,
@@ -1169,63 +1480,68 @@ async function main() {
       }
 
       try {
-        const initialValue =
-          convertValue(
-            capability.value,
-            capabilityConfig,
-          );
-
         writeEvent({
           type: 'value',
           initial: true,
-          device_name: device.name,
-          device_id: device.id,
-          capability_id: capabilityId,
-          loxone_key: loxoneKey,
-          value: initialValue,
+          device_name:
+            device.name,
+          device_id:
+            device.id,
+          capability_id:
+            capabilityId,
+          loxone_key:
+            loxoneKey,
+          value:
+            convertValue(
+              capability.value,
+              capabilityConfig,
+            ),
         });
 
       } catch (error) {
         writeEvent({
           type: 'warning',
           message:
-            `${device.name} / ${capabilityId}: ` +
-            `${error.message}`,
+            `${device.name} / ${capabilityId}: ${error.message}`,
         });
       }
 
       const instance =
-        device.makeCapabilityInstance(
-          capabilityId,
-          (newValue) => {
-            try {
-              const convertedValue =
-                convertValue(
-                  newValue,
-                  capabilityConfig,
-                );
+        device
+          .makeCapabilityInstance(
+            capabilityId,
+            (newValue) => {
+              try {
+                writeEvent({
+                  type:
+                    'value',
+                  initial:
+                    false,
+                  device_name:
+                    device.name,
+                  device_id:
+                    device.id,
+                  capability_id:
+                    capabilityId,
+                  loxone_key:
+                    loxoneKey,
+                  value:
+                    convertValue(
+                      newValue,
+                      capabilityConfig,
+                    ),
+                });
 
-              writeEvent({
-                type: 'value',
-                initial: false,
-                device_name: device.name,
-                device_id: device.id,
-                capability_id: capabilityId,
-                loxone_key: loxoneKey,
-                value: convertedValue,
-              });
-
-            } catch (error) {
-              writeEvent({
-                type: 'warning',
-                message:
-                  `${device.name} / ` +
-                  `${capabilityId}: ` +
-                  `${error.message}`,
-              });
-            }
-          },
-        );
+              } catch (error) {
+                writeEvent({
+                  type:
+                    'warning',
+                  message:
+                    `${device.name} / ${capabilityId}: ${error.message}`,
+                });
+              }
+            },
+          );
 
       subscriptions.push(
         instance,
@@ -1233,7 +1549,9 @@ async function main() {
     }
   }
 
-  if (subscriptions.length === 0) {
+  if (
+    subscriptions.length === 0
+  ) {
     throw new Error(
       'Nevznikl žádný realtime odběr.',
     );
@@ -1257,88 +1575,74 @@ async function main() {
       commandMap,
     );
 
-  const lightProfileStates =
+  const rgbwMaps =
+    buildRgbwWhiteChannelMaps(
+      config,
+      commandMap,
+    );
+
+  const mergedLightStates =
     new Map();
 
+  const rgbwStates =
+    new Map();
 
-  function flushLightProfile(
-    state,
+  function emitPendingSuccess(
+    snapshot,
+    homeyValue,
   ) {
-    const snapshot = {
-      device: state.device,
-      rgb: state.rgb,
-      lumitech: state.lumitech,
-      last_changed_mode:
-        state.last_changed_mode,
-      rgb_target:
-        state.rgb_target,
-      lumitech_target:
-        state.lumitech_target,
-      pending_results:
-        state.pending_results.splice(0),
-    };
-
-    state.timer = null;
-
-    state.apply_queue =
-      state.apply_queue.then(
-        async () => {
-          try {
-            const homeyValue =
-              await applyLightProfileSnapshot(
-                snapshot,
-              );
-
-            for (
-              const pending
-              of snapshot.pending_results
-            ) {
-              writeEvent({
-                type: 'command_result',
-                request_id:
-                  pending.request_id,
-                success: true,
-                key:
-                  pending.key,
-                device_name:
-                  snapshot.device.name,
-                device_id:
-                  snapshot.device.id,
-                capability_id:
-                  pending.capability_id,
-                homey_value:
-                  homeyValue,
-              });
-            }
-
-          } catch (error) {
-            for (
-              const pending
-              of snapshot.pending_results
-            ) {
-              writeEvent({
-                type: 'command_result',
-                request_id:
-                  pending.request_id,
-                success: false,
-                key:
-                  pending.key,
-                device_name:
-                  snapshot.device.name,
-                capability_id:
-                  pending.capability_id,
-                message:
-                  error?.message ??
-                  String(error),
-              });
-            }
-          }
-        },
-      );
+    for (
+      const pending
+      of snapshot.pendingResults
+    ) {
+      writeEvent({
+        type:
+          'command_result',
+        request_id:
+          pending.requestId,
+        success: true,
+        key:
+          pending.key,
+        device_name:
+          snapshot.device.name,
+        device_id:
+          snapshot.device.id,
+        capability_id:
+          pending.capabilityId,
+        homey_value:
+          homeyValue,
+      });
+    }
   }
 
+  function emitPendingFailure(
+    snapshot,
+    error,
+  ) {
+    for (
+      const pending
+      of snapshot.pendingResults
+    ) {
+      writeEvent({
+        type:
+          'command_result',
+        request_id:
+          pending.requestId,
+        success: false,
+        key:
+          pending.key,
+        device_name:
+          snapshot.device.name,
+        capability_id:
+          pending.capabilityId,
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
 
-  function scheduleLightProfile(
+  function scheduleMergedLight(
     state,
   ) {
     if (state.timer) {
@@ -1350,14 +1654,128 @@ async function main() {
     state.timer =
       setTimeout(
         () => {
-          flushLightProfile(
-            state,
-          );
+          state.timer = null;
+
+          const snapshot = {
+            device:
+              state.device,
+            rgb:
+              state.rgb
+                ? {
+                    ...state.rgb,
+                  }
+                : null,
+            lumitech:
+              state.lumitech
+                ? {
+                    ...state.lumitech,
+                  }
+                : null,
+            lastChangedMode:
+              state
+                .lastChangedMode,
+            rgbTarget:
+              state.rgbTarget,
+            lumitechTarget:
+              state
+                .lumitechTarget,
+            pendingResults:
+              state
+                .pendingResults
+                .splice(0),
+          };
+
+          state.applyQueue =
+            state.applyQueue
+              .then(
+                async () => {
+                  try {
+                    const homeyValue =
+                      await applyMergedLightSnapshot(
+                        snapshot,
+                      );
+
+                    emitPendingSuccess(
+                      snapshot,
+                      homeyValue,
+                    );
+
+                  } catch (error) {
+                    emitPendingFailure(
+                      snapshot,
+                      error,
+                    );
+                  }
+                },
+              );
         },
         LIGHT_MERGE_DELAY_MS,
       );
   }
 
+  function scheduleRgbw(
+    state,
+  ) {
+    if (state.timer) {
+      clearTimeout(
+        state.timer,
+      );
+    }
+
+    state.timer =
+      setTimeout(
+        () => {
+          state.timer = null;
+
+          const snapshot = {
+            device:
+              state.device,
+            rgb:
+              state.rgb
+                ? {
+                    ...state.rgb,
+                  }
+                : null,
+            white:
+              state.white,
+            lastChangedMode:
+              state
+                .lastChangedMode,
+            target:
+              state.target,
+            pendingResults:
+              state
+                .pendingResults
+                .splice(0),
+          };
+
+          state.applyQueue =
+            state.applyQueue
+              .then(
+                async () => {
+                  try {
+                    const homeyValue =
+                      await applyRgbwSnapshot(
+                        snapshot,
+                      );
+
+                    emitPendingSuccess(
+                      snapshot,
+                      homeyValue,
+                    );
+
+                  } catch (error) {
+                    emitPendingFailure(
+                      snapshot,
+                      error,
+                    );
+                  }
+                },
+              );
+        },
+        LIGHT_MERGE_DELAY_MS,
+      );
+  }
 
   async function handleRgbCommand(
     command,
@@ -1365,7 +1783,8 @@ async function main() {
     target,
   ) {
     const requestId =
-      command.request_id ?? null;
+      command.request_id ??
+      null;
 
     try {
       const rgb =
@@ -1373,35 +1792,53 @@ async function main() {
           command.value,
         );
 
+      const hsv =
+        rgbToHomeyHsv(
+          rgb.red,
+          rgb.green,
+          rgb.blue,
+        );
+
       const state =
-        getLightProfileState(
-          lightProfileStates,
+        getMergedLightState(
+          mergedLightStates,
           target.device,
         );
 
       state.rgb = rgb;
-      state.rgb_target = target;
-      state.last_changed_mode = 'rgb';
+      state.rgbTarget =
+        target;
 
-      state.pending_results.push({
-        request_id: requestId,
-        key,
-        capability_id: 'rgb',
-      });
+      if (hsv.dim > 0) {
+        state.lastChangedMode =
+          'rgb';
+      }
 
-      scheduleLightProfile(
+      state
+        .pendingResults
+        .push({
+          requestId,
+          key,
+          capabilityId:
+            'rgb',
+        });
+
+      scheduleMergedLight(
         state,
       );
 
     } catch (error) {
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: false,
         key,
         device_name:
           target.device.name,
-        capability_id: 'rgb',
+        capability_id:
+          'rgb',
         message:
           error?.message ??
           String(error),
@@ -1409,14 +1846,14 @@ async function main() {
     }
   }
 
-
   async function handleLumitechCommand(
     command,
     key,
     target,
   ) {
     const requestId =
-      command.request_id ?? null;
+      command.request_id ??
+      null;
 
     try {
       const lumitech =
@@ -1425,35 +1862,50 @@ async function main() {
         );
 
       const state =
-        getLightProfileState(
-          lightProfileStates,
+        getMergedLightState(
+          mergedLightStates,
           target.device,
         );
 
-      state.lumitech = lumitech;
-      state.lumitech_target = target;
-      state.last_changed_mode =
-        'lumitech';
+      state.lumitech =
+        lumitech;
 
-      state.pending_results.push({
-        request_id: requestId,
-        key,
-        capability_id: 'lumitech',
-      });
+      state.lumitechTarget =
+        target;
 
-      scheduleLightProfile(
+      if (
+        lumitech.brightness >
+        0
+      ) {
+        state.lastChangedMode =
+          'lumitech';
+      }
+
+      state
+        .pendingResults
+        .push({
+          requestId,
+          key,
+          capabilityId:
+            'lumitech',
+        });
+
+      scheduleMergedLight(
         state,
       );
 
     } catch (error) {
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: false,
         key,
         device_name:
           target.device.name,
-        capability_id: 'lumitech',
+        capability_id:
+          'lumitech',
         message:
           error?.message ??
           String(error),
@@ -1461,30 +1913,21 @@ async function main() {
     }
   }
 
-
   async function handleDimmerCommand(
     command,
     key,
     target,
   ) {
     const requestId =
-      command.request_id ?? null;
+      command.request_id ??
+      null;
 
     try {
       const brightness =
-        Number(command.value);
-
-      if (
-        !Number.isFinite(brightness) ||
-        brightness < 0 ||
-        brightness > 100
-      ) {
-        throw new Error(
-          `Dimmer hodnota musí být ` +
-          `v rozsahu 0–100: ` +
-          `${command.value}`,
+        parsePercent(
+          command.value,
+          'Dimmer hodnota',
         );
-      }
 
       const dim =
         brightness / 100;
@@ -1494,6 +1937,7 @@ async function main() {
           target.onoff,
           false,
         );
+
       } else {
         await setTargetValue(
           target.dim,
@@ -1507,15 +1951,18 @@ async function main() {
       }
 
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: true,
         key,
         device_name:
           target.device.name,
         device_id:
           target.device.id,
-        capability_id: 'dimmer',
+        capability_id:
+          'dimmer',
         homey_value: {
           brightness,
           dim,
@@ -1526,13 +1973,16 @@ async function main() {
 
     } catch (error) {
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: false,
         key,
         device_name:
           target.device.name,
-        capability_id: 'dimmer',
+        capability_id:
+          'dimmer',
         message:
           error?.message ??
           String(error),
@@ -1540,22 +1990,159 @@ async function main() {
     }
   }
 
+  async function handleRgbwRgbCommand(
+    command,
+    key,
+    target,
+  ) {
+    const requestId =
+      command.request_id ??
+      null;
+
+    try {
+      const rgb =
+        parseLoxoneRgb(
+          command.value,
+        );
+
+      const hsv =
+        rgbToHomeyHsv(
+          rgb.red,
+          rgb.green,
+          rgb.blue,
+        );
+
+      const state =
+        getRgbwState(
+          rgbwStates,
+          target.device,
+        );
+
+      state.rgb = rgb;
+      state.target =
+        target;
+
+      if (hsv.dim > 0) {
+        state.lastChangedMode =
+          'rgb';
+      }
+
+      state
+        .pendingResults
+        .push({
+          requestId,
+          key,
+          capabilityId:
+            'rgbw_rgb',
+        });
+
+      scheduleRgbw(
+        state,
+      );
+
+    } catch (error) {
+      writeEvent({
+        type:
+          'command_result',
+        request_id:
+          requestId,
+        success: false,
+        key,
+        device_name:
+          target.device.name,
+        capability_id:
+          'rgbw_rgb',
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
+
+  async function handleRgbwWhiteCommand(
+    command,
+    key,
+    target,
+  ) {
+    const requestId =
+      command.request_id ??
+      null;
+
+    try {
+      const white =
+        parsePercent(
+          command.value,
+          'White hodnota',
+        );
+
+      const state =
+        getRgbwState(
+          rgbwStates,
+          target.device,
+        );
+
+      state.white =
+        white;
+
+      state.target =
+        target;
+
+      if (white > 0) {
+        state.lastChangedMode =
+          'white';
+      }
+
+      state
+        .pendingResults
+        .push({
+          requestId,
+          key,
+          capabilityId:
+            'rgbw_white',
+        });
+
+      scheduleRgbw(
+        state,
+      );
+
+    } catch (error) {
+      writeEvent({
+        type:
+          'command_result',
+        request_id:
+          requestId,
+        success: false,
+        key,
+        device_name:
+          target.device.name,
+        capability_id:
+          'rgbw_white',
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
 
   async function handleCommand(
     command,
   ) {
     const requestId =
-      command.request_id ?? null;
+      command.request_id ??
+      null;
 
-    const key = command.key;
+    const key =
+      command.key;
 
     if (
       typeof key !== 'string' ||
       !key
     ) {
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: false,
         message:
           'Příkaz neobsahuje platný key.',
@@ -1565,7 +2152,9 @@ async function main() {
     }
 
     const rgbTarget =
-      rgbCommandMap.get(key);
+      rgbCommandMap.get(
+        key,
+      );
 
     if (rgbTarget) {
       await handleRgbCommand(
@@ -1578,7 +2167,9 @@ async function main() {
     }
 
     const lumitechTarget =
-      lumitechCommandMap.get(key);
+      lumitechCommandMap.get(
+        key,
+      );
 
     if (lumitechTarget) {
       await handleLumitechCommand(
@@ -1591,7 +2182,9 @@ async function main() {
     }
 
     const dimmerTarget =
-      dimmerCommandMap.get(key);
+      dimmerCommandMap.get(
+        key,
+      );
 
     if (dimmerTarget) {
       await handleDimmerCommand(
@@ -1603,18 +2196,51 @@ async function main() {
       return;
     }
 
+    const rgbwRgbTarget =
+      rgbwMaps.rgb.get(
+        key,
+      );
+
+    if (rgbwRgbTarget) {
+      await handleRgbwRgbCommand(
+        command,
+        key,
+        rgbwRgbTarget,
+      );
+
+      return;
+    }
+
+    const rgbwWhiteTarget =
+      rgbwMaps.white.get(
+        key,
+      );
+
+    if (rgbwWhiteTarget) {
+      await handleRgbwWhiteCommand(
+        command,
+        key,
+        rgbwWhiteTarget,
+      );
+
+      return;
+    }
+
     const target =
-      commandMap.get(key);
+      commandMap.get(
+        key,
+      );
 
     if (!target) {
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: false,
         key,
         message:
-          `Příkaz "${key}" není setable ` +
-          'nebo nebyl nalezen.',
+          `Příkaz "${key}" není setable nebo nebyl nalezen.`,
       });
 
       return;
@@ -1628,8 +2254,10 @@ async function main() {
         );
 
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: true,
         key,
         device_name:
@@ -1644,8 +2272,10 @@ async function main() {
 
     } catch (error) {
       writeEvent({
-        type: 'command_result',
-        request_id: requestId,
+        type:
+          'command_result',
+        request_id:
+          requestId,
         success: false,
         key,
         device_name:
@@ -1659,31 +2289,43 @@ async function main() {
     }
   }
 
-
   writeEvent({
     type: 'ready',
+
     subscriptions:
       subscriptions.length,
+
     commands:
       commandMap.size +
       rgbCommandMap.size +
       lumitechCommandMap.size +
-      dimmerCommandMap.size,
+      dimmerCommandMap.size +
+      rgbwMaps.rgb.size +
+      rgbwMaps.white.size,
+
     synthetic_rgb_commands:
-      rgbCommandMap.size,
+      rgbCommandMap.size +
+      rgbwMaps.rgb.size,
+
     synthetic_lumitech_commands:
       lumitechCommandMap.size,
+
     synthetic_dimmer_commands:
       dimmerCommandMap.size,
+
+    synthetic_white_commands:
+      rgbwMaps.white.size,
+
     skipped,
     missing,
   });
 
-
   const input =
     createInterface({
-      input: process.stdin,
-      crlfDelay: Infinity,
+      input:
+        process.stdin,
+      crlfDelay:
+        Infinity,
     });
 
   let commandQueue =
@@ -1692,66 +2334,78 @@ async function main() {
   input.on(
     'line',
     (line) => {
-      const message = line.trim();
+      const message =
+        line.trim();
 
       if (!message) {
         return;
       }
 
       commandQueue =
-        commandQueue.then(
-          async () => {
-            let command;
+        commandQueue
+          .then(
+            async () => {
+              let command;
 
-            try {
-              command =
-                JSON.parse(message);
-            } catch {
+              try {
+                command =
+                  JSON.parse(
+                    message,
+                  );
+
+              } catch {
+                writeEvent({
+                  type:
+                    'command_result',
+                  success:
+                    false,
+                  message:
+                    'Neplatný JSON příkaz.',
+                });
+
+                return;
+              }
+
+              if (
+                command?.type !==
+                'command'
+              ) {
+                writeEvent({
+                  type:
+                    'command_result',
+                  request_id:
+                    command
+                      ?.request_id ??
+                    null,
+                  success:
+                    false,
+                  message:
+                    'Neznámý typ příkazu.',
+                });
+
+                return;
+              }
+
+              await handleCommand(
+                command,
+              );
+            },
+          )
+          .catch(
+            (error) => {
               writeEvent({
-                type: 'command_result',
-                success: false,
+                type:
+                  'command_result',
+                success:
+                  false,
                 message:
-                  'Neplatný JSON příkaz.',
+                  error?.message ??
+                  String(error),
               });
-
-              return;
-            }
-
-            if (
-              command?.type !==
-              'command'
-            ) {
-              writeEvent({
-                type: 'command_result',
-                request_id:
-                  command?.request_id ??
-                  null,
-                success: false,
-                message:
-                  'Neznámý typ příkazu.',
-              });
-
-              return;
-            }
-
-            await handleCommand(
-              command,
-            );
-          },
-        ).catch(
-          (error) => {
-            writeEvent({
-              type: 'command_result',
-              success: false,
-              message:
-                error?.message ??
-                String(error),
-            });
-          },
-        );
+            },
+          );
     },
   );
-
 
   const shutdown =
     async (signal) => {
@@ -1763,7 +2417,19 @@ async function main() {
 
       for (
         const state
-        of lightProfileStates.values()
+        of mergedLightStates
+          .values()
+      ) {
+        if (state.timer) {
+          clearTimeout(
+            state.timer,
+          );
+        }
+      }
+
+      for (
+        const state
+        of rgbwStates.values()
       ) {
         if (state.timer) {
           clearTimeout(
@@ -1777,46 +2443,52 @@ async function main() {
         of subscriptions
       ) {
         try {
-          await subscription.destroy?.();
+          await subscription
+            .destroy?.();
+
         } catch {
-          // Chybu při ukončení ignorujeme.
+          // Ignorujeme chybu při ukončení.
         }
       }
 
       process.exit(0);
     };
 
-
   process.on(
     'SIGINT',
-    () => {
-      void shutdown('SIGINT');
-    },
+    () =>
+      void shutdown(
+        'SIGINT',
+      ),
   );
 
   process.on(
     'SIGTERM',
-    () => {
-      void shutdown('SIGTERM');
-    },
+    () =>
+      void shutdown(
+        'SIGTERM',
+      ),
   );
 
-  await new Promise(() => {});
+  await new Promise(
+    () => {},
+  );
 }
 
+main().catch(
+  (error) => {
+    writeEvent({
+      type: 'fatal',
+      message:
+        error?.message ??
+        String(error),
+    });
 
-main().catch((error) => {
-  writeEvent({
-    type: 'fatal',
-    message:
-      error?.message ??
+    writeLog(
+      error?.stack ??
       String(error),
-  });
+    );
 
-  writeLog(
-    error?.stack ??
-    String(error),
-  );
-
-  process.exit(1);
-});
+    process.exit(1);
+  },
+);

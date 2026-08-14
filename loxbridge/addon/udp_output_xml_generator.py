@@ -32,7 +32,9 @@ def load_config(
             "r",
             encoding="utf-8",
         ) as file:
-            config = yaml.safe_load(file)
+            config = yaml.safe_load(
+                file
+            )
 
     except FileNotFoundError as error:
         raise RuntimeError(
@@ -44,7 +46,10 @@ def load_config(
             f"Neplatný YAML v {path}: {error}"
         ) from error
 
-    if not isinstance(config, dict):
+    if not isinstance(
+        config,
+        dict,
+    ):
         raise RuntimeError(
             f"{path} neobsahuje platný YAML objekt."
         )
@@ -63,9 +68,8 @@ def create_root(
             "HintText": "",
             "Title": title,
             "Comment": "",
-            "Address": (
-                f"/dev/udp/{ip}/{port}"
-            ),
+            "Address":
+                f"/dev/udp/{ip}/{port}",
             "CmdInit": "",
             "CloseAfterSend": "true",
             "CmdSep": ";",
@@ -125,7 +129,9 @@ def create_boolean_command(
         f"{key}=0"
     )
 
-    attributes["Analog"] = "false"
+    attributes["Analog"] = (
+        "false"
+    )
 
     ET.SubElement(
         root,
@@ -151,7 +157,9 @@ def create_analog_command(
 
     attributes["CmdOff"] = ""
 
-    attributes["Analog"] = "true"
+    attributes["Analog"] = (
+        "true"
+    )
 
     ET.SubElement(
         root,
@@ -165,12 +173,16 @@ def get_command_title(
     capability_id: str,
     capability: dict[str, Any],
 ) -> str:
-    loxone_name = capability.get(
-        "loxone_name"
+    loxone_name = (
+        capability.get(
+            "loxone_name"
+        )
     )
 
     if loxone_name:
-        return str(loxone_name)
+        return str(
+            loxone_name
+        )
 
     title = capability.get(
         "title"
@@ -192,8 +204,10 @@ def get_setable_capability(
     capability_id: str,
     expected_type: str,
 ) -> dict[str, Any] | None:
-    capability = capabilities.get(
-        capability_id
+    capability = (
+        capabilities.get(
+            capability_id
+        )
     )
 
     if not isinstance(
@@ -203,13 +217,17 @@ def get_setable_capability(
         return None
 
     if (
-        capability.get("setable")
+        capability.get(
+            "setable"
+        )
         is not True
     ):
         return None
 
     if (
-        capability.get("type")
+        capability.get(
+            "type"
+        )
         != expected_type
     ):
         return None
@@ -219,7 +237,10 @@ def get_setable_capability(
     )
 
     if (
-        not isinstance(key, str)
+        not isinstance(
+            key,
+            str,
+        )
         or not key
     ):
         return None
@@ -230,21 +251,28 @@ def get_setable_capability(
 def get_base_key(
     capabilities: dict[str, Any],
 ) -> str | None:
-    onoff = get_setable_capability(
-        capabilities,
-        "onoff",
-        "boolean",
+    onoff = (
+        get_setable_capability(
+            capabilities,
+            "onoff",
+            "boolean",
+        )
     )
 
     if onoff is None:
         return None
 
-    onoff_key = onoff.get(
-        "key"
+    onoff_key = (
+        onoff.get(
+            "key"
+        )
     )
 
     if (
-        not isinstance(onoff_key, str)
+        not isinstance(
+            onoff_key,
+            str,
+        )
         or not onoff_key.endswith(
             "_onoff"
         )
@@ -271,8 +299,13 @@ def enum_has_value(
         return False
 
     return any(
-        isinstance(value, dict)
-        and value.get("id") == enum_id
+        isinstance(
+            value,
+            dict,
+        )
+        and value.get(
+            "id"
+        ) == enum_id
         for value in values
     )
 
@@ -280,28 +313,36 @@ def enum_has_value(
 def get_rgb_command_key(
     capabilities: dict[str, Any],
 ) -> str | None:
-    dim = get_setable_capability(
-        capabilities,
-        "dim",
-        "number",
+    dim = (
+        get_setable_capability(
+            capabilities,
+            "dim",
+            "number",
+        )
     )
 
-    hue = get_setable_capability(
-        capabilities,
-        "light_hue",
-        "number",
+    hue = (
+        get_setable_capability(
+            capabilities,
+            "light_hue",
+            "number",
+        )
     )
 
-    saturation = get_setable_capability(
-        capabilities,
-        "light_saturation",
-        "number",
+    saturation = (
+        get_setable_capability(
+            capabilities,
+            "light_saturation",
+            "number",
+        )
     )
 
-    mode = get_setable_capability(
-        capabilities,
-        "light_mode",
-        "enum",
+    mode = (
+        get_setable_capability(
+            capabilities,
+            "light_mode",
+            "enum",
+        )
     )
 
     if (
@@ -318,35 +359,45 @@ def get_rgb_command_key(
     ):
         return None
 
-    base_key = get_base_key(
-        capabilities
+    base_key = (
+        get_base_key(
+            capabilities
+        )
     )
 
     if base_key is None:
         return None
 
-    return f"{base_key}_rgb"
+    return (
+        f"{base_key}_rgb"
+    )
 
 
 def get_lumitech_command_key(
     capabilities: dict[str, Any],
 ) -> str | None:
-    onoff = get_setable_capability(
-        capabilities,
-        "onoff",
-        "boolean",
+    onoff = (
+        get_setable_capability(
+            capabilities,
+            "onoff",
+            "boolean",
+        )
     )
 
-    dim = get_setable_capability(
-        capabilities,
-        "dim",
-        "number",
+    dim = (
+        get_setable_capability(
+            capabilities,
+            "dim",
+            "number",
+        )
     )
 
-    temperature = get_setable_capability(
-        capabilities,
-        "light_temperature",
-        "number",
+    temperature = (
+        get_setable_capability(
+            capabilities,
+            "light_temperature",
+            "number",
+        )
     )
 
     if (
@@ -356,10 +407,12 @@ def get_lumitech_command_key(
     ):
         return None
 
-    mode = get_setable_capability(
-        capabilities,
-        "light_mode",
-        "enum",
+    mode = (
+        get_setable_capability(
+            capabilities,
+            "light_mode",
+            "enum",
+        )
     )
 
     if (
@@ -371,29 +424,37 @@ def get_lumitech_command_key(
     ):
         return None
 
-    base_key = get_base_key(
-        capabilities
+    base_key = (
+        get_base_key(
+            capabilities
+        )
     )
 
     if base_key is None:
         return None
 
-    return f"{base_key}_lumitech"
+    return (
+        f"{base_key}_lumitech"
+    )
 
 
 def get_dimmer_command_key(
     capabilities: dict[str, Any],
 ) -> str | None:
-    onoff = get_setable_capability(
-        capabilities,
-        "onoff",
-        "boolean",
+    onoff = (
+        get_setable_capability(
+            capabilities,
+            "onoff",
+            "boolean",
+        )
     )
 
-    dim = get_setable_capability(
-        capabilities,
-        "dim",
-        "number",
+    dim = (
+        get_setable_capability(
+            capabilities,
+            "dim",
+            "number",
+        )
     )
 
     if (
@@ -424,14 +485,128 @@ def get_dimmer_command_key(
         if capability is not None:
             return None
 
-    base_key = get_base_key(
-        capabilities
+    base_key = (
+        get_base_key(
+            capabilities
+        )
     )
 
     if base_key is None:
         return None
 
-    return f"{base_key}_dimmer"
+    return (
+        f"{base_key}_dimmer"
+    )
+
+
+def get_rgbw_white_channel_keys(
+    capabilities: dict[str, Any],
+) -> tuple[str, str] | None:
+    # RGB + samostatný white kanál.
+    #
+    # light_mode zde nechceme.
+    #
+    # onoff.whitemode záměrně není
+    # podmínkou ani součástí profilu.
+    #
+    # U testovaného driveru jeho
+    # zapnutí fyzicky vynutí
+    # 100 % bílé.
+
+    light_mode = (
+        get_setable_capability(
+            capabilities,
+            "light_mode",
+            "enum",
+        )
+    )
+
+    if light_mode is not None:
+        return None
+
+    required = [
+        get_setable_capability(
+            capabilities,
+            "onoff",
+            "boolean",
+        ),
+        get_setable_capability(
+            capabilities,
+            "dim",
+            "number",
+        ),
+        get_setable_capability(
+            capabilities,
+            "light_hue",
+            "number",
+        ),
+        get_setable_capability(
+            capabilities,
+            "light_saturation",
+            "number",
+        ),
+        get_setable_capability(
+            capabilities,
+            "dim.white",
+            "number",
+        ),
+    ]
+
+    if any(
+        capability is None
+        for capability in required
+    ):
+        return None
+
+    base_key = (
+        get_base_key(
+            capabilities
+        )
+    )
+
+    if base_key is None:
+        return None
+
+    return (
+        f"{base_key}_rgb",
+        f"{base_key}_white",
+    )
+
+
+def add_synthetic_analog(
+    root: ET.Element,
+    used_keys: set[str],
+    stats: dict[str, int],
+    *,
+    key: str,
+    title: str,
+    stat_name: str,
+    duplicate_label: str,
+) -> None:
+    if key in used_keys:
+        raise RuntimeError(
+            f"Duplicitní "
+            f"{duplicate_label} "
+            f"key: {key}"
+        )
+
+    used_keys.add(
+        key
+    )
+
+    create_analog_command(
+        root=root,
+        title=title,
+        key=key,
+    )
+
+    stats[
+        stat_name
+    ] += 1
+
+    stats[
+        "generated"
+    ] += 1
 
 
 def generate_commands(
@@ -446,6 +621,7 @@ def generate_commands(
         "synthetic_rgb": 0,
         "synthetic_lumitech": 0,
         "synthetic_dimmer": 0,
+        "synthetic_white": 0,
         "unsupported": 0,
         "missing_key": 0,
     }
@@ -480,9 +656,11 @@ def generate_commands(
             )
         )
 
-        capabilities = device.get(
-            "capabilities",
-            {},
+        capabilities = (
+            device.get(
+                "capabilities",
+                {},
+            )
         )
 
         if not isinstance(
@@ -502,13 +680,17 @@ def generate_commands(
                 continue
 
             if (
-                capability.get("setable")
+                capability.get(
+                    "setable"
+                )
                 is not True
             ):
                 continue
 
             capability_type = (
-                capability.get("type")
+                capability.get(
+                    "type"
+                )
             )
 
             if (
@@ -526,7 +708,10 @@ def generate_commands(
             )
 
             if (
-                not isinstance(key, str)
+                not isinstance(
+                    key,
+                    str,
+                )
                 or not key
             ):
                 stats[
@@ -541,12 +726,18 @@ def generate_commands(
                     f"{key}"
                 )
 
-            used_keys.add(key)
+            used_keys.add(
+                key
+            )
 
-            title = get_command_title(
-                device_name,
-                str(capability_id),
-                capability,
+            title = (
+                get_command_title(
+                    device_name,
+                    str(
+                        capability_id
+                    ),
+                    capability,
+                )
             )
 
             if (
@@ -559,12 +750,11 @@ def generate_commands(
                     key=key,
                 )
 
-                stats["boolean"] += 1
+                stats[
+                    "boolean"
+                ] += 1
 
-            elif capability_type in {
-                "number",
-                "enum",
-            }:
+            else:
                 create_analog_command(
                     root=root,
                     title=title,
@@ -575,37 +765,32 @@ def generate_commands(
                     capability_type
                 ] += 1
 
-            stats["generated"] += 1
+            stats[
+                "generated"
+            ] += 1
 
-        rgb_key = get_rgb_command_key(
-            capabilities
+        rgb_key = (
+            get_rgb_command_key(
+                capabilities
+            )
         )
 
         if rgb_key is not None:
-            if rgb_key in used_keys:
-                raise RuntimeError(
-                    "Duplicitní syntetický "
-                    "RGB key: "
-                    f"{rgb_key}"
-                )
-
-            used_keys.add(
-                rgb_key
-            )
-
-            create_analog_command(
-                root=root,
+            add_synthetic_analog(
+                root,
+                used_keys,
+                stats,
+                key=rgb_key,
                 title=(
                     f"{device_name} - RGB"
                 ),
-                key=rgb_key,
+                stat_name=(
+                    "synthetic_rgb"
+                ),
+                duplicate_label=(
+                    "syntetický RGB"
+                ),
             )
-
-            stats[
-                "synthetic_rgb"
-            ] += 1
-
-            stats["generated"] += 1
 
         lumitech_key = (
             get_lumitech_command_key(
@@ -614,30 +799,21 @@ def generate_commands(
         )
 
         if lumitech_key is not None:
-            if lumitech_key in used_keys:
-                raise RuntimeError(
-                    "Duplicitní syntetický "
-                    "Lumitech key: "
-                    f"{lumitech_key}"
-                )
-
-            used_keys.add(
-                lumitech_key
-            )
-
-            create_analog_command(
-                root=root,
+            add_synthetic_analog(
+                root,
+                used_keys,
+                stats,
+                key=lumitech_key,
                 title=(
                     f"{device_name} - Lumitech"
                 ),
-                key=lumitech_key,
+                stat_name=(
+                    "synthetic_lumitech"
+                ),
+                duplicate_label=(
+                    "syntetický Lumitech"
+                ),
             )
-
-            stats[
-                "synthetic_lumitech"
-            ] += 1
-
-            stats["generated"] += 1
 
         dimmer_key = (
             get_dimmer_command_key(
@@ -646,30 +822,65 @@ def generate_commands(
         )
 
         if dimmer_key is not None:
-            if dimmer_key in used_keys:
-                raise RuntimeError(
-                    "Duplicitní syntetický "
-                    "Dimmer key: "
-                    f"{dimmer_key}"
-                )
-
-            used_keys.add(
-                dimmer_key
-            )
-
-            create_analog_command(
-                root=root,
+            add_synthetic_analog(
+                root,
+                used_keys,
+                stats,
+                key=dimmer_key,
                 title=(
                     f"{device_name} - Dimmer"
                 ),
-                key=dimmer_key,
+                stat_name=(
+                    "synthetic_dimmer"
+                ),
+                duplicate_label=(
+                    "syntetický Dimmer"
+                ),
             )
 
-            stats[
-                "synthetic_dimmer"
-            ] += 1
+        rgbw_keys = (
+            get_rgbw_white_channel_keys(
+                capabilities
+            )
+        )
 
-            stats["generated"] += 1
+        if rgbw_keys is not None:
+            (
+                rgbw_rgb_key,
+                rgbw_white_key,
+            ) = rgbw_keys
+
+            add_synthetic_analog(
+                root,
+                used_keys,
+                stats,
+                key=rgbw_rgb_key,
+                title=(
+                    f"{device_name} - RGB"
+                ),
+                stat_name=(
+                    "synthetic_rgb"
+                ),
+                duplicate_label=(
+                    "RGBW RGB"
+                ),
+            )
+
+            add_synthetic_analog(
+                root,
+                used_keys,
+                stats,
+                key=rgbw_white_key,
+                title=(
+                    f"{device_name} - White"
+                ),
+                stat_name=(
+                    "synthetic_white"
+                ),
+                duplicate_label=(
+                    "RGBW White"
+                ),
+            )
 
     return stats
 
@@ -683,17 +894,17 @@ def write_xml(
         exist_ok=True,
     )
 
-    tree = ET.ElementTree(root)
-
     ET.indent(
-        tree,
+        root,
         space="\t",
     )
 
-    xml_body = ET.tostring(
-        root,
-        encoding="utf-8",
-        short_empty_elements=True,
+    xml_body = (
+        ET.tostring(
+            root,
+            encoding="utf-8",
+            short_empty_elements=True,
+        )
     )
 
     declaration = (
@@ -721,7 +932,8 @@ def parse_arguments() -> argparse.Namespace:
         type=Path,
         default=DEFAULT_CONFIG_PATH,
         help=(
-            "Cesta ke config.generated.yaml"
+            "Cesta ke "
+            "config.generated.yaml"
         ),
     )
 
@@ -755,8 +967,8 @@ def parse_arguments() -> argparse.Namespace:
         "--title",
         default="LoxBridge - Homey",
         help=(
-            "Název virtuálního výstupu "
-            "v Loxone Config."
+            "Název virtuálního "
+            "výstupu v Loxone Config."
         ),
     )
 
@@ -764,7 +976,9 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def main() -> None:
-    args = parse_arguments()
+    args = (
+        parse_arguments()
+    )
 
     config = load_config(
         args.config
@@ -796,7 +1010,7 @@ def main() -> None:
     )
 
     print(
-        "UDP adresa: "
+        f"UDP adresa: "
         f"/dev/udp/"
         f"{args.ip}/"
         f"{args.port}"
@@ -837,6 +1051,11 @@ def main() -> None:
     print(
         "Syntetické Dimmer:        "
         f"{stats['synthetic_dimmer']}"
+    )
+
+    print(
+        "Syntetické White:         "
+        f"{stats['synthetic_white']}"
     )
 
     print(
