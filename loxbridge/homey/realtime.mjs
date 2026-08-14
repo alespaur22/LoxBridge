@@ -13,6 +13,10 @@ const SUPPORTED_TYPES = new Set([
 ]);
 
 
+const WHITE_WARM_KELVIN = 2700;
+const WHITE_COLD_KELVIN = 6500;
+
+
 function writeEvent(event) {
   process.stdout.write(
     `${JSON.stringify(event)}\n`,
@@ -329,6 +333,93 @@ function rgbToHomeyHsv(
 }
 
 
+function parseLoxoneLumitech(value) {
+  const numericValue = Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    throw new Error(
+      `Neplatná Lumitech hodnota: ${value}`,
+    );
+  }
+
+  const packedValue = Math.round(numericValue);
+
+  if (
+    packedValue < 0 ||
+    Math.abs(numericValue - packedValue) > 0.01
+  ) {
+    throw new Error(
+      `Lumitech hodnota musí být celé číslo: ${value}`,
+    );
+  }
+
+  const normalized =
+    String(packedValue).padStart(9, '0');
+
+  if (
+    normalized.length !== 9 ||
+    !normalized.startsWith('20')
+  ) {
+    throw new Error(
+      `Neplatný Lumitech formát: ${value}`,
+    );
+  }
+
+  const brightness = Number(
+    normalized.slice(2, 5),
+  );
+
+  const kelvin = Number(
+    normalized.slice(5, 9),
+  );
+
+  if (
+    brightness < 0 ||
+    brightness > 100
+  ) {
+    throw new Error(
+      `Lumitech jas je mimo rozsah 0–100: ${brightness}`,
+    );
+  }
+
+  if (
+    !Number.isFinite(kelvin) ||
+    kelvin <= 0
+  ) {
+    throw new Error(
+      `Neplatná teplota bílé: ${kelvin}`,
+    );
+  }
+
+  return {
+    brightness,
+    kelvin,
+  };
+}
+
+
+function kelvinToHomeyTemperature(
+  kelvin,
+) {
+  const clampedKelvin =
+    Math.min(
+      WHITE_COLD_KELVIN,
+      Math.max(
+        WHITE_WARM_KELVIN,
+        kelvin,
+      ),
+    );
+
+  return (
+    WHITE_COLD_KELVIN -
+    clampedKelvin
+  ) / (
+    WHITE_COLD_KELVIN -
+    WHITE_WARM_KELVIN
+  );
+}
+
+
 async function setTargetValue(
   target,
   value,
@@ -472,6 +563,95 @@ function buildRgbCommandMap(
   }
 
   return rgbCommandMap;
+}
+
+
+function buildLumitechCommandMap(
+  config,
+  commandMap,
+) {
+  const lumitechCommandMap =
+    new Map();
+
+  for (
+    const deviceConfig
+    of config.devices
+  ) {
+    const onoff =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'onoff',
+        commandMap,
+      );
+
+    const dim =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'dim',
+        commandMap,
+      );
+
+    const temperature =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_temperature',
+        commandMap,
+      );
+
+    const mode =
+      getConfiguredCommandTarget(
+        deviceConfig,
+        'light_mode',
+        commandMap,
+      );
+
+    if (
+      !onoff ||
+      !dim ||
+      !temperature ||
+      !mode
+    ) {
+      continue;
+    }
+
+    const rawOnOff =
+      deviceConfig.capabilities?.onoff;
+
+    const onoffConfig =
+      parseCapability(
+        'onoff',
+        rawOnOff,
+      );
+
+    const onoffKey =
+      onoffConfig?.key;
+
+    if (
+      typeof onoffKey !== 'string' ||
+      !onoffKey.endsWith('_onoff')
+    ) {
+      continue;
+    }
+
+    const baseKey =
+      onoffKey.slice(
+        0,
+        -'_onoff'.length,
+      );
+
+    lumitechCommandMap.set(
+      `${baseKey}_lumitech`,
+      {
+        device: onoff.device,
+        onoff,
+        dim,
+        temperature,
+        mode,
+      },
+    );
+  }
+
+  return lumitechCommandMap;
 }
 
 
@@ -727,6 +907,13 @@ async function main() {
     );
 
 
+  const lumitechCommandMap =
+    buildLumitechCommandMap(
+      config,
+      commandMap,
+    );
+
+
   async function handleRgbCommand(
     command,
     key,
@@ -814,6 +1001,92 @@ async function main() {
   }
 
 
+  async function handleLumitechCommand(
+    command,
+    key,
+    target,
+  ) {
+    const requestId =
+      command.request_id ?? null;
+
+    try {
+      const lumitech =
+        parseLoxoneLumitech(
+          command.value,
+        );
+
+      const dim =
+        lumitech.brightness / 100;
+
+      const temperature =
+        kelvinToHomeyTemperature(
+          lumitech.kelvin,
+        );
+
+      if (dim === 0) {
+        await setTargetValue(
+          target.onoff,
+          false,
+        );
+      } else {
+        await setTargetValue(
+          target.mode,
+          'temperature',
+        );
+
+        await setTargetValue(
+          target.temperature,
+          temperature,
+        );
+
+        await setTargetValue(
+          target.dim,
+          dim,
+        );
+
+        await setTargetValue(
+          target.onoff,
+          true,
+        );
+      }
+
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: true,
+        key,
+        device_name:
+          target.device.name,
+        device_id:
+          target.device.id,
+        capability_id: 'lumitech',
+        homey_value: {
+          brightness:
+            lumitech.brightness,
+          kelvin:
+            lumitech.kelvin,
+          dim,
+          temperature,
+        },
+      });
+
+    } catch (error) {
+      writeEvent({
+        type: 'command_result',
+        request_id: requestId,
+        success: false,
+        key,
+        device_name:
+          target.device.name,
+        capability_id: 'lumitech',
+        message:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
+
+
   async function handleCommand(
     command,
   ) {
@@ -845,6 +1118,19 @@ async function main() {
         command,
         key,
         rgbTarget,
+      );
+
+      return;
+    }
+
+    const lumitechTarget =
+      lumitechCommandMap.get(key);
+
+    if (lumitechTarget) {
+      await handleLumitechCommand(
+        command,
+        key,
+        lumitechTarget,
       );
 
       return;
@@ -914,9 +1200,12 @@ async function main() {
       subscriptions.length,
     commands:
       commandMap.size +
-      rgbCommandMap.size,
+      rgbCommandMap.size +
+      lumitechCommandMap.size,
     synthetic_rgb_commands:
       rgbCommandMap.size,
+    synthetic_lumitech_commands:
+      lumitechCommandMap.size,
     skipped,
     missing,
   });
