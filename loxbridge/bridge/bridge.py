@@ -8,6 +8,10 @@ from typing import Any, TextIO
 
 import yaml
 
+from loxbridge.homey.event_listener import (
+    DEFAULT_LISTEN_PORT as EVENT_LISTEN_PORT,
+    listen_for_homey_events,
+)
 from loxbridge.logger.logger import logger
 from loxbridge.loxone.udp import send_value
 from loxbridge.loxone.udp_listener import (
@@ -35,6 +39,12 @@ class Bridge:
         self.command_stop_event = threading.Event()
 
         self.command_thread: (
+            threading.Thread | None
+        ) = None
+
+        self.event_stop_event = threading.Event()
+
+        self.event_thread: (
             threading.Thread | None
         ) = None
 
@@ -483,6 +493,152 @@ class Bridge:
         self.command_thread.start()
 
     @staticmethod
+    def collect_event_keys(
+        runtime_config: dict[str, Any],
+    ) -> set[str]:
+        result: set[str] = set()
+
+        devices = runtime_config.get(
+            "devices",
+            [],
+        )
+
+        if not isinstance(devices, list):
+            return result
+
+        for device in devices:
+            if not isinstance(device, dict):
+                continue
+
+            loxbridge = device.get("loxbridge")
+
+            if not isinstance(loxbridge, dict):
+                continue
+
+            events = loxbridge.get("events")
+
+            if not isinstance(events, list):
+                continue
+
+            for event in events:
+                if not isinstance(event, dict):
+                    continue
+
+                key = event.get("key")
+
+                if isinstance(key, str) and key:
+                    result.add(key)
+
+        return result
+
+    @staticmethod
+    def send_homey_event_to_loxone(
+        key: str,
+        loxone_ip: str,
+        loxone_port: int,
+    ) -> None:
+        send_value(
+            ip=loxone_ip,
+            port=loxone_port,
+            key=key,
+            value=1,
+        )
+
+        logger.info(
+            "Homey event → Loxone: "
+            f"{key}"
+        )
+
+    def run_event_listener(
+        self,
+        *,
+        trusted_source_ip: str,
+        allowed_keys: set[str],
+        loxone_ip: str,
+        loxone_port: int,
+    ) -> None:
+        try:
+            listen_for_homey_events(
+                trusted_source_ip=trusted_source_ip,
+                allowed_keys=allowed_keys,
+                callback=lambda key: (
+                    self.send_homey_event_to_loxone(
+                        key,
+                        loxone_ip,
+                        loxone_port,
+                    )
+                ),
+                stop_event=self.event_stop_event,
+                listen_port=EVENT_LISTEN_PORT,
+            )
+        except OSError as error:
+            logger.error(
+                "Homey event HTTP listener selhal: "
+                f"{error}"
+            )
+
+    def start_event_listener(
+        self,
+        *,
+        loxone_ip: str,
+        loxone_port: int,
+    ) -> None:
+        if (
+            self.event_thread is not None
+            and self.event_thread.is_alive()
+        ):
+            return
+
+        runtime_config = self.load_yaml(
+            self.runtime_config_path()
+        )
+
+        allowed_keys = self.collect_event_keys(
+            runtime_config
+        )
+
+        if not allowed_keys:
+            logger.info(
+                "Homey event HTTP listener: "
+                "žádné event vstupy v profilu."
+            )
+            return
+
+        trusted_source_ip = str(
+            self.config.get("homey", {}).get("ip", "")
+        )
+
+        if not trusted_source_ip:
+            raise RuntimeError(
+                "V konfiguraci chybí homey.ip pro event listener."
+            )
+
+        self.event_stop_event.clear()
+
+        self.event_thread = threading.Thread(
+            target=self.run_event_listener,
+            kwargs={
+                "trusted_source_ip": trusted_source_ip,
+                "allowed_keys": allowed_keys,
+                "loxone_ip": loxone_ip,
+                "loxone_port": loxone_port,
+            },
+            daemon=True,
+        )
+
+        self.event_thread.start()
+
+    def stop_event_listener(
+        self,
+    ) -> None:
+        self.event_stop_event.set()
+
+        if self.event_thread is None:
+            return
+
+        self.event_thread.join(timeout=2)
+
+    @staticmethod
     def process_event(
         event: dict,
         loxone_ip: str,
@@ -679,6 +835,11 @@ class Bridge:
 
         self.start_command_listener()
 
+        self.start_event_listener(
+            loxone_ip=loxone_ip,
+            loxone_port=loxone_port,
+        )
+
         assert (
             self.process.stdout
             is not None
@@ -869,6 +1030,8 @@ class Bridge:
             )
 
         finally:
+            self.stop_event_listener()
+
             self.stop_command_listener()
 
             self.stop_helper()

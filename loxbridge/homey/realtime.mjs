@@ -6,6 +6,7 @@ import { HomeyAPI } from 'homey-api';
 import YAML from 'yaml';
 
 const SUPPORTED_TYPES = new Set(['boolean', 'number', 'enum']);
+const REQUIRED_PROFILE_SCHEMA_VERSION = 2;
 const WHITE_WARM_KELVIN = 2700;
 const WHITE_COLD_KELVIN = 6500;
 const LIGHT_MERGE_DELAY_MS = 120;
@@ -33,6 +34,16 @@ async function loadConfig(configPath) {
 
   if (!Array.isArray(config.devices)) {
     throw new Error('V konfiguraci chybí devices.');
+  }
+
+  if (
+    Number(config?.loxbridge?.schema_version) !==
+    REQUIRED_PROFILE_SCHEMA_VERSION
+  ) {
+    throw new Error(
+      'config.generated.yaml používá staré schéma. ' +
+      'Spusť znovu: python -m loxbridge.generate',
+    );
   }
 
   return config;
@@ -469,393 +480,258 @@ function getConfiguredCommandTarget(
   ) ?? null;
 }
 
-function getBaseKey(
+function buildNormalizedInputsBySource(
   deviceConfig,
 ) {
-  const onoffConfig =
-    parseCapability(
-      'onoff',
-      deviceConfig
-        .capabilities?.onoff,
-    );
+  const result = new Map();
 
-  const onoffKey =
-    onoffConfig?.key;
+  const inputs =
+    deviceConfig.loxbridge?.inputs;
 
-  if (
-    typeof onoffKey !== 'string' ||
-    !onoffKey.endsWith(
-      '_onoff',
-    )
-  ) {
-    return null;
+  if (!Array.isArray(inputs)) {
+    return result;
   }
 
-  return onoffKey.slice(
-    0,
-    -'_onoff'.length,
+  for (const input of inputs) {
+    if (
+      !input ||
+      typeof input !== 'object'
+    ) {
+      continue;
+    }
+
+    const sourceCapability =
+      input.source_capability;
+
+    const key = input.key;
+
+    if (
+      typeof sourceCapability !== 'string' ||
+      !sourceCapability ||
+      typeof key !== 'string' ||
+      !key
+    ) {
+      continue;
+    }
+
+    const current =
+      result.get(sourceCapability) ?? [];
+
+    current.push(input);
+    result.set(sourceCapability, current);
+  }
+
+  return result;
+}
+
+function convertNormalizedInput(
+  value,
+  inputConfig,
+) {
+  if (inputConfig.kind === 'binary_threshold') {
+    const numberValue = Number(value);
+
+    if (!Number.isFinite(numberValue)) {
+      throw new Error(
+        `Normalizovaný vstup ${inputConfig.key} ` +
+        `nemá číselnou hodnotu: ${value}`,
+      );
+    }
+
+    const threshold = Number(
+      inputConfig.threshold ?? 0.5,
+    );
+
+    if (!Number.isFinite(threshold)) {
+      throw new Error(
+        `Neplatný threshold pro ${inputConfig.key}.`,
+      );
+    }
+
+    return numberValue >= threshold;
+  }
+
+  throw new Error(
+    `Nepodporovaný normalizovaný vstup: ` +
+    `${inputConfig.kind}`,
   );
 }
 
-function buildRgbCommandMap(
-  config,
-  commandMap,
-) {
-  const result =
-    new Map();
+function emitNormalizedInputEvents({
+  device,
+  capabilityId,
+  sourceValue,
+  initial,
+  normalizedInputsBySource,
+}) {
+  const inputs =
+    normalizedInputsBySource.get(capabilityId);
 
-  for (
-    const deviceConfig
-    of config.devices
-  ) {
-    const onoff =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'onoff',
-        commandMap,
-      );
-
-    const dim =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'dim',
-        commandMap,
-      );
-
-    const hue =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_hue',
-        commandMap,
-      );
-
-    const saturation =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_saturation',
-        commandMap,
-      );
-
-    const mode =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_mode',
-        commandMap,
-      );
-
-    if (
-      !onoff ||
-      !dim ||
-      !hue ||
-      !saturation ||
-      !mode
-    ) {
-      continue;
-    }
-
-    const baseKey =
-      getBaseKey(
-        deviceConfig,
-      );
-
-    if (!baseKey) {
-      continue;
-    }
-
-    result.set(
-      `${baseKey}_rgb`,
-      {
-        device:
-          onoff.device,
-        onoff,
-        dim,
-        hue,
-        saturation,
-        mode,
-      },
-    );
+  if (!inputs) {
+    return;
   }
 
-  return result;
-}
-
-function buildLumitechCommandMap(
-  config,
-  commandMap,
-) {
-  const result =
-    new Map();
-
-  for (
-    const deviceConfig
-    of config.devices
-  ) {
-    const onoff =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'onoff',
-        commandMap,
-      );
-
-    const dim =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'dim',
-        commandMap,
-      );
-
-    const temperature =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_temperature',
-        commandMap,
-      );
-
-    const mode =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_mode',
-        commandMap,
-      );
-
-    if (
-      !onoff ||
-      !dim ||
-      !temperature
-    ) {
-      continue;
+  for (const inputConfig of inputs) {
+    try {
+      writeEvent({
+        type: 'value',
+        initial,
+        device_name: device.name,
+        device_id: device.id,
+        capability_id:
+          `normalized:${inputConfig.key}`,
+        loxone_key: inputConfig.key,
+        value: convertNormalizedInput(
+          sourceValue,
+          inputConfig,
+        ),
+      });
+    } catch (error) {
+      writeEvent({
+        type: 'warning',
+        message:
+          `${device.name} / ${capabilityId} → ` +
+          `${inputConfig.key}: ${error.message}`,
+      });
     }
-
-    const baseKey =
-      getBaseKey(
-        deviceConfig,
-      );
-
-    if (!baseKey) {
-      continue;
-    }
-
-    result.set(
-      `${baseKey}_lumitech`,
-      {
-        device:
-          onoff.device,
-        onoff,
-        dim,
-        temperature,
-        mode,
-      },
-    );
   }
-
-  return result;
 }
 
-function buildDimmerCommandMap(
+function buildProfileCommandMap(
   config,
   commandMap,
 ) {
-  const result =
-    new Map();
+  const result = new Map();
+
+  const stats = {
+    rgb: 0,
+    lumitech: 0,
+    dimmer: 0,
+    white: 0,
+    other: 0,
+  };
 
   for (
     const deviceConfig
     of config.devices
   ) {
-    const onoff =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'onoff',
-        commandMap,
-      );
+    const commands =
+      deviceConfig.loxbridge?.commands;
 
-    const dim =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'dim',
-        commandMap,
-      );
-
-    if (
-      !onoff ||
-      !dim
-    ) {
+    if (!Array.isArray(commands)) {
       continue;
     }
 
-    const advancedIds = [
-      'light_hue',
-      'light_saturation',
-      'light_temperature',
-      'dim.white',
-    ];
+    for (const commandConfig of commands) {
+      if (
+        !commandConfig ||
+        typeof commandConfig !== 'object'
+      ) {
+        continue;
+      }
 
-    const hasAdvancedLight =
-      advancedIds.some(
-        (capabilityId) => {
-          const parsed =
-            parseCapability(
-              capabilityId,
-              deviceConfig
-                .capabilities?.[
-                  capabilityId
-                ],
-            );
+      const key = commandConfig.key;
+      const kind = commandConfig.kind;
+      const targetConfigs = commandConfig.targets;
 
-          return (
-            parsed?.setable ===
-            true
+      if (
+        typeof key !== 'string' ||
+        !key ||
+        typeof kind !== 'string' ||
+        !kind ||
+        !targetConfigs ||
+        typeof targetConfigs !== 'object'
+      ) {
+        continue;
+      }
+
+      const resolvedTargets = {};
+      let targetDevice = null;
+      let valid = true;
+
+      for (
+        const [alias, capabilityId]
+        of Object.entries(targetConfigs)
+      ) {
+        if (
+          typeof capabilityId !== 'string' ||
+          !capabilityId
+        ) {
+          valid = false;
+          break;
+        }
+
+        const target =
+          getConfiguredCommandTarget(
+            deviceConfig,
+            capabilityId,
+            commandMap,
           );
-        },
-      );
 
-    if (hasAdvancedLight) {
-      continue;
+        if (!target) {
+          writeEvent({
+            type: 'warning',
+            message:
+              `${deviceConfig.name} / profil ${kind}: ` +
+              `chybí setable capability ${capabilityId}.`,
+          });
+
+          valid = false;
+          break;
+        }
+
+        resolvedTargets[alias] = target;
+        targetDevice ??= target.device;
+      }
+
+      if (!valid || !targetDevice) {
+        continue;
+      }
+
+      const profileTarget = {
+        device: targetDevice,
+        key,
+        kind,
+        group: commandConfig.group ?? null,
+        options:
+          commandConfig.options ?? {},
+        ...resolvedTargets,
+      };
+
+      if (kind === 'rgb_white_white') {
+        const configuredMasterDim = Number(
+          profileTarget.options?.white_master_dim ??
+          RGBW_WHITE_MASTER_DIM,
+        );
+
+        profileTarget.whiteMasterDim =
+          Number.isFinite(configuredMasterDim)
+            ? configuredMasterDim
+            : RGBW_WHITE_MASTER_DIM;
+      }
+
+      result.set(key, profileTarget);
+
+      if (
+        kind === 'rgb' ||
+        kind === 'rgb_white_rgb'
+      ) {
+        stats.rgb += 1;
+      } else if (kind === 'lumitech') {
+        stats.lumitech += 1;
+      } else if (kind === 'dimmer') {
+        stats.dimmer += 1;
+      } else if (kind === 'rgb_white_white') {
+        stats.white += 1;
+      } else {
+        stats.other += 1;
+      }
     }
-
-    const baseKey =
-      getBaseKey(
-        deviceConfig,
-      );
-
-    if (!baseKey) {
-      continue;
-    }
-
-    result.set(
-      `${baseKey}_dimmer`,
-      {
-        device:
-          onoff.device,
-        onoff,
-        dim,
-      },
-    );
-  }
-
-  return result;
-}
-
-function buildRgbwWhiteChannelMaps(
-  config,
-  commandMap,
-) {
-  const rgb =
-    new Map();
-
-  const white =
-    new Map();
-
-  for (
-    const deviceConfig
-    of config.devices
-  ) {
-    /*
-     * Profil pro zařízení:
-     *
-     * onoff
-     * dim
-     * light_hue
-     * light_saturation
-     * dim.white
-     *
-     * bez light_mode.
-     *
-     * onoff.whitemode záměrně NEPOUŽÍVÁME.
-     * U testovaného driveru fyzicky vynutí
-     * bílou na 100 %, i když dim.white
-     * v Homey zůstává například 0.25.
-     */
-
-    const mode =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_mode',
-        commandMap,
-      );
-
-    if (mode) {
-      continue;
-    }
-
-    const onoff =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'onoff',
-        commandMap,
-      );
-
-    const dim =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'dim',
-        commandMap,
-      );
-
-    const hue =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_hue',
-        commandMap,
-      );
-
-    const saturation =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'light_saturation',
-        commandMap,
-      );
-
-    const whiteDim =
-      getConfiguredCommandTarget(
-        deviceConfig,
-        'dim.white',
-        commandMap,
-      );
-
-    if (
-      !onoff ||
-      !dim ||
-      !hue ||
-      !saturation ||
-      !whiteDim
-    ) {
-      continue;
-    }
-
-    const baseKey =
-      getBaseKey(
-        deviceConfig,
-      );
-
-    if (!baseKey) {
-      continue;
-    }
-
-    const target = {
-      device:
-        onoff.device,
-      onoff,
-      dim,
-      hue,
-      saturation,
-      whiteDim,
-    };
-
-    rgb.set(
-      `${baseKey}_rgb`,
-      target,
-    );
-
-    white.set(
-      `${baseKey}_white`,
-      target,
-    );
   }
 
   return {
-    rgb,
-    white,
+    commands: result,
+    stats,
   };
 }
 
@@ -967,10 +843,12 @@ async function applyMergedLightSnapshot(
       );
     }
 
-    await setTargetValue(
-      target.mode,
-      'color',
-    );
+    if (target.mode) {
+      await setTargetValue(
+        target.mode,
+        'color',
+      );
+    }
 
     await setTargetValue(
       target.hue,
@@ -1251,9 +1129,16 @@ async function applyRgbwSnapshot(
      * protože fyzicky vynutí bílou 100 %.
      */
 
+    const whiteMasterDim =
+      Number.isFinite(
+        Number(target.whiteMasterDim),
+      )
+        ? Number(target.whiteMasterDim)
+        : RGBW_WHITE_MASTER_DIM;
+
     await setTargetValue(
       target.dim,
-      RGBW_WHITE_MASTER_DIM,
+      whiteMasterDim,
     );
 
     await setTargetValue(
@@ -1273,7 +1158,7 @@ async function applyRgbwSnapshot(
       dim:
         whiteDim,
       master_dim:
-        RGBW_WHITE_MASTER_DIM,
+        whiteMasterDim,
     };
   }
 
@@ -1403,6 +1288,11 @@ async function main() {
       deviceConfig
         .capabilities ?? {};
 
+    const normalizedInputsBySource =
+      buildNormalizedInputsBySource(
+        deviceConfig,
+      );
+
     for (
       const [
         capabilityId,
@@ -1480,6 +1370,12 @@ async function main() {
       }
 
       try {
+        const convertedValue =
+          convertValue(
+            capability.value,
+            capabilityConfig,
+          );
+
         writeEvent({
           type: 'value',
           initial: true,
@@ -1492,10 +1388,15 @@ async function main() {
           loxone_key:
             loxoneKey,
           value:
-            convertValue(
-              capability.value,
-              capabilityConfig,
-            ),
+            convertedValue,
+        });
+
+        emitNormalizedInputEvents({
+          device,
+          capabilityId,
+          sourceValue: convertedValue,
+          initial: true,
+          normalizedInputsBySource,
         });
 
       } catch (error) {
@@ -1512,6 +1413,12 @@ async function main() {
             capabilityId,
             (newValue) => {
               try {
+                const convertedValue =
+                  convertValue(
+                    newValue,
+                    capabilityConfig,
+                  );
+
                 writeEvent({
                   type:
                     'value',
@@ -1526,10 +1433,15 @@ async function main() {
                   loxone_key:
                     loxoneKey,
                   value:
-                    convertValue(
-                      newValue,
-                      capabilityConfig,
-                    ),
+                    convertedValue,
+                });
+
+                emitNormalizedInputEvents({
+                  device,
+                  capabilityId,
+                  sourceValue: convertedValue,
+                  initial: false,
+                  normalizedInputsBySource,
                 });
 
               } catch (error) {
@@ -1557,29 +1469,17 @@ async function main() {
     );
   }
 
-  const rgbCommandMap =
-    buildRgbCommandMap(
+  const profileCommandState =
+    buildProfileCommandMap(
       config,
       commandMap,
     );
 
-  const lumitechCommandMap =
-    buildLumitechCommandMap(
-      config,
-      commandMap,
-    );
+  const profileCommandMap =
+    profileCommandState.commands;
 
-  const dimmerCommandMap =
-    buildDimmerCommandMap(
-      config,
-      commandMap,
-    );
-
-  const rgbwMaps =
-    buildRgbwWhiteChannelMaps(
-      config,
-      commandMap,
-    );
+  const profileCommandStats =
+    profileCommandState.stats;
 
   const mergedLightStates =
     new Map();
@@ -2151,77 +2051,61 @@ async function main() {
       return;
     }
 
-    const rgbTarget =
-      rgbCommandMap.get(
+    const profileTarget =
+      profileCommandMap.get(
         key,
       );
 
-    if (rgbTarget) {
-      await handleRgbCommand(
-        command,
-        key,
-        rgbTarget,
-      );
-
-      return;
-    }
-
-    const lumitechTarget =
-      lumitechCommandMap.get(
-        key,
-      );
-
-    if (lumitechTarget) {
-      await handleLumitechCommand(
-        command,
-        key,
-        lumitechTarget,
-      );
-
-      return;
-    }
-
-    const dimmerTarget =
-      dimmerCommandMap.get(
-        key,
-      );
-
-    if (dimmerTarget) {
-      await handleDimmerCommand(
-        command,
-        key,
-        dimmerTarget,
-      );
-
-      return;
-    }
-
-    const rgbwRgbTarget =
-      rgbwMaps.rgb.get(
-        key,
-      );
-
-    if (rgbwRgbTarget) {
-      await handleRgbwRgbCommand(
-        command,
-        key,
-        rgbwRgbTarget,
-      );
-
-      return;
-    }
-
-    const rgbwWhiteTarget =
-      rgbwMaps.white.get(
-        key,
-      );
-
-    if (rgbwWhiteTarget) {
-      await handleRgbwWhiteCommand(
-        command,
-        key,
-        rgbwWhiteTarget,
-      );
+    if (profileTarget) {
+      if (profileTarget.kind === 'rgb') {
+        await handleRgbCommand(
+          command,
+          key,
+          profileTarget,
+        );
+      } else if (
+        profileTarget.kind === 'lumitech'
+      ) {
+        await handleLumitechCommand(
+          command,
+          key,
+          profileTarget,
+        );
+      } else if (
+        profileTarget.kind === 'dimmer'
+      ) {
+        await handleDimmerCommand(
+          command,
+          key,
+          profileTarget,
+        );
+      } else if (
+        profileTarget.kind === 'rgb_white_rgb'
+      ) {
+        await handleRgbwRgbCommand(
+          command,
+          key,
+          profileTarget,
+        );
+      } else if (
+        profileTarget.kind === 'rgb_white_white'
+      ) {
+        await handleRgbwWhiteCommand(
+          command,
+          key,
+          profileTarget,
+        );
+      } else {
+        writeEvent({
+          type: 'command_result',
+          request_id: requestId,
+          success: false,
+          key,
+          message:
+            `Nepodporovaný profilový příkaz: ` +
+            `${profileTarget.kind}`,
+        });
+      }
 
       return;
     }
@@ -2297,24 +2181,22 @@ async function main() {
 
     commands:
       commandMap.size +
-      rgbCommandMap.size +
-      lumitechCommandMap.size +
-      dimmerCommandMap.size +
-      rgbwMaps.rgb.size +
-      rgbwMaps.white.size,
+      profileCommandMap.size,
 
     synthetic_rgb_commands:
-      rgbCommandMap.size +
-      rgbwMaps.rgb.size,
+      profileCommandStats.rgb,
 
     synthetic_lumitech_commands:
-      lumitechCommandMap.size,
+      profileCommandStats.lumitech,
 
     synthetic_dimmer_commands:
-      dimmerCommandMap.size,
+      profileCommandStats.dimmer,
 
     synthetic_white_commands:
-      rgbwMaps.white.size,
+      profileCommandStats.white,
+
+    synthetic_other_commands:
+      profileCommandStats.other,
 
     skipped,
     missing,

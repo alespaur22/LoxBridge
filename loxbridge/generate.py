@@ -11,6 +11,10 @@ import yaml
 from loxbridge.addon.translations import (
     get_capability_title,
 )
+from loxbridge.profiles import (
+    PROFILE_SCHEMA_VERSION,
+    build_device_manifest,
+)
 
 
 PROJECT_ROOT = (
@@ -624,8 +628,17 @@ def generate_devices(
         ] = {
             "name": device_name,
             "slug": device_slug,
+            "homey_class": device.get("class"),
+            "driver_id": device.get("driver_id"),
+            "zone_name": device.get("zone_name"),
             "capabilities": (
                 generated_capabilities
+            ),
+            "loxbridge": build_device_manifest(
+                exported_device=device,
+                device_name=device_name,
+                device_slug=device_slug,
+                capabilities=generated_capabilities,
             ),
         }
 
@@ -701,6 +714,9 @@ def build_generated_config(
     )
 
     generated_config = {
+        "loxbridge": {
+            "schema_version": PROFILE_SCHEMA_VERSION,
+        },
         "homey": (
             homey_config
         ),
@@ -822,6 +838,30 @@ def main() -> None:
         "Capabilities:           "
         f"{capability_count}"
     )
+
+    profile_counts = Counter(
+        str(
+            device.get(
+                "loxbridge", {}
+            ).get(
+                "profile",
+                "generic",
+            )
+        )
+        for device in generated_config["devices"]
+        if isinstance(device, dict)
+    )
+
+    print()
+    print("Profily:")
+
+    for profile_id, count in sorted(
+        profile_counts.items()
+    ):
+        print(
+            f"  {profile_id:<28} "
+            f"{count}"
+        )
 
     print()
 
