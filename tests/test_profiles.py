@@ -111,6 +111,7 @@ class ProfileEngineTests(unittest.TestCase):
         profile = self.profile("LED Obývák")
 
         self.assertEqual(profile["inputs"], [])
+
         self.assertEqual(
             profile["suppress_raw_inputs"],
             [
@@ -120,15 +121,28 @@ class ProfileEngineTests(unittest.TestCase):
                 "measure_voltage.input4",
             ],
         )
+
+        # Fyzicky používáme pouze Input 1.
         self.assertEqual(
             len(profile["events"]),
-            20,
+            5,
         )
 
         by_key = {
             event["key"]: event
             for event in profile["events"]
         }
+
+        self.assertEqual(
+            set(by_key),
+            {
+                "led_obyvak_input_1_press_1x",
+                "led_obyvak_input_1_press_2x",
+                "led_obyvak_input_1_press_3x",
+                "led_obyvak_input_1_hold",
+                "led_obyvak_input_1_release",
+            },
+        )
 
         press_1x = by_key[
             "led_obyvak_input_1_press_1x"
@@ -146,7 +160,11 @@ class ProfileEngineTests(unittest.TestCase):
             "led_obyvak_input_1_release"
         ]
 
-        self.assertEqual(press_1x["kind"], "pulse")
+        self.assertEqual(
+            press_1x["kind"],
+            "pulse",
+        )
+
         self.assertEqual(
             press_1x["trigger"]["args"],
             {
@@ -154,28 +172,112 @@ class ProfileEngineTests(unittest.TestCase):
                 "scene": "Key Pressed 1 time",
             },
         )
+
         self.assertEqual(
             press_2x["trigger"]["args"]["scene"],
             "Key Pressed 2 times",
         )
+
         self.assertEqual(
             press_3x["trigger"]["args"]["scene"],
             "Key Pressed 3 times",
         )
+
         self.assertEqual(
             hold["trigger"]["args"]["scene"],
             "Key Held Down",
         )
+
         self.assertEqual(
             release["trigger"]["args"]["scene"],
             "Key Released",
         )
+
         self.assertTrue(
             press_1x["trigger"]["card_id"].endswith(
                 ":FGRGBWM-442:scene"
             )
         )
 
+    def test_shelly_rgbw_input_1_becomes_events(self) -> None:
+        profile = self.profile("LED Koupelna")
+
+        self.assertEqual(
+            len(profile["events"]),
+            4,
+        )
+
+        by_key = {
+            event["key"]: event
+            for event in profile["events"]
+        }
+
+        self.assertEqual(
+            set(by_key),
+            {
+                "led_koupelna_input_1_press_1x",
+                "led_koupelna_input_1_press_2x",
+                "led_koupelna_input_1_press_3x",
+                "led_koupelna_input_1_hold",
+            },
+        )
+
+        press_1x = by_key[
+            "led_koupelna_input_1_press_1x"
+        ]
+        press_2x = by_key[
+            "led_koupelna_input_1_press_2x"
+        ]
+        press_3x = by_key[
+            "led_koupelna_input_1_press_3x"
+        ]
+        hold = by_key[
+            "led_koupelna_input_1_hold"
+        ]
+
+        self.assertEqual(
+            press_1x["trigger"]["args"],
+            {
+                "action": {
+                    "id": 0,
+                    "name": "Single Push 1",
+                    "action": "single_push_1",
+                },
+            },
+        )
+
+        self.assertEqual(
+            press_2x["trigger"]["args"]["action"],
+            {
+                "id": 2,
+                "name": "Double Push 1",
+                "action": "double_push_1",
+            },
+        )
+
+        self.assertEqual(
+            press_3x["trigger"]["args"]["action"],
+            {
+                "id": 3,
+                "name": "Triple Push 1",
+                "action": "triple_push_1",
+            },
+        )
+
+        self.assertEqual(
+            hold["trigger"]["args"]["action"],
+            {
+                "id": 1,
+                "name": "Long Push 1",
+                "action": "long_push_1",
+            },
+        )
+
+        self.assertTrue(
+            press_1x["trigger"]["card_id"].endswith(
+                ":triggerActionEvent"
+            )
+        )
 
     def test_all_profile_targets_exist_and_are_setable(self) -> None:
         for device in self.devices:
@@ -189,33 +291,56 @@ class ProfileEngineTests(unittest.TestCase):
                         command=command["key"],
                         capability=capability_id,
                     ):
-                        self.assertIn(capability_id, capabilities)
+                        self.assertIn(
+                            capability_id,
+                            capabilities,
+                        )
                         self.assertTrue(
-                            capabilities[capability_id]["setable"]
+                            capabilities[
+                                capability_id
+                            ]["setable"]
                         )
 
             for normalized in profile["inputs"]:
-                source = normalized["source_capability"]
+                source = normalized[
+                    "source_capability"
+                ]
+
                 with self.subTest(
                     device=device["name"],
                     source=source,
                 ):
-                    self.assertIn(source, capabilities)
+                    self.assertIn(
+                        source,
+                        capabilities,
+                    )
 
-            for event in profile.get("events", []):
+            for event in profile.get(
+                "events",
+                [],
+            ):
                 with self.subTest(
                     device=device["name"],
                     event=event["key"],
                 ):
-                    self.assertEqual(event["kind"], "pulse")
-                    self.assertIn("card_id", event["trigger"])
+                    self.assertEqual(
+                        event["kind"],
+                        "pulse",
+                    )
+                    self.assertIn(
+                        "card_id",
+                        event["trigger"],
+                    )
                     self.assertIsInstance(
-                        event["trigger"].get("args"),
+                        event["trigger"].get(
+                            "args"
+                        ),
                         dict,
                     )
 
     def test_ac_profile(self) -> None:
         profile = self.profile("AC Obývák")
+
         self.assertEqual(
             profile["profile"],
             "climate.ac",

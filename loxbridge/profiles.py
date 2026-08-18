@@ -32,6 +32,50 @@ FIBARO_SCENE_EVENTS = (
 )
 
 
+# Shelly RGBW (Gen2/Plus) publikuje tlačítkové události přes Flow
+# trigger "Action event". U našeho RGBW zapojení je fyzicky použit
+# pouze Input 1.
+SHELLY_RGBW_DRIVER = "homey:app:cloud.shelly:shelly"
+
+SHELLY_RGBW_ACTION_EVENTS = (
+    (
+        "press_1x",
+        "Press 1x",
+        0,
+        "Single Push 1",
+        "single_push_1",
+    ),
+    (
+        "press_2x",
+        "Press 2x",
+        2,
+        "Double Push 1",
+        "double_push_1",
+    ),
+    (
+        "press_3x",
+        "Press 3x",
+        3,
+        "Triple Push 1",
+        "triple_push_1",
+    ),
+    (
+        "hold",
+        "Hold",
+        1,
+        "Long Push 1",
+        "long_push_1",
+    ),
+)
+
+SHELLY_RGBW_EVENT_CAPABILITIES = {
+    "dim.white",
+    "light_hue",
+    "light_saturation",
+    "onoff.whitemode",
+}
+
+
 def _capability(
     capabilities: dict[str, dict[str, Any]],
     capability_id: str,
@@ -91,6 +135,18 @@ def _enum_has_value(
         isinstance(value, dict)
         and value.get("id") == value_id
         for value in values
+    )
+
+
+def _is_shelly_rgbw_event_device(
+    driver_id: str,
+    capabilities: dict[str, dict[str, Any]],
+) -> bool:
+    if driver_id != SHELLY_RGBW_DRIVER:
+        return False
+
+    return SHELLY_RGBW_EVENT_CAPABILITIES.issubset(
+        capabilities
     )
 
 
@@ -454,9 +510,6 @@ def build_event_inputs(
         exported_device.get("driver_id") or ""
     )
 
-    if driver_id != FIBARO_RGBW_SCENE_DRIVER:
-        return events, suppress_raw_inputs
-
     homey_id = str(
         exported_device.get("id") or ""
     )
@@ -464,42 +517,61 @@ def build_event_inputs(
     if not homey_id:
         return events, suppress_raw_inputs
 
-    matches: list[tuple[int, str]] = []
+    if driver_id == FIBARO_RGBW_SCENE_DRIVER:
+        matches: list[tuple[int, str]] = []
 
-    for capability_id, capability in capabilities.items():
-        if capability.get("type") != "number":
-            continue
+        for capability_id, capability in capabilities.items():
+            if capability.get("type") != "number":
+                continue
 
-        match = INPUT_BANK_CAPABILITY_RE.match(
-            capability_id
-        )
-
-        if not match:
-            continue
-
-        matches.append(
-            (
-                int(match.group("index")),
-                capability_id,
+            match = INPUT_BANK_CAPABILITY_RE.match(
+                capability_id
             )
+
+            if not match:
+                continue
+
+            matches.append(
+                (
+                    int(match.group("index")),
+                    capability_id,
+                )
+            )
+
+        # V NORMAL režimu nechceme zobrazovat surové napěťové
+        # vstupy Fibara. V RAW/DEBUG režimu zůstávají dostupné.
+        suppress_raw_inputs.extend(
+            source_capability
+            for _, source_capability in sorted(matches)
         )
 
-    trigger_card_id = (
-        f"homey:device:{homey_id}:"
-        "FGRGBWM-442:scene"
-    )
+        # V aktuálních instalacích LoxBridge je fyzicky používán
+        # pouze Input 1. Inputy 2-4 proto negenerují eventy.
+        has_input_1 = any(
+            index == 1
+            for index, _ in matches
+        )
 
-    for index, source_capability in sorted(matches):
-        suppress_raw_inputs.append(source_capability)
+        if not has_input_1:
+            return events, suppress_raw_inputs
 
-        for event_id, event_title, scene_id in FIBARO_SCENE_EVENTS:
+        trigger_card_id = (
+            f"homey:device:{homey_id}:"
+            "FGRGBWM-442:scene"
+        )
+
+        for (
+            event_id,
+            event_title,
+            scene_id,
+        ) in FIBARO_SCENE_EVENTS:
             events.append(
                 {
                     "key": (
-                        f"{device_slug}_input_{index}_{event_id}"
+                        f"{device_slug}_input_1_{event_id}"
                     ),
                     "title": (
-                        f"{device_name} - Input {index} - "
+                        f"{device_name} - Input 1 - "
                         f"{event_title}"
                     ),
                     "kind": "pulse",
@@ -507,8 +579,50 @@ def build_event_inputs(
                     "trigger": {
                         "card_id": trigger_card_id,
                         "args": {
-                            "input": str(index),
+                            "input": "1",
                             "scene": scene_id,
+                        },
+                    },
+                }
+            )
+
+        return events, suppress_raw_inputs
+
+    if _is_shelly_rgbw_event_device(
+        driver_id,
+        capabilities,
+    ):
+        trigger_card_id = (
+            f"homey:device:{homey_id}:"
+            "triggerActionEvent"
+        )
+
+        for (
+            event_id,
+            event_title,
+            action_id,
+            action_name,
+            action_value,
+        ) in SHELLY_RGBW_ACTION_EVENTS:
+            events.append(
+                {
+                    "key": (
+                        f"{device_slug}_input_1_{event_id}"
+                    ),
+                    "title": (
+                        f"{device_name} - Input 1 - "
+                        f"{event_title}"
+                    ),
+                    "kind": "pulse",
+                    "type": "event",
+                    "trigger": {
+                        "card_id": trigger_card_id,
+                        "args": {
+                            "action": {
+                                "id": action_id,
+                                "name": action_name,
+                                "action": action_value,
+                            },
                         },
                     },
                 }
