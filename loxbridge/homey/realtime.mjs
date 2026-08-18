@@ -6,7 +6,7 @@ import { HomeyAPI } from 'homey-api';
 import YAML from 'yaml';
 
 const SUPPORTED_TYPES = new Set(['boolean', 'number', 'enum']);
-const REQUIRED_PROFILE_SCHEMA_VERSION = 2;
+const REQUIRED_PROFILE_SCHEMA_VERSION = 4;
 const WHITE_WARM_KELVIN = 2700;
 const WHITE_COLD_KELVIN = 6500;
 const LIGHT_MERGE_DELAY_MS = 120;
