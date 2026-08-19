@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 
-PROFILE_SCHEMA_VERSION = 4
+PROFILE_SCHEMA_VERSION = 5
 
 RGBW_WHITE_MASTER_DIM = 0.01
 
@@ -74,6 +74,22 @@ SHELLY_RGBW_EVENT_CAPABILITIES = {
     "light_saturation",
     "onoff.whitemode",
 }
+
+
+# Aeotec Pico Duo Switch (ZGA003) publikuje fyzické vstupy přes
+# Flow trigger "A switch action occurred". Homey reprezentuje jeden
+# fyzický Duo modul více zařízeními; switch-action je dostupný na
+# hlavním endpointu, který v naší instalaci poznáme podle capability
+# measure_voltage. Tento endpoint nese události pro Switch 1 i Switch 2.
+AEOTEC_PICO_DUO_DRIVER = "homey:app:com.aeotec:ZGA003"
+
+AEOTEC_PICO_DUO_EVENT_CAPABILITY = "measure_voltage"
+
+AEOTEC_SWITCH_EVENTS = (
+    ("press_1x", "Press 1x", "pressed"),
+    ("hold", "Hold", "held"),
+    ("release", "Release", "released"),
+)
 
 
 def _capability(
@@ -147,6 +163,19 @@ def _is_shelly_rgbw_event_device(
 
     return SHELLY_RGBW_EVENT_CAPABILITIES.issubset(
         capabilities
+    )
+
+
+def _is_aeotec_pico_duo_event_device(
+    driver_id: str,
+    capabilities: dict[str, dict[str, Any]],
+) -> bool:
+    if driver_id != AEOTEC_PICO_DUO_DRIVER:
+        return False
+
+    return (
+        AEOTEC_PICO_DUO_EVENT_CAPABILITY
+        in capabilities
     )
 
 
@@ -627,6 +656,49 @@ def build_event_inputs(
                     },
                 }
             )
+
+        return events, suppress_raw_inputs
+
+    if _is_aeotec_pico_duo_event_device(
+        driver_id,
+        capabilities,
+    ):
+        trigger_card_id = (
+            f"homey:device:{homey_id}:"
+            "switch-action"
+        )
+
+        for input_index, switch_id in (
+            (1, "sw1"),
+            (2, "sw2"),
+        ):
+            for (
+                event_id,
+                event_title,
+                action_id,
+            ) in AEOTEC_SWITCH_EVENTS:
+                events.append(
+                    {
+                        "key": (
+                            f"{device_slug}_input_"
+                            f"{input_index}_{event_id}"
+                        ),
+                        "title": (
+                            f"{device_name} - Input "
+                            f"{input_index} - "
+                            f"{event_title}"
+                        ),
+                        "kind": "pulse",
+                        "type": "event",
+                        "trigger": {
+                            "card_id": trigger_card_id,
+                            "args": {
+                                "switch": switch_id,
+                                "action": action_id,
+                            },
+                        },
+                    }
+                )
 
     return events, suppress_raw_inputs
 

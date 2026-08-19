@@ -120,12 +120,12 @@ class XmlGeneratorTests(unittest.TestCase):
         # + Shelly Koupelna 4.
         self.assertEqual(
             stats["events"],
-            14,
+            26,
         )
 
         self.assertEqual(
             stats["generated"],
-            287,
+            299,
         )
 
         commands = root.findall(

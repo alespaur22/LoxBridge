@@ -279,6 +279,143 @@ class ProfileEngineTests(unittest.TestCase):
             )
         )
 
+    def test_aeotec_pico_duo_becomes_events(self) -> None:
+        main_profile = self.profile(
+            "Bodovky Obývak"
+        )
+        secondary_profile = self.profile(
+            "Lustr Obývak"
+        )
+
+        self.assertEqual(
+            len(main_profile["events"]),
+            6,
+        )
+        self.assertEqual(
+            len(secondary_profile["events"]),
+            0,
+        )
+
+        by_key = {
+            event["key"]: event
+            for event in main_profile["events"]
+        }
+
+        self.assertEqual(
+            set(by_key),
+            {
+                "bodovky_obyvak_input_1_press_1x",
+                "bodovky_obyvak_input_1_hold",
+                "bodovky_obyvak_input_1_release",
+                "bodovky_obyvak_input_2_press_1x",
+                "bodovky_obyvak_input_2_hold",
+                "bodovky_obyvak_input_2_release",
+            },
+        )
+
+        self.assertEqual(
+            by_key[
+                "bodovky_obyvak_input_1_press_1x"
+            ]["trigger"]["args"],
+            {
+                "switch": "sw1",
+                "action": "pressed",
+            },
+        )
+
+        self.assertEqual(
+            by_key[
+                "bodovky_obyvak_input_1_hold"
+            ]["trigger"]["args"],
+            {
+                "switch": "sw1",
+                "action": "held",
+            },
+        )
+
+        self.assertEqual(
+            by_key[
+                "bodovky_obyvak_input_1_release"
+            ]["trigger"]["args"],
+            {
+                "switch": "sw1",
+                "action": "released",
+            },
+        )
+
+        self.assertEqual(
+            by_key[
+                "bodovky_obyvak_input_2_press_1x"
+            ]["trigger"]["args"],
+            {
+                "switch": "sw2",
+                "action": "pressed",
+            },
+        )
+
+        self.assertEqual(
+            by_key[
+                "bodovky_obyvak_input_2_hold"
+            ]["trigger"]["args"],
+            {
+                "switch": "sw2",
+                "action": "held",
+            },
+        )
+
+        self.assertEqual(
+            by_key[
+                "bodovky_obyvak_input_2_release"
+            ]["trigger"]["args"],
+            {
+                "switch": "sw2",
+                "action": "released",
+            },
+        )
+
+        for event in main_profile["events"]:
+            self.assertTrue(
+                event["trigger"]["card_id"].endswith(
+                    ":switch-action"
+                )
+            )
+
+        # Druhý fyzický Pico Duo musí mít stejnou strukturu:
+        # hlavní endpoint Světlo Vchod nese oba vstupy,
+        # sekundární Pico Duo Switch (2) žádné eventy.
+        second_main = self.profile(
+            "Světlo Vchod"
+        )
+        second_secondary = self.profile(
+            "Pico Duo Switch (2)"
+        )
+
+        self.assertEqual(
+            len(second_main["events"]),
+            6,
+        )
+        self.assertEqual(
+            len(second_secondary["events"]),
+            0,
+        )
+
+        second_keys = {
+            event["key"]
+            for event in second_main["events"]
+        }
+
+        self.assertEqual(
+            second_keys,
+            {
+                "svetlo_vchod_input_1_press_1x",
+                "svetlo_vchod_input_1_hold",
+                "svetlo_vchod_input_1_release",
+                "svetlo_vchod_input_2_press_1x",
+                "svetlo_vchod_input_2_hold",
+                "svetlo_vchod_input_2_release",
+            },
+        )
+
     def test_all_profile_targets_exist_and_are_setable(self) -> None:
         for device in self.devices:
             capabilities = device["capabilities"]
