@@ -59,20 +59,25 @@ LED Koupelna
 
 `realtime.mjs` ani XML generátor už nemusí znovu poznávat konkrétní typ světla.
 
-## Normalizované vstupy
+## Normalizované vstupy (aktuálně neaktivní)
 
-Profile Engine může z raw Homey capability vytvořit logický Loxone vstup.
-První podporovaná transformace je `binary_threshold`.
+Profile Engine má mechanismus, který by uměl z raw Homey capability vytvořit
+logický Loxone vstup — transformaci `binary_threshold` (`convertNormalizedInput`
+v `realtime.mjs`, threshold výchozně 0.5). `build_normalized_inputs()` v
+`loxbridge/profiles.py` ale dnes vždy vrací prázdný seznam a v
+`config.generated.yaml` je aktuálně **0 normalizovaných vstupů**.
 
-U testovaného Fibaro RGBW driveru jsou například:
+Případ, který tuhle transformaci původně motivoval — Fibaro RGBW Controller 2,
+`measure_voltage.input1..4` → `led_obyvak_input_1..4` jako 0/1 stav — je dnes
+řešený jinak: přes eventy (`build_event_inputs()`, viz
+[docs/04_event_bridge.md](04_event_bridge.md)), ne přes normalizovaný stav.
+Raw `measure_voltage.*` capability je u tohoto driveru v NORMAL XML potlačená
+(`suppress_raw_inputs`), takže tam dnes není ani raw, ani normalizovaná
+podoba — jen impulsní eventy.
 
-```text
-measure_voltage.input1 → led_obyvak_input_1
-measure_voltage.input2 → led_obyvak_input_2
-```
-
-V režimu `normal` je raw analogový vstup v XML nahrazen normalizovaným stavem
-0/1. Runtime stále může posílat raw hodnotu, takže diagnostika zůstává možná.
+`binary_threshold` kód (Python i `realtime.mjs`) v repozitáři zůstává, takže
+jde o mechanismus, který lze znovu zapojit voláním `build_normalized_inputs()`
+s reálnou logikou, ne o smazanou funkci.
 
 ## Generování vstupů
 

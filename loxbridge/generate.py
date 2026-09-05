@@ -1,7 +1,5 @@
 import json
-import re
 import sys
-import unicodedata
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -11,10 +9,18 @@ import yaml
 from loxbridge.addon.translations import (
     get_capability_title,
 )
+from loxbridge.capability_filter import (
+    should_include_capability,
+)
+from loxbridge.instances import (
+    DEFAULT_INSTANCES_DIR,
+    load_all_instances,
+)
 from loxbridge.profiles import (
     PROFILE_SCHEMA_VERSION,
     build_device_manifest,
 )
+from loxbridge.slug import slugify
 
 
 PROJECT_ROOT = (
@@ -38,24 +44,6 @@ GENERATED_CONFIG_PATH = (
     / "config"
     / "config.generated.yaml"
 )
-
-
-SUPPORTED_TYPES = {
-    "boolean",
-    "number",
-    "enum",
-    "string",
-}
-
-
-IGNORED_CAPABILITY_PREFIXES = (
-    "devicecapabilities_",
-)
-
-
-IGNORED_CAPABILITIES = {
-    "button",
-}
 
 
 # Speciální mapování Homey enumů
@@ -98,42 +86,6 @@ LOXONE_ENUM_MAPPINGS: dict[
         "High": 7,
     },
 }
-
-
-def slugify(
-    value: str,
-) -> str:
-    normalized = unicodedata.normalize(
-        "NFKD",
-        value,
-    )
-
-    ascii_value = (
-        normalized
-        .encode(
-            "ascii",
-            "ignore",
-        )
-        .decode("ascii")
-    )
-
-    ascii_value = ascii_value.lower()
-
-    slug = re.sub(
-        r"[^a-z0-9]+",
-        "_",
-        ascii_value,
-    )
-
-    slug = re.sub(
-        r"_+",
-        "_",
-        slug,
-    )
-
-    slug = slug.strip("_")
-
-    return slug or "device"
 
 
 def load_yaml(
@@ -223,52 +175,6 @@ def load_export(
         )
 
     return data
-
-
-def should_include_capability(
-    capability: dict[str, Any],
-) -> bool:
-    capability_id = str(
-        capability.get(
-            "id",
-            "",
-        )
-    )
-
-    capability_type = (
-        capability.get(
-            "type"
-        )
-    )
-
-    getable = capability.get(
-        "getable"
-    )
-
-    if not capability_id:
-        return False
-
-    if getable is not True:
-        return False
-
-    if (
-        capability_type
-        not in SUPPORTED_TYPES
-    ):
-        return False
-
-    if (
-        capability_id
-        in IGNORED_CAPABILITIES
-    ):
-        return False
-
-    if capability_id.startswith(
-        IGNORED_CAPABILITY_PREFIXES
-    ):
-        return False
-
-    return True
 
 
 def build_enum_values(
@@ -487,10 +393,114 @@ def make_unique_key(
         counter += 1
 
 
+def _event_role(
+    event_key: str,
+    key_base: str,
+) -> str:
+    prefix = f"{key_base}_" if key_base else ""
+
+    if prefix and event_key.startswith(prefix):
+        return event_key[len(prefix):]
+
+    return event_key
+
+
+def apply_instance_overrides(
+    generated_device: dict[str, Any],
+    instance: dict[str, Any] | None,
+) -> None:
+    """Přepíše key/title/loxone_name generovaného zařízení hodnotami
+    z jeho Device Instance, in place.
+
+    Profile Engine (loxbridge.profiles) už rozhodl, jaké capabilities/
+    commands/events zařízení má, a build_capability()/build_commands()/
+    build_event_inputs() pro ně dopočítaly výchozí (slug-based) key a
+    název. Tahle funkce nic nepřidává ani neodebírá - jen pro role, pro
+    které má instance uloženou hodnotu, tu výchozí hodnotu nahradí
+    zamrzlou hodnotou z instance. Role, které instance nezná (chybí
+    v config/devices/, nebo instance danou roli ještě nemá uloženou),
+    zůstávají na dnešním dopočítaném chování - to je fallback popsaný
+    v návrhu. Instance samotná se tu nikdy nezapisuje ani neupravuje.
+    """
+    if not instance:
+        return
+
+    keys = instance.get("keys") or {}
+    display_names = instance.get("display_names") or {}
+
+    capability_keys = keys.get("capabilities") or {}
+    capability_names = (
+        display_names.get("capabilities") or {}
+    )
+
+    capabilities = (
+        generated_device.get("capabilities") or {}
+    )
+
+    for capability_id, capability in capabilities.items():
+        if not isinstance(capability, dict):
+            continue
+
+        if capability_id in capability_keys:
+            capability["key"] = capability_keys[
+                capability_id
+            ]
+
+        if capability_id in capability_names:
+            capability["loxone_name"] = capability_names[
+                capability_id
+            ]
+
+    loxbridge = generated_device.get("loxbridge") or {}
+
+    command_keys = keys.get("commands") or {}
+    command_names = display_names.get("commands") or {}
+
+    for command in loxbridge.get("commands") or []:
+        if not isinstance(command, dict):
+            continue
+
+        role = command.get("kind")
+
+        if role in command_keys:
+            command["key"] = command_keys[role]
+
+        if role in command_names:
+            command["title"] = command_names[role]
+
+    event_keys = keys.get("events") or {}
+    event_names = display_names.get("events") or {}
+
+    # Role eventu se odvozuje odseknutím key_base prefixu z klíče -
+    # stejně jako to dělala migrace. Použije se zamrzlý key_base
+    # z instance (ne aktuální slug zařízení), aby přiřazení fungovalo
+    # i po přejmenování zařízení v Homey.
+    event_key_base = str(
+        instance.get("key_base")
+        or generated_device.get("slug")
+        or ""
+    )
+
+    for event in loxbridge.get("events") or []:
+        if not isinstance(event, dict):
+            continue
+
+        full_key = str(event.get("key") or "")
+
+        role = _event_role(full_key, event_key_base)
+
+        if role in event_keys:
+            event["key"] = event_keys[role]
+
+        if role in event_names:
+            event["title"] = event_names[role]
+
+
 def generate_devices(
     exported_devices: list[
         dict[str, Any]
     ],
+    instances: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[
     list[dict[str, Any]],
     int,
@@ -647,6 +657,17 @@ def generate_devices(
                 "homey_id"
             ] = device_id
 
+        instance = (
+            instances.get(device_id)
+            if instances and device_id
+            else None
+        )
+
+        apply_instance_overrides(
+            generated_device,
+            instance,
+        )
+
         generated_devices.append(
             generated_device
         )
@@ -666,6 +687,7 @@ def build_generated_config(
         str,
         Any,
     ],
+    instances: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[
     dict[str, Any],
     int,
@@ -710,7 +732,8 @@ def build_generated_config(
         generated_devices,
         capability_count,
     ) = generate_devices(
-        exported_devices
+        exported_devices,
+        instances=instances,
     )
 
     generated_config = {
@@ -757,6 +780,143 @@ def save_generated_config(
         )
 
 
+def _register_key(
+    seen: dict[str, tuple[str, str, str]],
+    collisions: list[str],
+    key: Any,
+    device_name: str,
+    category: str,
+    role: Any,
+) -> None:
+    if not key:
+        return
+
+    key = str(key)
+
+    if key in seen:
+        previous_device, previous_category, previous_role = (
+            seen[key]
+        )
+
+        collisions.append(
+            f"  {key!r}: "
+            f"{previous_device} / {previous_category} / "
+            f"{previous_role}  ×  "
+            f"{device_name} / {category} / {role}"
+        )
+
+        return
+
+    seen[key] = (device_name, category, role)
+
+
+def validate_unique_keys(
+    generated_config: dict[str, Any],
+) -> None:
+    """Ověří, že žádné dva Loxone klíče v celém config.generated.yaml
+    nekolidují - napříč capabilities, commands i events, přes všechna
+    zařízení.
+
+    Kolize je chyba konfigurace, ne něco, co se má tiše přejmenovat -
+    volající (generate_and_save) tuhle funkci musí zavolat před
+    zápisem výstupu a při chybě soubor vůbec nezapisovat.
+    """
+    seen: dict[str, tuple[str, str, str]] = {}
+    collisions: list[str] = []
+
+    devices = generated_config.get("devices") or []
+
+    for device in devices:
+        if not isinstance(device, dict):
+            continue
+
+        device_name = str(device.get("name", ""))
+
+        capabilities = device.get("capabilities") or {}
+
+        for capability_id, capability in capabilities.items():
+            if not isinstance(capability, dict):
+                continue
+
+            _register_key(
+                seen,
+                collisions,
+                capability.get("key"),
+                device_name,
+                "capability",
+                capability_id,
+            )
+
+        loxbridge = device.get("loxbridge") or {}
+
+        for command in loxbridge.get("commands") or []:
+            if not isinstance(command, dict):
+                continue
+
+            _register_key(
+                seen,
+                collisions,
+                command.get("key"),
+                device_name,
+                "command",
+                command.get("kind"),
+            )
+
+        for event in loxbridge.get("events") or []:
+            if not isinstance(event, dict):
+                continue
+
+            _register_key(
+                seen,
+                collisions,
+                event.get("key"),
+                device_name,
+                "event",
+                event.get("key"),
+            )
+
+    if collisions:
+        raise RuntimeError(
+            "Kolize Loxone klíčů - generate zastaven, "
+            "výstupní soubor nebyl zapsán:\n"
+            + "\n".join(collisions)
+        )
+
+
+def generate_and_save(
+    *,
+    current_config_path: Path,
+    export_path: Path,
+    output_path: Path,
+    instances_dir: Path,
+) -> tuple[dict[str, Any], int]:
+    """Kompletní pipeline generate → validace → zápis.
+
+    Validace unikátnosti klíčů proběhne vždy před zápisem výstupu.
+    Pokud selže (nebo selže cokoliv dřívějšího), output_path se vůbec
+    neotevře pro zápis, takže existující soubor na téhle cestě zůstane
+    nedotčený.
+    """
+    current_config = load_yaml(current_config_path)
+    export_data = load_export(export_path)
+    instances = load_all_instances(instances_dir)
+
+    generated_config, capability_count = build_generated_config(
+        current_config=current_config,
+        export_data=export_data,
+        instances=instances,
+    )
+
+    validate_unique_keys(generated_config)
+
+    save_generated_config(
+        config=generated_config,
+        path=output_path,
+    )
+
+    return generated_config, capability_count
+
+
 def main() -> None:
     print(
         "LoxBridge Config Generator"
@@ -783,34 +943,32 @@ def main() -> None:
 
     print()
 
-    current_config = (
-        load_yaml(
-            CURRENT_CONFIG_PATH
-        )
+    instances = load_all_instances(
+        DEFAULT_INSTANCES_DIR
     )
 
-    export_data = (
-        load_export(
-            EXPORT_PATH
-        )
+    print(
+        "Device Instance store: "
+        f"{len(instances)} "
+        "instancí "
+        f"({DEFAULT_INSTANCES_DIR})"
     )
+
+    print()
 
     (
         generated_config,
         capability_count,
-    ) = build_generated_config(
-        current_config=(
-            current_config
+    ) = generate_and_save(
+        current_config_path=(
+            CURRENT_CONFIG_PATH
         ),
-        export_data=(
-            export_data
-        ),
-    )
-
-    save_generated_config(
-        config=generated_config,
-        path=(
+        export_path=EXPORT_PATH,
+        output_path=(
             GENERATED_CONFIG_PATH
+        ),
+        instances_dir=(
+            DEFAULT_INSTANCES_DIR
         ),
     )
 
@@ -822,11 +980,6 @@ def main() -> None:
 
     print(
         "Generování dokončeno."
-    )
-
-    print(
-        "Zařízení v exportu:     "
-        f"{export_data.get('device_count', '?')}"
     )
 
     print(

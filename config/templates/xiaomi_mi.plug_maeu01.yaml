@@ -1,0 +1,47 @@
+# Device Template - popisuje jeden konkrétní Homey model, ne obecnou
+# kategorii. Nesmí obsahovat nic z konkrétní domácnosti (žádné jméno,
+# místnost, Loxone key).
+#
+# Doloženo reálnými daty z exports/homey_devices.json (zařízení
+# "Bazénová filtrace", driver_id homey:app:com.xiaomi-mi:plug.maeu01,
+# capabilities přesně onoff/measure_power/meter_power).
+
+template_id: xiaomi_mi.plug_maeu01
+version: 1
+label: "Xiaomi Mi Smart Plug (plug.maeu01)"
+vendor: "Xiaomi"
+model: "plug.maeu01"
+
+match:
+  driver_id: "homey:app:com.xiaomi-mi:plug.maeu01"
+  requires_capabilities:
+    - onoff
+    - measure_power
+    - meter_power
+  excludes_capabilities: []
+
+capabilities:
+  onoff:
+    role: power
+    direction: bidirectional
+    datatype: boolean
+    key_suffix: power
+    display_suffix: "Zapnutí"
+    transform: []
+  measure_power:
+    role: power_now
+    direction: homey_to_loxone
+    datatype: number
+    key_suffix: power_now
+    display_suffix: "Aktuální výkon"
+    transform: []
+  meter_power:
+    role: energy_total
+    direction: homey_to_loxone
+    datatype: number
+    key_suffix: energy_total
+    display_suffix: "Energie"
+    transform: []
+
+commands: []
+events: []
